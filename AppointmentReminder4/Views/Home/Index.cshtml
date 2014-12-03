@@ -1,0 +1,60 @@
+﻿@{
+    ViewBag.Title = "Home Page";
+    Layout = null;
+}
+
+<html xmlns="http://www.w3.org/1999/xhtml" data-ng-app="appointmentReminderApp">
+<head>
+    <title></title>
+
+    <link href="~/Content/bootstrap.min.css" rel="stylesheet" />
+
+    <script src="~/Scripts/angular.js"></script>
+    <script src="~/Scripts/angular-route.js"></script>
+    <script src="~/Scripts/angular-ui/ui-bootstrap-tpls.js"></script>
+    <script src="~/Scripts/angular-local-storage.js"></script>
+    <script src="~/Scripts/angular-local-storage.min.js"></script>
+
+    <link href="~/Content/bootstrap.min.css" rel="stylesheet" />
+
+    <script src="~/App/AppointmentReminderApp.js"></script>
+
+    @*-- Controllers*@
+    <script src="~/App/AuthForm/authRegisterController.js"></script>
+    <script src="~/App/AuthForm/authLoginController.js"></script>
+    <script src="~/App/AuthForm/authLogoutController.js"></script>
+    <script src="~/App/AuthForm/ValuesController.js"></script>
+    
+    <script src="~/App/HomeController.js"></script>
+
+    @*-- Services*@
+    <script src="~/App/AuthForm/authInterceptorService.js"></script>
+    <script src="~/App/AuthForm/authService.js"></script>
+
+
+@*
+    <script src="~/app2/AppointmentReminderApp.js"></script>
+    <script src="~/app2/ProfileForm/profileController.js"></script>
+    <script src="~/app2/ProfileForm/profileDirective.js"></script>
+    <script src="~/app2/ProfileForm/profileService.js"></script>
+
+    <script src="~/app2/ContactForm/contactController.js"></script>
+    <script src="~/app2/ContactForm/contactService.js"></script>
+
+    <script src="~/app2/ReminderForm/reminderController.js"></script>
+    <script src="~/app2/ReminderForm/reminderService.js"></script>*@
+
+    <base href="/" />
+
+</head>
+<body class="container">
+    <h1>Appointment Reminder</h1>
+    <a href="/home">Home</a>
+    <a href="/values">Values</a>
+    <a href="/Register">Register</a>
+    <a href="/Login">Login</a>
+    <a href="/Logout">Logout</a>
+    <br /><br /><br />
+    <div data-ng-view>this is index page.</div>
+</body>
+</html>
