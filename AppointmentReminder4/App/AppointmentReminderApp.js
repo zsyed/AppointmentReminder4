@@ -27,6 +27,22 @@ appointmentReminderApp.config(function ($routeProvider, $locationProvider) {
 		    templateUrl: "App/AuthForm/templates/values.html",
 		    controller: "ValuesController"
 		})
+		.when("/Profile", {
+		    templateUrl: "App/ProfileForm/templates/profile.html",
+		    controller: "profileController"
+		})
+		.when("/Profile/:id", {
+		    templateUrl: "App/ProfileForm/templates/profile.html",
+		    controller: "profileController"
+		})
+		.when("/newProfileForm", {
+		    templateUrl: "App/ProfileForm/templates/profileUpdate.html",
+		    controller: "profileController"
+		})
+		.when("/updateProfileForm/:id", {
+		    templateUrl: "App/ProfileForm/templates/profileUpdate.html",
+		    controller: "profileController"
+		})
 		.otherwise({ redirectTo: "/home" });
 });
 
