@@ -273,11 +273,10 @@ namespace AppointmentReminder4.Controllers
         {
             DateTime currentDateTime;
             var contact = new ReminderDb().Contacts.Where(c => c.Id == reminder.ContactId).FirstOrDefault();
-
 #if DEBUG
             currentDateTime = DateTime.Now;
 #else
-				int prodServerTimeDifference = 0;
+                int prodServerTimeDifference = 0;
 
 				switch (contact.TimeZone)
 				{
