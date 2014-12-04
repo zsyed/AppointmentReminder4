@@ -70,6 +70,7 @@ appointmentReminderApp.factory('authService', ['$http', '$q', 'localStorageServi
 	            deferred.resolve(response);
 
 	        }).error(function (err, status) {
+	            alert(err.error_description);
 	            logoutUser();
 	            deferred.reject(err);
 	        });
