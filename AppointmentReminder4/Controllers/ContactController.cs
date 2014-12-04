@@ -82,6 +82,8 @@ namespace AppointmentReminder4.Controllers
 			{
 				var profile = _db.Profiles.ToList().Find(p => p.UserName == User.Identity.Name);
 				contact.ProfileId = profile.Id;
+                contact.SendEmail = true;
+                contact.SendSMS = true;
 				contact.Active = true;
 				_db.Contacts.Add(contact);
 				_db.Save();
