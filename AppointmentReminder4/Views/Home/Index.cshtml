@@ -5,7 +5,7 @@
 
 <html xmlns="http://www.w3.org/1999/xhtml" data-ng-app="appointmentReminderApp">
 <head>
-    <title></title>
+    <title>Appointment Reminder</title>
 
     <link href="~/Content/bootstrap.min.css" rel="stylesheet" />
 
@@ -16,6 +16,7 @@
     <script src="~/Scripts/angular-local-storage.min.js"></script>
 
     <link href="~/Content/bootstrap.min.css" rel="stylesheet" />
+    <link href="~/Content/Site.css" rel="stylesheet" />
 
     <script src="~/App/AppointmentReminderApp.js"></script>
 
@@ -34,6 +35,7 @@
     <script src="~/App/ReminderForm/reminderController.js"></script>
     <script src="~/App/ReminderForm/reminderService.js"></script>
     @*----Home*@
+    <script src="~/App/AuthForm/indexController.js"></script>
     <script src="~/App/HomeController.js"></script>
 
     @*-- Services*@
@@ -44,15 +46,32 @@
 
 </head>
 <body class="container">
-    <h1>Appointment Reminder</h1>
-    <a href="/home">Home</a>
-    <a href="/Profile">Profile</a>
-    <a href="/Contacts">Contacts</a>
-    <a href="/Reminders">Reminders</a>
-    <a href="/Register">Register</a>
-    <a href="/Login">Login</a>
-    <a href="/Logout">Logout</a>
-    <br /><br /><br />
-    <div data-ng-view></div>
+
+    <div class="navbar navbar-inverse navbar-fixed-top" role="navigation" data-ng-controller="indexController">
+        <div class="container">
+            <div class="navbar-header">
+                <button class="btn btn-success navbar-toggle" data-ng-click="navbarExpanded = !navbarExpanded">
+                    <span class="glyphicon glyphicon-chevron-down"></span>
+                </button>
+                <a class="navbar-brand" href="/home">Home</a>
+                <a class="navbar-brand" data-ng-hide="!authentication.isAuth" href="/Profile">Profile</a>
+                <a class="navbar-brand" data-ng-hide="!authentication.isAuth" href="/Contacts">Contacts</a>
+                <a class="navbar-brand" data-ng-hide="!authentication.isAuth" href="/Reminders">Reminders</a>
+            </div>
+            <div class="collapse navbar-collapse" data-collapse="!navbarExpanded">
+                <ul class="nav navbar-nav navbar-right">
+                    <li data-ng-hide="!authentication.isAuth"><a href="/">Welcome {{authentication.userName}}</a></li>
+                    <li data-ng-hide="!authentication.isAuth"><a href="" data-ng-click="logoutUser()">Logout</a></li>
+                    <li data-ng-hide="authentication.isAuth"> <a href="/Login">Login</a></li>
+                    <li data-ng-hide="authentication.isAuth"> <a href="/Register">Register</a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <div class="container">
+        <div data-ng-view="">
+        </div>
+    </div>
 </body>
 </html>

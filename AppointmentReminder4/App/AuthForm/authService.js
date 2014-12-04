@@ -3,14 +3,14 @@
 
 appointmentReminderApp.factory('authService', ['$http', '$q', 'localStorageService', function ($http, $q, localStorageService) {
 
-    var serviceBase = "/";
+        var serviceBase = "/";
 
-    var getValues = function () {
+        var getValues = function () {
 
-        return $http.get(serviceBase + 'api/values').then(function (results) {
-            return results;
-        });
-    };
+            return $http.get(serviceBase + 'api/values').then(function (results) {
+                return results;
+            });
+        };
 
         var _authentication = {
             isAuth: false,
@@ -66,6 +66,7 @@ appointmentReminderApp.factory('authService', ['$http', '$q', 'localStorageServi
 	            _authentication.userName = loginData.userName;
 	            _authentication.useRefreshTokens = loginData.useRefreshTokens;
 
+	            response.authentication = _authentication;
 	            deferred.resolve(response);
 
 	        }).error(function (err, status) {
@@ -82,6 +83,7 @@ appointmentReminderApp.factory('authService', ['$http', '$q', 'localStorageServi
             registerUser: registerUser,
             loginUser: loginUser,
             logoutUser: logoutUser,
+            authentication: _authentication,
             getValues: getValues
 	    };
 	}

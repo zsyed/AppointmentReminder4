@@ -3,7 +3,6 @@
 	    $scope.loginForm = function () {
 	        authService.loginUser($scope.loginData).then(
                 function (results) {
-                    //$scope.auth = results.data;
                     $location.path('/home');
                 },
                     function (results) {

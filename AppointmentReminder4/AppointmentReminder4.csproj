@@ -294,6 +294,7 @@
     <Content Include="App\AuthForm\authRegisterController.js" />
     <Content Include="App\AuthForm\authService.js" />
     <Content Include="App\AuthForm\authLogoutController.js" />
+    <Content Include="App\AuthForm\indexController.js" />
     <Content Include="App\AuthForm\templates\login.html" />
     <Content Include="App\AuthForm\templates\logout.html" />
     <Content Include="App\AuthForm\templates\register.html" />
