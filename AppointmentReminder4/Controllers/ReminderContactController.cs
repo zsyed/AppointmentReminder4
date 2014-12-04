@@ -13,7 +13,7 @@ namespace AppointmentReminder4.Controllers
  		private IReminderDb _db;
 		public ReminderContactController(IReminderDb db)
 		{
-			_db = db;
+			_db = db; 
 		}
 		public IHttpActionResult GetAllReminderContacts()
 		{
