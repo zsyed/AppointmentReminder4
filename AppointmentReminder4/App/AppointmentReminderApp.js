@@ -1,12 +1,11 @@
 ﻿
 var appointmentReminderApp = angular.module('appointmentReminderApp', ["ngRoute", "ui.bootstrap", "LocalStorageModule"]);
 
-appointmentReminderApp.config(function ($routeProvider, $locationProvider) {
-// appointmentReminderApp.config(function ($routeProvider, $locationProvider,$httpProvider) {
-   // $httpProvider.interceptors.push('authInterceptorService');
+appointmentReminderApp.config(function ($routeProvider, $locationProvider, $httpProvider) {
+    $httpProvider.interceptors.push('authInterceptorService');
     $locationProvider.html5Mode(true);
-
     $routeProvider
+        // Auth 
 		.when("/home", {
 		    templateUrl: "App/Home.html",
 		    controller: "HomeController"
@@ -23,10 +22,7 @@ appointmentReminderApp.config(function ($routeProvider, $locationProvider) {
 		    templateUrl: "App/AuthForm/templates/logout.html",
 		    controller: "authLogoutController"
 		})
-		.when("/values", {
-		    templateUrl: "App/AuthForm/templates/values.html",
-		    controller: "ValuesController"
-		})
+        // Profile
 		.when("/Profile", {
 		    templateUrl: "App/ProfileForm/templates/profile.html",
 		    controller: "profileController"
@@ -43,9 +39,45 @@ appointmentReminderApp.config(function ($routeProvider, $locationProvider) {
 		    templateUrl: "App/ProfileForm/templates/profileUpdate.html",
 		    controller: "profileController"
 		})
+        // Contact
+		.when("/Contacts", {
+		    templateUrl: "App/ContactForm/templates/contacts.html",
+		    controller: "contactController"
+		})
+		.when("/newContactForm", {
+		    templateUrl: "App/ContactForm/templates/contactUpdate.html",
+		    controller: "contactController"
+		})
+		.when("/updateContactForm/:id", {
+		    templateUrl: "App/ContactForm/templates/contactUpdate.html",
+		    controller: "contactController"
+		})
+		.when("/deleteContactForm/:id", {
+		    templateUrl: "App/ContactForm/templates/contactDelete.html",
+		    controller: "contactController"
+		})
+        // Reminder
+		.when("/Reminders", {
+		    templateUrl: "App/ReminderForm/templates/reminders.html",
+		    controller: "reminderController"
+		})
+		.when("/historyReminderForm", {
+		    templateUrl: "App/ReminderForm/templates/reminderHistory.html",
+		    controller: "reminderController"
+		})
+		.when("/newReminderForm", {
+		    templateUrl: "App/ReminderForm/templates/reminderUpdate.html",
+		    controller: "reminderController"
+		})
+		.when("/updateReminderForm/:id", {
+		    templateUrl: "App/ReminderForm/templates/reminderUpdate.html",
+		    controller: "reminderController"
+		})
+		.when("/deleteReminderForm/:id", {
+		    templateUrl: "App/ReminderForm/templates/reminderDelete.html",
+		    controller: "reminderController"
+		})
+        // All else
 		.otherwise({ redirectTo: "/home" });
 });
 
-appointmentReminderApp.config(function ($httpProvider) {
-    $httpProvider.interceptors.push('authInterceptorService');
-});

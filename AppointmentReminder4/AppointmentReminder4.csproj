@@ -76,6 +76,9 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\Newtonsoft.Json.6.0.6\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
+    <Reference Include="RestSharp">
+      <HintPath>..\packages\RestSharp.105.0.1\lib\net4\RestSharp.dll</HintPath>
+    </Reference>
     <Reference Include="StructureMap">
       <HintPath>..\packages\structuremap.3.1.4.143\lib\net40\StructureMap.dll</HintPath>
     </Reference>
@@ -144,6 +147,9 @@
     <Reference Include="System.Web.WebPages.Razor, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <Private>True</Private>
       <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.2\lib\net45\System.Web.WebPages.Razor.dll</HintPath>
+    </Reference>
+    <Reference Include="Twilio.Api">
+      <HintPath>..\packages\Twilio.3.6.24\lib\3.5\Twilio.Api.dll</HintPath>
     </Reference>
     <Reference Include="WebActivator">
       <HintPath>..\packages\WebActivator.1.5.1\lib\net40\WebActivator.dll</HintPath>
@@ -243,9 +249,13 @@
     <Compile Include="Areas\HelpPage\SampleGeneration\TextSample.cs" />
     <Compile Include="Areas\HelpPage\XmlDocumentationProvider.cs" />
     <Compile Include="Controllers\AccountController.cs" />
+    <Compile Include="Controllers\ContactController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\MessageController.cs" />
     <Compile Include="Controllers\ProfileController.cs" />
-    <Compile Include="Controllers\ValuesController.cs" />
+    <Compile Include="Controllers\ReminderContactController.cs" />
+    <Compile Include="Controllers\ReminderController.cs" />
+    <Compile Include="Controllers\ReminderHistoryController.cs" />
     <Compile Include="Data\Common.cs" />
     <Compile Include="Data\Contact.cs" />
     <Compile Include="Data\IdentityService.cs" />
@@ -287,14 +297,24 @@
     <Content Include="App\AuthForm\templates\login.html" />
     <Content Include="App\AuthForm\templates\logout.html" />
     <Content Include="App\AuthForm\templates\register.html" />
+    <Content Include="App\ContactForm\contactController.js" />
+    <Content Include="App\ContactForm\contactService.js" />
+    <Content Include="App\ContactForm\templates\contactDelete.html" />
+    <Content Include="App\ContactForm\templates\contacts.html" />
+    <Content Include="App\ContactForm\templates\contactUpdate.html" />
     <Content Include="App\Home.html" />
     <Content Include="App\HomeController.js" />
     <Content Include="App\AuthForm\templates\values.html" />
-    <Content Include="App\AuthForm\ValuesController.js" />
     <Content Include="App\ProfileForm\profileController.js" />
     <Content Include="App\ProfileForm\profileService.js" />
     <Content Include="App\ProfileForm\templates\profile.html" />
     <Content Include="App\ProfileForm\templates\profileUpdate.html" />
+    <Content Include="App\ReminderForm\reminderController.js" />
+    <Content Include="App\ReminderForm\reminderService.js" />
+    <Content Include="App\ReminderForm\templates\reminderDelete.html" />
+    <Content Include="App\ReminderForm\templates\reminderHistory.html" />
+    <Content Include="App\ReminderForm\templates\reminders.html" />
+    <Content Include="App\ReminderForm\templates\reminderUpdate.html" />
     <Content Include="Areas\HelpPage\HelpPage.css" />
     <Content Include="Content\bootstrap-theme.css" />
     <Content Include="Content\bootstrap-theme.min.css" />
@@ -1148,6 +1168,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Views\Message\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />
