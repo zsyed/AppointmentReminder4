@@ -52,38 +52,41 @@ namespace AppointmentReminder4.Controllers
                 foreach (var reminder in reminders)
                 {
                     var contact = new ReminderDb().Contacts.Where(c => c.Id == reminder.ContactId).FirstOrDefault();
-                    if (this.SendReminderAllowed(reminder))
+                    if (contact != null)
                     {
-                        // get server current datetime.
-                        DateTime serverCurrentDateTime = this.ServerCurrentDateTime(reminder);
-
-                        if (SendDaily(contact, reminder, serverCurrentDateTime))
+                        if (this.SendReminderAllowed(reminder))
                         {
-                            contactList.Add(new SelectListItem()
-                            {
-                                Text = string.Format("{0} {1}", contact.FirstName.Trim(), contact.LastName.Trim()),
-                                Value = reminder.Message
-                            });
-                        }
+                            // get server current datetime.
+                            DateTime serverCurrentDateTime = this.ServerCurrentDateTime(reminder);
 
-                        if (SendWeekly(contact, reminder, serverCurrentDateTime))
-                        {
-                            contactList.Add(new SelectListItem()
+                            if (SendDaily(contact, reminder, serverCurrentDateTime))
                             {
-                                Text = string.Format("{0} {1}", contact.FirstName.Trim(), contact.LastName.Trim()),
-                                Value = reminder.Message
-                            });
-                        }
+                                contactList.Add(new SelectListItem()
+                                {
+                                    Text = string.Format("{0} {1}", contact.FirstName.Trim(), contact.LastName.Trim()),
+                                    Value = reminder.Message
+                                });
+                            }
 
-                        if (SendOnce(contact, reminder, serverCurrentDateTime))
-                        {
-                            contactList.Add(new SelectListItem()
+                            if (SendWeekly(contact, reminder, serverCurrentDateTime))
                             {
-                                Text = string.Format("{0} {1}", contact.FirstName.Trim(), contact.LastName.Trim()),
-                                Value = reminder.Message
-                            });
-                        }
+                                contactList.Add(new SelectListItem()
+                                {
+                                    Text = string.Format("{0} {1}", contact.FirstName.Trim(), contact.LastName.Trim()),
+                                    Value = reminder.Message
+                                });
+                            }
 
+                            if (SendOnce(contact, reminder, serverCurrentDateTime))
+                            {
+                                contactList.Add(new SelectListItem()
+                                {
+                                    Text = string.Format("{0} {1}", contact.FirstName.Trim(), contact.LastName.Trim()),
+                                    Value = reminder.Message
+                                });
+                            }
+
+                        }
                     }
                 }
             }

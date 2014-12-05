@@ -48,19 +48,22 @@ namespace AppointmentReminder4.Controllers
 			foreach (var reminder in reminders)
 			{
 				var contact = _db.Contacts.ToList().Find(c => c.Id == reminder.ContactId);
-				remindersModel.Add(new ReminderModel()
-					{
-						Id = reminder.Id,
-						ContactId = reminder.ContactId,
-						Message = reminder.Message,
-						ProfileId = reminder.ProfileId,
-						ReminderDateTime = reminder.ReminderDateTime,
-						ContactName = string.Format("{0} {1}", contact.FirstName, contact.LastName),
-						Recurrence = reminder.Recurrence,
-						WeekDay = reminder.WeekDay,
-						Sent = reminder.Sent
-					}
-				);
+                if (contact != null)
+                {
+                    remindersModel.Add(new ReminderModel()
+                        {
+                            Id = reminder.Id,
+                            ContactId = reminder.ContactId,
+                            Message = reminder.Message,
+                            ProfileId = reminder.ProfileId,
+                            ReminderDateTime = reminder.ReminderDateTime,
+                            ContactName = string.Format("{0} {1}", contact.FirstName, contact.LastName),
+                            Recurrence = reminder.Recurrence,
+                            WeekDay = reminder.WeekDay,
+                            Sent = reminder.Sent
+                        }
+                    );
+                }
 			}
 			return remindersModel;
 		}

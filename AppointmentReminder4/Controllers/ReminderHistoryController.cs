@@ -29,7 +29,7 @@ namespace AppointmentReminder4.Controllers
 				{
 					var contact = new ReminderDb().Contacts.ToList().Find(c => c.Id == reminderHistory.ContactId);
 					var reminder = new ReminderDb().Reminders.ToList().Find(r => r.Id == reminderHistory.ReminderId);
-					if (reminder != null)
+					if (reminder != null && contact != null)
 					{
 						reminderHistoryModels.Add(
 							new ReminderHistoryModel()

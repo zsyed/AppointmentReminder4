@@ -23,9 +23,9 @@ namespace AppointmentReminder.Data
             // Subject and multipart/alternative Body
             mailMsg.Subject = emailSubject;
             string text = emailBody;
-            string html = @"<p>html body</p>";
+            //string html = @"<p>html body</p>";
             mailMsg.AlternateViews.Add(AlternateView.CreateAlternateViewFromString(text, null, MediaTypeNames.Text.Plain));
-            mailMsg.AlternateViews.Add(AlternateView.CreateAlternateViewFromString(html, null, MediaTypeNames.Text.Html));
+            //mailMsg.AlternateViews.Add(AlternateView.CreateAlternateViewFromString(html, null, MediaTypeNames.Text.Html));
 
             // Init SmtpClient and send
             SmtpClient smtpClient = new SmtpClient(ConfigurationManager.AppSettings["EmailHost"], Convert.ToInt32(ConfigurationManager.AppSettings["EmailPort"]));
@@ -54,7 +54,7 @@ namespace AppointmentReminder.Data
             //// client.Port = EmailPort;
             //client.Host = EmailHost;
 
-            //client.EnableSsl = true; 
+            //client.EnableSsl = true;
             //client.Send(mail);
 		}
 	}
