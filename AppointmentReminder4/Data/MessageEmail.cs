@@ -1,4 +1,5 @@
-﻿using System;
+﻿using AppointmentReminder4.Data;
+using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Linq;
@@ -28,8 +29,13 @@ namespace AppointmentReminder.Data
             //mailMsg.AlternateViews.Add(AlternateView.CreateAlternateViewFromString(html, null, MediaTypeNames.Text.Html));
 
             // Init SmtpClient and send
-            SmtpClient smtpClient = new SmtpClient(ConfigurationManager.AppSettings["EmailHost"], Convert.ToInt32(ConfigurationManager.AppSettings["EmailPort"]));
-            System.Net.NetworkCredential credentials = new System.Net.NetworkCredential(ConfigurationManager.AppSettings["EmailAccountAddress"], ConfigurationManager.AppSettings["EmailAccountPassword"]);
+            string emailHost = Security.Decrypt(ConfigurationManager.AppSettings["EmailHost"]);
+            string emailPort = Security.Decrypt(ConfigurationManager.AppSettings["EmailPort"]);
+            string emailAccountAddress = Security.Decrypt(ConfigurationManager.AppSettings["EmailAccountAddress"]);
+            string emailAccountPassword = Security.Decrypt(ConfigurationManager.AppSettings["EmailAccountPassword"]);
+
+            SmtpClient smtpClient = new SmtpClient(emailHost, Convert.ToInt32(emailPort));
+            System.Net.NetworkCredential credentials = new System.Net.NetworkCredential(emailAccountAddress, emailAccountPassword);
             smtpClient.Credentials = credentials;
 
             smtpClient.Send(mailMsg);
@@ -57,5 +63,7 @@ namespace AppointmentReminder.Data
             //client.EnableSsl = true;
             //client.Send(mail);
 		}
-	}
+
+        public string Decrypt { get; set; }
+    }
 }

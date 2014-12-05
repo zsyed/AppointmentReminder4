@@ -1,4 +1,5 @@
 ﻿using AppointmentReminder.Data;
+using AppointmentReminder4.Data;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
@@ -217,7 +218,7 @@ namespace AppointmentReminder4.Controllers
             string message = this.SMSMessageToSend(reminder, profile, contact);
 
             string AccountSid = profile.AccountSid;
-            string AuthToken = profile.AuthToken;
+            string AuthToken = Security.Decrypt(profile.AuthToken);
 
             var twilio = new TwilioRestClient(AccountSid, AuthToken);
 
@@ -318,6 +319,51 @@ namespace AppointmentReminder4.Controllers
 
             var messageSent = twilio.SendSmsMessage(fromPhoneNumber, toPhoneNumber, message, "");
         }
+
+        public string SendTestEmail()
+        {
+            string msg = string.Empty;
+            try
+            {
+                string fromEmailAddress = "myemail@mydomain.com";
+                string toEmailAddress = "datagig@gmail.com";
+                string emailSubject = "test subject";
+                string emailBody = "test email body";
+
+                var emailMessage = new MessageEmail();
+                emailMessage.Send(fromEmailAddress, toEmailAddress, emailSubject, emailBody, "Zulfiqar Syed", "Faisal Syed");
+                return "successful send test email." + DateTime.Now.ToString();
+            }
+            catch(Exception ex)
+            {
+                return ex.InnerException.Message.ToString();
+            }
+
+        }
+
+        public string SendTestSMS()
+        {
+            try
+            {
+                string AccountSid = "AC36241612702f6674342ac88458c378c8";
+                string AuthToken = Security.Decrypt("524c5c21a8/434`28/`a4b564b501b43");
+
+                var twilio = new TwilioRestClient(AccountSid, AuthToken);
+
+                var messageSent = twilio.SendSmsMessage("7144595176", "7144691491", "just a test sms message", "");
+                return "successful send test sms." + DateTime.Now.ToString();
+            }
+            catch (Exception ex)
+            {
+                return ex.InnerException.Message.ToString();
+            }
+        }
+
+        public string Encrypt(string text)
+        {
+            return Security.Encrypt(text);
+        }
+
 
     }
 }
