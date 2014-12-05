@@ -28,13 +28,17 @@
 			<input type="text"  data-ng-model="contact.PhoneNumber"  id="PhoneNumber" name="PhoneNumber" class="form-control" />
 		</div>
 	</div>
-	
-	<div class="form-group">
-		<label class="col-sm-3 control-label" for="TimeZone">Time Zone</label>
-		<div class="col-sm-9" >
-			<input type="text"  data-ng-model="contact.TimeZone"  id="TimeZone" name="TimeZone" class="form-control" />
-		</div>
-	</div>
+
+    <div class="form-group">
+        <label class="col-sm-3 control-label" for="TimeZone">TimeZone</label>
+        <div class="col-sm-3">
+            <select id="ddlTimeZone" class="form-control"
+                    data-ng-model="selectedTimeZone"
+                    data-ng-options="timeZone.idZone for timeZone in timeZones">
+                <option></option>
+            </select>
+        </div>
+    </div>
 	
 	<div class="form-group">
 		<label class="col-sm-3 control-label" ></label>

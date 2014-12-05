@@ -1,11 +1,29 @@
 ﻿appointmentReminderApp.controller('contactController',
 	function ContactFormController($scope, $window, $location, $routeParams, contactService) {
+
+	    $scope.timeZones = [
+          { idZone: 'PST' },
+          { idZone: 'MST' },
+          { idZone: 'CST' },
+          { idZone: 'EST'}
+	    ];
 		
 		if ($routeParams.id) {
 		
 			contactService.getContact($routeParams.id).then(
 				function (results) {
-					$scope.contact = results.data;
+
+				    $scope.contact = results.data;
+
+				    var keepGoing = true;
+				    var i = 0;
+				    for (i = 0; i <= $scope.timeZones.length && keepGoing; i++) {
+				        if ($scope.timeZones[i].idZone == $scope.contact.TimeZone) {
+				            $scope.selectedTimeZone = $scope.timeZones[i];
+				            keepGoing = false;
+				        }
+				    }
+
 				},
 				function (results) {
 					// on error
@@ -50,7 +68,8 @@
 		};
 
 		$scope.submitForm = function() {
-			if ($scope.contact.Id > 0) {
+		    if ($scope.contact.Id > 0) {
+		        $scope.contact.TimeZone = $scope.selectedTimeZone.idZone;
 				contactService.updateContact($scope.contact).then(
 					function(results) {
 						$scope.contact = results.data;
@@ -62,7 +81,7 @@
 					}
 				);
 			} else {
-
+		        $scope.contact.TimeZone = $scope.selectedTimeZone.idZone;
 				contactService.insertContact($scope.contact).then(
 					function (results) {
 						$scope.contact = results.data;
@@ -77,7 +96,8 @@
 		};
 		
 		$scope.submitDeleteForm = function () {
-			if ($scope.contact.Id > 0) {
+		    if ($scope.contact.Id > 0) {
+		        $scope.contact.TimeZone = $scope.selectedTimeZone.idZone;
 				contactService.deleteContact($routeParams.id).then(
 					function (results) {
 						$scope.contact = results.data;
