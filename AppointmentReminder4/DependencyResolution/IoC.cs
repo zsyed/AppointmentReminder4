@@ -17,6 +17,12 @@
 
 
 using AppointmentReminder.Data;
+using AppointmentReminder4.Models;
+using Microsoft.AspNet.Identity;
+using Microsoft.AspNet.Identity.EntityFramework;
+using Microsoft.Owin.Security;
+using Microsoft.Owin.Security.DataHandler;
+using Microsoft.Owin.Security.DataHandler.Serializer;
 using StructureMap;
 using StructureMap.Graph;
 namespace AppointmentReminder4.DependencyResolution {
@@ -30,8 +36,12 @@ namespace AppointmentReminder4.DependencyResolution {
                                         scan.WithDefaultConventions();
                                     });
                                             x.For<IReminderDb>().Use<ReminderDb>();
+                                            x.For<ISecureDataFormat<AuthenticationTicket>>().Use<SecureDataFormat<AuthenticationTicket>>();
+                                            x.For<IUserStore<ApplicationUser>>().Use<UserStore<ApplicationUser>>();
+                                            x.For<System.Data.Entity.DbContext>().Use(() => new ApplicationDbContext());
                         });
             return ObjectFactory.Container;
         }
     }
 }
+

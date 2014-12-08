@@ -16,6 +16,7 @@ using Microsoft.Owin.Security.OAuth;
 using AppointmentReminder4.Models;
 using AppointmentReminder4.Providers;
 using AppointmentReminder4.Results;
+using StructureMap;
 
 namespace AppointmentReminder4.Controllers
 {
@@ -26,6 +27,7 @@ namespace AppointmentReminder4.Controllers
         private const string LocalLoginProvider = "Local";
         private ApplicationUserManager _userManager;
 
+        [DefaultConstructor]
         public AccountController()
         {
         }
