@@ -141,33 +141,45 @@ namespace AppointmentReminder4.Controllers
         [AllowAnonymous]
         public async Task<IHttpActionResult> ResetPassword(ResetPasswordBindingModel model)
         {
-            //if (!ModelState.IsValid)
-            //{
-            //    return Ok();
-            //}
-            var user = await UserManager.FindByNameAsync(model.Email);
-            if (user == null)
+            string errorMsg = string.Empty;
+
+            try
             {
-                // Don't reveal that the user does not exist
-                // return RedirectToAction("ResetPasswordConfirmation", "Account");
+                if (!ModelState.IsValid)
+                {
+                    foreach (var value in ModelState.Values)
+                    {
+                        foreach (var err in value.Errors)
+                        {
+                            errorMsg = errorMsg + " " + err.ErrorMessage;
+                        }
+                    }
+                    throw new Exception(errorMsg);
+                }
+
+                var user = await UserManager.FindByNameAsync(model.Email);
+                if (user == null)
+                {
+                    errorMsg = "There is a problem with this email address.";
+                    throw new Exception(errorMsg);
+                    // Don't reveal that the user does not exist
+                    // return RedirectToAction("ResetPasswordConfirmation", "Account");
+                }
+
+                string code = await UserManager.GeneratePasswordResetTokenAsync(user.Id); 
+
+                var callbackUrl = Url.Route("DefaultApi", new { controller = "Account/ResetPasswordEmail", userId = user.Id, code = code, newPassword = model.Password });
+                callbackUrl = "http://" + Url.Request.RequestUri.Authority + callbackUrl;
+
+                var emailBody = "Please reset your new password by clicking <a href=\"" + callbackUrl + "\">here</a>";
+                await new MessageEmail().SendAsync("DoNotReply@AppointmentReminder.com", user.UserName, "Reset your password", emailBody, "DoNotReply@AppointmentReminder.com", user.UserName);
+
+                return Ok();
             }
-            //var result = await UserManager.ResetPasswordAsync(user.Id, model.Code, model.Password);
-            //if (result.Succeeded)
-            //{
-            //    return Ok();
-            //}
-            //return BadRequest(ModelState);
-
-            string code = await UserManager.GeneratePasswordResetTokenAsync(user.Id); // .GenerateEmailConfirmationTokenAsync(user.Id);
-
-            var callbackUrl = Url.Route("DefaultApi", new { controller = "Account/ResetPasswordEmail", userId = user.Id, code = code, newPassword = model.Password});
-            callbackUrl = "http://" + Url.Request.RequestUri.Authority + callbackUrl;
-
-            var emailBody = "Please reset your new password by clicking <a href=\"" + callbackUrl + "\">here</a>";
-            await new MessageEmail().SendAsync("DoNotReply@AppointmentReminder.com", user.UserName, "Reset your password", emailBody, "DoNotReply@AppointmentReminder.com", user.UserName);
-
-            return Ok();
-
+            catch(Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
 
         // POST api/Account/SetPassword
@@ -402,41 +414,7 @@ namespace AppointmentReminder4.Controllers
             {
                 return BadRequest(ex.Message);
             }
-
-
         }
-
-        //////
-        ////// POST: /Account/ForgotPassword
-        ////[AllowAnonymous]
-        ////[Route("ForgotPassword")]
-        ////public async Task<IHttpActionResult> ForgotPassword(ForgotPasswordBindingModel model)
-        ////{
-        ////    if (ModelState.IsValid)
-        ////    {
-        ////        var user = await UserManager.FindByNameAsync(model.Email);
-        ////        if (user == null || !(await UserManager.IsEmailConfirmedAsync(user.Id)))
-        ////        {
-        ////            // Don't reveal that the user does not exist or is not confirmed
-        ////            // return View("ForgotPasswordConfirmation");
-        ////        }
-
-        ////        // For more information on how to enable account confirmation and password reset please visit http://go.microsoft.com/fwlink/?LinkID=320771
-        ////        // Send an email with this link
-        ////        string code = await UserManager.GeneratePasswordResetTokenAsync(user.Id);
-        ////        var callbackUrl = Url.Route("DefaultApi", new { controller = "Account/ResetPassword", userId = user.Id, code = code });
-        ////        callbackUrl = "http://" + Url.Request.RequestUri.Authority + callbackUrl;
-        ////        // await UserManager.SendEmailAsync(user.Id, "Reset Password", "Please reset your password by clicking <a href=\"" + callbackUrl + "\">here</a>");
-        ////        // return RedirectToAction("ForgotPasswordConfirmation", "Account");
-        ////        var emailBody = "Please reset your password by clicking <a href=\"" + callbackUrl + "\">here</a>";
-        ////        await new MessageEmail().SendAsync("DoNotReply@AppointmentReminder.com", user.UserName, "Reset your password", emailBody, "DoNotReply@AppointmentReminder.com", user.UserName);
-        ////        return Ok();
-        ////    }
-
-        ////    // If we got this far, something failed, redisplay form
-        ////    // return View(model);
-        ////    return GetErrorResult(null);
-        ////}
 
         //
         // GET: /Account/ConfirmEmail
@@ -459,7 +437,6 @@ namespace AppointmentReminder4.Controllers
             return Ok();
         }
 
-
         //
         // GET: /Account/ResetPasswordEmail
         // GET api/Account/ResetPasswordEmail
@@ -467,18 +444,33 @@ namespace AppointmentReminder4.Controllers
         [AllowAnonymous]
         public async Task<IHttpActionResult> GetResetPasswordEmail(string userId, string code, string newPassword)
         {
-            if (userId == null || code == null)
-            {
-                return GetErrorResult(null);
-            }
-            var result = await UserManager.ResetPasswordAsync(userId, code, newPassword); //   .ConfirmEmailAsync(userId, code);
+            string errmsg = string.Empty;
 
-            if (!result.Succeeded)
+            try
             {
-                return GetErrorResult(result);
-            }
+                if (userId == null || code == null)
+                {
+                    errmsg = "Either email address or other necessary parameter is null.";
+                    throw new Exception(errmsg);
+                }
+                var result = await UserManager.ResetPasswordAsync(userId, code, newPassword); 
 
-            return Ok();
+                if (!result.Succeeded)
+                {
+                    foreach (var err in result.Errors)
+                    {
+                        errmsg = errmsg + " - " + err;
+                    }
+
+                    throw new Exception(errmsg);
+                }
+
+                return Ok();
+            }
+            catch(Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
 
         // POST api/Account/RegisterExternal

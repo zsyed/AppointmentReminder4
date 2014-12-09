@@ -25,16 +25,24 @@
         };
 
 	    $scope.resetPassword = function () {
-	        authService.resetPassword($scope.passwordResetData).then(
-                function (results) {
-                    // $scope.auth = results.data;
-                    // $window.history.back();
-                    $location.path('/PasswordResetCheck');
-                },
-                    function (results) {
-                        // on error
-                        var data = results.data;
-                    }
-                );
+	        authService.resetPassword($scope.passwordResetData)
+                .success(function (data, status, headers, config) {
+                        $scope.message = '';
+                        $scope.errors =[];
+                        if (data.success === false) {
+
+                            $scope.message = data.Message;
+                            $scope.savedSuccessfully = false;
+
+                        }
+                        else {
+                            $scope.savedSuccessfully = true;
+                            $scope.message = 'Password reset was successful. Please click on the link in the email just sent to you to complete this process.';
+                        }
+                            })
+                .error(function (data, status, headers, config) {
+                    $scope.message = data.Message;
+                    $scope.savedSuccessfully = false;
+                });
 	    };
 	});

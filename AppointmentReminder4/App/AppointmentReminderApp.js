@@ -14,10 +14,6 @@ appointmentReminderApp.config(function ($routeProvider, $locationProvider, $http
 		    templateUrl: "App/AuthForm/templates/register.html",
 		    controller: "authRegisterController"
 		})
-		.when("/RegisterSuccess", {
-		    templateUrl: "App/AuthForm/templates/registerSuccess.html",
-		    controller: "authRegisterController"
-		})
 		.when("/Login", {
 		    templateUrl: "App/AuthForm/templates/login.html",
 		    controller: "authLoginController"
@@ -30,10 +26,6 @@ appointmentReminderApp.config(function ($routeProvider, $locationProvider, $http
         templateUrl: "App/AuthForm/templates/resetPassword.html",
             controller: "authRegisterController"
 		})
-		.when("/PasswordResetCheck", {
-        templateUrl: "App/AuthForm/templates/resetPasswordCheck.html",
-            controller: "authRegisterController"
-    })
         // Profile
 		.when("/Profile", {
 		    templateUrl: "App/ProfileForm/templates/profile.html",
