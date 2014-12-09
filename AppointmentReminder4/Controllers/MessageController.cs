@@ -328,9 +328,10 @@ namespace AppointmentReminder4.Controllers
                 string fromEmailAddress = "myemail@mydomain.com";
                 string toEmailAddress = "datagig@gmail.com";
                 string emailSubject = "test subject";
-                string emailBody = "test email body";
+                string emailBody = "Please confirm your account by clicking <a href=\"" + "http://www.microsoft.com" + "\">here</a>"; // "<b>test email body</b>"; 
 
                 var emailMessage = new MessageEmail();
+                
                 emailMessage.Send(fromEmailAddress, toEmailAddress, emailSubject, emailBody, "Zulfiqar Syed", "Faisal Syed");
                 return "successful send test email." + DateTime.Now.ToString();
             }

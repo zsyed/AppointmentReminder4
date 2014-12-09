@@ -17,6 +17,7 @@ using AppointmentReminder4.Models;
 using AppointmentReminder4.Providers;
 using AppointmentReminder4.Results;
 using StructureMap;
+using AppointmentReminder.Data;
 
 namespace AppointmentReminder4.Controllers
 {
@@ -333,6 +334,35 @@ namespace AppointmentReminder4.Controllers
             var user = new ApplicationUser() { UserName = model.Email, Email = model.Email };
 
             IdentityResult result = await UserManager.CreateAsync(user, model.Password);
+
+            if (!result.Succeeded)
+            {
+                return GetErrorResult(result);
+            }
+
+            string code = await UserManager.GenerateEmailConfirmationTokenAsync(user.Id);
+
+            var callbackUrl = Url.Route("DefaultApi", new { controller = "Account/ConfirmEmail", userId = user.Id, code = code });
+            callbackUrl = "http://" + Url.Request.RequestUri.Authority + callbackUrl;
+
+            var emailBody = "Please confirm your account by clicking <a href=\"" + callbackUrl + "\">here</a>";
+            await new MessageEmail().SendAsync("DoNotReply@AppointmentReminder.com", user.UserName, "Confirm your account", emailBody, "DoNotReply@AppointmentReminder.com", user.UserName);
+            
+            return Ok();
+        }
+
+        //
+        // GET: /Account/ConfirmEmail
+        // GET api/Account/ExternalLogin
+        [Route("ConfirmEmail", Name = "ConfirmEmail")]
+        [AllowAnonymous]
+        public async Task<IHttpActionResult> GetConfirmEmail(string userId, string code)
+        {
+            if (userId == null || code == null)
+            {
+                return GetErrorResult(null);
+            }
+            var result = await UserManager.ConfirmEmailAsync(userId, code);
 
             if (!result.Succeeded)
             {

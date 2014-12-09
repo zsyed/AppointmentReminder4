@@ -5,12 +5,20 @@ using System.Configuration;
 using System.Linq;
 using System.Net.Mail;
 using System.Net.Mime;
+using System.Threading.Tasks;
 using System.Web;
 
 namespace AppointmentReminder.Data
 {
 	public class MessageEmail 
 	{
+
+        public Task SendAsync(string fromEmailAddress, string toEmailAddress, string emailSubject, string emailBody, string fromName, string ToName)
+        {
+            Send(fromEmailAddress, toEmailAddress, emailSubject, emailBody, fromName, ToName);
+            return Task.FromResult(0);
+        }
+
 		public void Send(string fromEmailAddress, string toEmailAddress, string emailSubject, string emailBody, string fromName, string ToName)
 		{
             MailMessage mailMsg = new MailMessage();
@@ -24,9 +32,7 @@ namespace AppointmentReminder.Data
             // Subject and multipart/alternative Body
             mailMsg.Subject = emailSubject;
             string text = emailBody;
-            //string html = @"<p>html body</p>";
-            mailMsg.AlternateViews.Add(AlternateView.CreateAlternateViewFromString(text, null, MediaTypeNames.Text.Plain));
-            //mailMsg.AlternateViews.Add(AlternateView.CreateAlternateViewFromString(html, null, MediaTypeNames.Text.Html));
+            mailMsg.AlternateViews.Add(AlternateView.CreateAlternateViewFromString(text, null, MediaTypeNames.Text.Html));
 
             // Init SmtpClient and send
             string emailHost = Security.Decrypt(ConfigurationManager.AppSettings["EmailHost"]);
@@ -37,31 +43,7 @@ namespace AppointmentReminder.Data
             SmtpClient smtpClient = new SmtpClient(emailHost, Convert.ToInt32(emailPort));
             System.Net.NetworkCredential credentials = new System.Net.NetworkCredential(emailAccountAddress, emailAccountPassword);
             smtpClient.Credentials = credentials;
-
             smtpClient.Send(mailMsg);
-
-
-            //System.Net.Mail.MailMessage mail = new System.Net.Mail.MailMessage();
-            //mail.To.Add(toEmailAddress);
-            //mail.From = new MailAddress(fromEmailAddress, fromEmailAddress, System.Text.Encoding.UTF8);
-            //mail.Subject = emailSubject;
-            //mail.SubjectEncoding = System.Text.Encoding.UTF8;
-            //mail.Body = emailBody;
-            //mail.BodyEncoding = System.Text.Encoding.UTF8;
-            //mail.IsBodyHtml = true;
-            //SmtpClient client = new SmtpClient();
-
-            //string EmailAccountAddress = ConfigurationManager.AppSettings["EmailAccountAddress"];
-            //string EmailAccountPassword = ConfigurationManager.AppSettings["EmailAccountPassword"];
-            //string EmailHost = ConfigurationManager.AppSettings["EmailHost"];
-            //// int EmailPort = Convert.ToInt32(ConfigurationManager.AppSettings["EmailPort"]);
-
-            //client.Credentials = new System.Net.NetworkCredential(EmailAccountAddress, EmailAccountPassword);
-            //// client.Port = EmailPort;
-            //client.Host = EmailHost;
-
-            //client.EnableSsl = true;
-            //client.Send(mail);
 		}
 
         public string Decrypt { get; set; }
