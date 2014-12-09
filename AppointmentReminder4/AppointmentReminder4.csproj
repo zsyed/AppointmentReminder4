@@ -299,6 +299,7 @@
     <Content Include="App\AuthForm\templates\login.html" />
     <Content Include="App\AuthForm\templates\logout.html" />
     <Content Include="App\AuthForm\templates\register.html" />
+    <Content Include="App\AuthForm\templates\registerSuccess.html" />
     <Content Include="App\ContactForm\contactController.js" />
     <Content Include="App\ContactForm\contactService.js" />
     <Content Include="App\ContactForm\templates\contactDelete.html" />

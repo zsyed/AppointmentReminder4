@@ -3,8 +3,9 @@
 	    $scope.registerForm = function () {
 	        authService.registerUser($scope.auth).then(
                 function (results) {
-                    $scope.auth = results.data;
-                    $window.history.back();
+                    // $scope.auth = results.data;
+                    // $window.history.back();
+                    $location.path('/RegisterSuccess');
                 },
                     function (results) {
                         // on error

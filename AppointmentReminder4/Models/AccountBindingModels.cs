@@ -32,6 +32,14 @@ namespace AppointmentReminder4.Models
         public string ConfirmPassword { get; set; }
     }
 
+    public class ForgotPasswordBindingModel
+    {
+        [Required]
+        [EmailAddress]
+        [Display(Name = "Email")]
+        public string Email { get; set; }
+    }
+
     public class RegisterBindingModel
     {
         [Required]

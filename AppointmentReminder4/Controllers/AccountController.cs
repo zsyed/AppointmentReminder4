@@ -351,6 +351,38 @@ namespace AppointmentReminder4.Controllers
             return Ok();
         }
 
+        //////
+        ////// POST: /Account/ForgotPassword
+        ////[AllowAnonymous]
+        ////[Route("ForgotPassword")]
+        ////public async Task<IHttpActionResult> ForgotPassword(ForgotPasswordBindingModel model)
+        ////{
+        ////    if (ModelState.IsValid)
+        ////    {
+        ////        var user = await UserManager.FindByNameAsync(model.Email);
+        ////        if (user == null || !(await UserManager.IsEmailConfirmedAsync(user.Id)))
+        ////        {
+        ////            // Don't reveal that the user does not exist or is not confirmed
+        ////            // return View("ForgotPasswordConfirmation");
+        ////        }
+
+        ////        // For more information on how to enable account confirmation and password reset please visit http://go.microsoft.com/fwlink/?LinkID=320771
+        ////        // Send an email with this link
+        ////        string code = await UserManager.GeneratePasswordResetTokenAsync(user.Id);
+        ////        var callbackUrl = Url.Route("DefaultApi", new { controller = "Account/ResetPassword", userId = user.Id, code = code });
+        ////        callbackUrl = "http://" + Url.Request.RequestUri.Authority + callbackUrl;
+        ////        // await UserManager.SendEmailAsync(user.Id, "Reset Password", "Please reset your password by clicking <a href=\"" + callbackUrl + "\">here</a>");
+        ////        // return RedirectToAction("ForgotPasswordConfirmation", "Account");
+        ////        var emailBody = "Please reset your password by clicking <a href=\"" + callbackUrl + "\">here</a>";
+        ////        await new MessageEmail().SendAsync("DoNotReply@AppointmentReminder.com", user.UserName, "Reset your password", emailBody, "DoNotReply@AppointmentReminder.com", user.UserName);
+        ////        return Ok();
+        ////    }
+
+        ////    // If we got this far, something failed, redisplay form
+        ////    // return View(model);
+        ////    return GetErrorResult(null);
+        ////}
+
         //
         // GET: /Account/ConfirmEmail
         // GET api/Account/ExternalLogin

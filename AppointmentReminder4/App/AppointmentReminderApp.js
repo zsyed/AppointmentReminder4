@@ -14,6 +14,10 @@ appointmentReminderApp.config(function ($routeProvider, $locationProvider, $http
 		    templateUrl: "App/AuthForm/templates/register.html",
 		    controller: "authRegisterController"
 		})
+		.when("/RegisterSuccess", {
+		    templateUrl: "App/AuthForm/templates/registerSuccess.html",
+		    controller: "authRegisterController"
+		})
 		.when("/Login", {
 		    templateUrl: "App/AuthForm/templates/login.html",
 		    controller: "authLoginController"
