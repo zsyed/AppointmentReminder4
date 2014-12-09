@@ -359,29 +359,51 @@ namespace AppointmentReminder4.Controllers
         [Route("Register")]
         public async Task<IHttpActionResult> Register(RegisterBindingModel model)
         {
-            if (!ModelState.IsValid)
+            string errorMsg = string.Empty;
+            try {
+
+                if (!ModelState.IsValid)
+                {
+                    foreach(var value in ModelState.Values)
+                    {
+                        foreach(var err in value.Errors)
+                        {
+                            errorMsg = errorMsg + " " + err.ErrorMessage; 
+                        }
+                    }
+                    throw new Exception(errorMsg);
+                }
+
+                var user = new ApplicationUser() { UserName = model.Email, Email = model.Email };
+
+                IdentityResult result = await UserManager.CreateAsync(user, model.Password);
+
+                if (!result.Succeeded)
+                {
+                    foreach(var err in result.Errors)
+                    {
+                        errorMsg = errorMsg + " - " + err ; 
+                    }
+                    throw new Exception(errorMsg);
+                }
+
+                string code = await UserManager.GenerateEmailConfirmationTokenAsync(user.Id);
+
+                var callbackUrl = Url.Route("DefaultApi", new { controller = "Account/ConfirmEmail", userId = user.Id, code = code });
+                callbackUrl = "http://" + Url.Request.RequestUri.Authority + callbackUrl;
+
+                var emailBody = "Please confirm your account by clicking <a href=\"" + callbackUrl + "\">here</a>";
+                await new MessageEmail().SendAsync("DoNotReply@AppointmentReminder.com", user.UserName, "Confirm your account", emailBody, "DoNotReply@AppointmentReminder.com", user.UserName);
+
+                return Ok();
+
+            }
+            catch (Exception ex)
             {
-                return BadRequest(ModelState);
+                return BadRequest(ex.Message);
             }
 
-            var user = new ApplicationUser() { UserName = model.Email, Email = model.Email };
 
-            IdentityResult result = await UserManager.CreateAsync(user, model.Password);
-
-            if (!result.Succeeded)
-            {
-                return GetErrorResult(result);
-            }
-
-            string code = await UserManager.GenerateEmailConfirmationTokenAsync(user.Id);
-
-            var callbackUrl = Url.Route("DefaultApi", new { controller = "Account/ConfirmEmail", userId = user.Id, code = code });
-            callbackUrl = "http://" + Url.Request.RequestUri.Authority + callbackUrl;
-
-            var emailBody = "Please confirm your account by clicking <a href=\"" + callbackUrl + "\">here</a>";
-            await new MessageEmail().SendAsync("DoNotReply@AppointmentReminder.com", user.UserName, "Confirm your account", emailBody, "DoNotReply@AppointmentReminder.com", user.UserName);
-            
-            return Ok();
         }
 
         //////

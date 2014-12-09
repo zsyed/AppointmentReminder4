@@ -38,6 +38,11 @@
             </div>
 
         </div>
+
+
+        <div data-ng-hide="message == ''" data-ng-class="(savedSuccessfully) ? 'alert alert-success' : 'alert alert-danger'">
+            {{message}}
+        </div>
     </div>
 
 </form>
