@@ -137,6 +137,39 @@ namespace AppointmentReminder4.Controllers
             return Ok();
         }
 
+        // POST: /Account/ResetPassword
+        [AllowAnonymous]
+        public async Task<IHttpActionResult> ResetPassword(ResetPasswordBindingModel model)
+        {
+            //if (!ModelState.IsValid)
+            //{
+            //    return Ok();
+            //}
+            var user = await UserManager.FindByNameAsync(model.Email);
+            if (user == null)
+            {
+                // Don't reveal that the user does not exist
+                // return RedirectToAction("ResetPasswordConfirmation", "Account");
+            }
+            //var result = await UserManager.ResetPasswordAsync(user.Id, model.Code, model.Password);
+            //if (result.Succeeded)
+            //{
+            //    return Ok();
+            //}
+            //return BadRequest(ModelState);
+
+            string code = await UserManager.GeneratePasswordResetTokenAsync(user.Id); // .GenerateEmailConfirmationTokenAsync(user.Id);
+
+            var callbackUrl = Url.Route("DefaultApi", new { controller = "Account/ResetPasswordEmail", userId = user.Id, code = code, newPassword = model.Password});
+            callbackUrl = "http://" + Url.Request.RequestUri.Authority + callbackUrl;
+
+            var emailBody = "Please reset your new password by clicking <a href=\"" + callbackUrl + "\">here</a>";
+            await new MessageEmail().SendAsync("DoNotReply@AppointmentReminder.com", user.UserName, "Reset your password", emailBody, "DoNotReply@AppointmentReminder.com", user.UserName);
+
+            return Ok();
+
+        }
+
         // POST api/Account/SetPassword
         [Route("SetPassword")]
         public async Task<IHttpActionResult> SetPassword(SetPasswordBindingModel model)
@@ -395,6 +428,28 @@ namespace AppointmentReminder4.Controllers
                 return GetErrorResult(null);
             }
             var result = await UserManager.ConfirmEmailAsync(userId, code);
+
+            if (!result.Succeeded)
+            {
+                return GetErrorResult(result);
+            }
+
+            return Ok();
+        }
+
+
+        //
+        // GET: /Account/ResetPasswordEmail
+        // GET api/Account/ResetPasswordEmail
+        [Route("ResetPasswordEmail", Name = "ResetPasswordEmail")]
+        [AllowAnonymous]
+        public async Task<IHttpActionResult> GetResetPasswordEmail(string userId, string code, string newPassword)
+        {
+            if (userId == null || code == null)
+            {
+                return GetErrorResult(null);
+            }
+            var result = await UserManager.ResetPasswordAsync(userId, code, newPassword); //   .ConfirmEmailAsync(userId, code);
 
             if (!result.Succeeded)
             {

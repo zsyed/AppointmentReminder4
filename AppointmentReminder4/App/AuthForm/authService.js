@@ -28,7 +28,11 @@ appointmentReminderApp.factory('authService', ['$http', '$q', 'localStorageServi
         var registerUser = function (auth) {
             logoutUser();
 	        return $http.post("/api/Account/Register", auth);
-	    };
+        };
+
+        var resetPassword = function (passwordResetData) {
+            return $http.post("/api/Account/ResetPassword", passwordResetData);
+        };
 
 	    var logoutUser = function () {
 
@@ -85,7 +89,8 @@ appointmentReminderApp.factory('authService', ['$http', '$q', 'localStorageServi
             loginUser: loginUser,
             logoutUser: logoutUser,
             authentication: _authentication,
-            getValues: getValues
+            getValues: getValues,
+            resetPassword: resetPassword
 	    };
 	}
 ]);

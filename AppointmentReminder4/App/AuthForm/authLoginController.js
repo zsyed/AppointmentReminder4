@@ -23,4 +23,8 @@
 	    $scope.$on('LOGIN_STOPLOADED_EVENT', function () {
 	        $scope.loadinglogin = false;
 	    });
+
+	    $scope.resetPassword = function () {
+	        $location.path('/ResetPassword');
+	    };
 	});
