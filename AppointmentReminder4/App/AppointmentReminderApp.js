@@ -36,7 +36,7 @@ appointmentReminderApp.config(function ($routeProvider, $locationProvider, $http
 		    controller: "profileController"
 		})
 		.when("/newProfileForm", {
-		    templateUrl: "App/ProfileForm/templates/profileUpdate.html",
+		    templateUrl: "App/ProfileForm/templates/profileCreate.html",
 		    controller: "profileController"
 		})
 		.when("/updateProfileForm/:id", {

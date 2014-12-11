@@ -311,6 +311,7 @@
     <Content Include="App\ProfileForm\profileController.js" />
     <Content Include="App\ProfileForm\profileService.js" />
     <Content Include="App\ProfileForm\templates\profile.html" />
+    <Content Include="App\ProfileForm\templates\profileCreate.html" />
     <Content Include="App\ProfileForm\templates\profileUpdate.html" />
     <Content Include="App\ReminderForm\reminderController.js" />
     <Content Include="App\ReminderForm\reminderService.js" />
