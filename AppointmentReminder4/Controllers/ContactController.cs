@@ -20,15 +20,30 @@ namespace AppointmentReminder4.Controllers
 		public IQueryable<Contact> GetAllContacts()
 		{
 			var profile = _db.Profiles.ToList().Find(p => p.UserName == User.Identity.Name);
-			var contacts = new ReminderDb().Contacts.Where(c => c.ProfileId == profile.Id).OrderBy(c => c.LastName);
-			return contacts;
+            if (profile != null)
+            {
+                var contacts = new ReminderDb().Contacts.Where(c => c.ProfileId == profile.Id).OrderBy(c => c.LastName);
+                return contacts;
+            }
+            else
+            {
+                return null;
+            }
 		}
 
 		public Contact Get(int Id)
 		{
 			var profile = _db.Profiles.ToList().Find(p => p.UserName == User.Identity.Name);
-			var contact = new ReminderDb().Contacts.Where(c => c.ProfileId == profile.Id).ToList().Find(c => c.Id == Id);
-			return contact;
+            if (profile != null)
+            {
+                var contact = new ReminderDb().Contacts.Where(c => c.ProfileId == profile.Id).ToList().Find(c => c.Id == Id);
+                return contact;
+            }
+            else
+            {
+                return null;
+            }
+
 		}
 
 		public HttpResponseMessage Put([FromBody] Contact contact)

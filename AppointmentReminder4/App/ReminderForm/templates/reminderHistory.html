@@ -7,31 +7,31 @@
 </div>
 
 <div data-ng-show="loadingreminderhistories == false">
-	<table class="table">
-		<thead>
-			<tr>
-				<th> <b>Recurrence</b></th>
-				<th> <b>Week Day</b></th>
-				<th> <b>Scheduled</b></th>
-				<th> <b>Sent</b></th>
-				<th> <b>Message</b></th>
-				<th> <b>Contact</b></th>
-				<th> <b>Type</b></th>
-			</tr>
-				
-		</thead>
-		<tbody>
-			<tr data-ng-repeat="reminderhistory in reminderhistories">
-				
-				<td>{{reminderhistory.Recurrence}}</td>
-				<td>{{reminderhistory.Weekday}}</td>
-				<td>{{reminderhistory.ReminderDateTime | date: 'EEE MM/dd/yyyy hh:mm a'}}</td>
-				<td>{{reminderhistory.MessageSentDateTime | date: 'EEE MM/dd/yyyy hh:mm a'}}</td>
-				<td>{{reminderhistory.Message}}</td>
-				<td>{{reminderhistory.ContactName}}</td>
-				<td>{{reminderhistory.EmailSent == true? "Email": reminderhistory.SMSSent == true? "SMS": "None"}}</td>
+    <table class="table" data-ng-show="reminderhistories.length > 0">
+        <thead>
+            <tr>
+                <th> <b>Recurrence</b></th>
+                <th> <b>Week Day</b></th>
+                <th> <b>Scheduled</b></th>
+                <th> <b>Sent</b></th>
+                <th> <b>Message</b></th>
+                <th> <b>Contact</b></th>
+                <th> <b>Type</b></th>
+            </tr>
 
-			</tr>
-		</tbody>
-	</table>
+        </thead>
+        <tbody>
+            <tr data-ng-repeat="reminderhistory in reminderhistories">
+
+                <td>{{reminderhistory.Recurrence}}</td>
+                <td>{{reminderhistory.Weekday}}</td>
+                <td>{{reminderhistory.ReminderDateTime | date: 'EEE MM/dd/yyyy hh:mm a'}}</td>
+                <td>{{reminderhistory.MessageSentDateTime | date: 'EEE MM/dd/yyyy hh:mm a'}}</td>
+                <td>{{reminderhistory.Message}}</td>
+                <td>{{reminderhistory.ContactName}}</td>
+                <td>{{reminderhistory.EmailSent == true? "Email": reminderhistory.SMSSent == true? "SMS": "None"}}</td>
+
+            </tr>
+        </tbody>
+    </table>
 	</div>

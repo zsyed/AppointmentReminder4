@@ -42,50 +42,69 @@ namespace AppointmentReminder4.Controllers
 		public List<ReminderModel> GetAllReminders()
 		{
 			var profile = _db.Profiles.ToList().Find(p => p.UserName == User.Identity.Name);
-			var reminders = new ReminderDb().Reminders.Where(r => r.ProfileId == profile.Id).OrderByDescending(r => r.ReminderDateTime);
+            if (profile != null)
+            {
+                var reminders = new ReminderDb().Reminders.Where(r => r.ProfileId == profile.Id).OrderByDescending(r => r.ReminderDateTime);
 
-			var remindersModel = new List<ReminderModel>();
-			foreach (var reminder in reminders)
-			{
-				var contact = _db.Contacts.ToList().Find(c => c.Id == reminder.ContactId);
-                if (contact != null)
+                if (reminders.Count() > 0)
                 {
-                    remindersModel.Add(new ReminderModel()
+                    var remindersModel = new List<ReminderModel>();
+                    foreach (var reminder in reminders)
+                    {
+                        var contact = _db.Contacts.ToList().Find(c => c.Id == reminder.ContactId);
+                        if (contact != null)
                         {
-                            Id = reminder.Id,
-                            ContactId = reminder.ContactId,
-                            Message = reminder.Message,
-                            ProfileId = reminder.ProfileId,
-                            ReminderDateTime = reminder.ReminderDateTime,
-                            ContactName = string.Format("{0} {1}", contact.FirstName, contact.LastName),
-                            Recurrence = reminder.Recurrence,
-                            WeekDay = reminder.WeekDay,
-                            Sent = reminder.Sent
+                            remindersModel.Add(new ReminderModel()
+                                {
+                                    Id = reminder.Id,
+                                    ContactId = reminder.ContactId,
+                                    Message = reminder.Message,
+                                    ProfileId = reminder.ProfileId,
+                                    ReminderDateTime = reminder.ReminderDateTime,
+                                    ContactName = string.Format("{0} {1}", contact.FirstName, contact.LastName),
+                                    Recurrence = reminder.Recurrence,
+                                    WeekDay = reminder.WeekDay,
+                                    Sent = reminder.Sent
+                                }
+                            );
                         }
-                    );
+                    }
+                    return remindersModel;
                 }
-			}
-			return remindersModel;
+            }
+
+            return null;
 		}
 
 		public ReminderModel Get(int Id)
 		{
+            string message = string.Empty;
 			var profile = _db.Profiles.ToList().Find(p => p.UserName == User.Identity.Name);
-			var reminder = _db.Reminders.Where(p => p.ProfileId == profile.Id).ToList().Find(r => r.Id == Id);
-			var contact = _db.Contacts.ToList().Find(c => c.Id == reminder.ContactId);
-			var reminderModel = new ReminderModel()
-				                    {
-					                    Id = reminder.Id,
-										ContactId = reminder.ContactId,
-					                    Message = reminder.Message,
-					                    ProfileId = reminder.ProfileId,
-					                    ReminderDateTime = reminder.ReminderDateTime,
-					                    ContactName = string.Format("{0} {1}", contact.FirstName, contact.LastName),
-										Recurrence = reminder.Recurrence,
-										WeekDay = reminder.WeekDay,
-					                    Sent = reminder.Sent
-				                    };
-			return reminderModel;
+            if (profile != null)
+            {
+                var reminder = _db.Reminders.Where(p => p.ProfileId == profile.Id).ToList().Find(r => r.Id == Id);
+                if (reminder != null)
+                {
+                    var contact = _db.Contacts.ToList().Find(c => c.Id == reminder.ContactId);
+                    if (contact != null)
+                    {
+                        var reminderModel = new ReminderModel()
+                                                {
+                                                    Id = reminder.Id,
+                                                    ContactId = reminder.ContactId,
+                                                    Message = reminder.Message,
+                                                    ProfileId = reminder.ProfileId,
+                                                    ReminderDateTime = reminder.ReminderDateTime,
+                                                    ContactName = string.Format("{0} {1}", contact.FirstName, contact.LastName),
+                                                    Recurrence = reminder.Recurrence,
+                                                    WeekDay = reminder.WeekDay,
+                                                    Sent = reminder.Sent
+                                                };
+                        return reminderModel;
+                    }
+                }
+            }
+            return null;            
 		}
 
 		public HttpResponseMessage Delete(int Id)

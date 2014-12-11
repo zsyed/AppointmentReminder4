@@ -1,6 +1,10 @@
 ﻿appointmentReminderApp.controller('contactController',
 	function ContactFormController($scope, $window, $location, $routeParams, contactService) {
 
+	    $scope.contactsAvailable = false;
+	    $scope.profileExist = false;
+	    $scope.message = "";
+
 	    $scope.timeZones = [
           { idZone: 'PST' },
           { idZone: 'MST' },
@@ -12,7 +16,7 @@
 		
 			contactService.getContact($routeParams.id).then(
 				function (results) {
-
+				    $scope.contactsAvailable = true;
 				    $scope.contact = results.data;
 
 				    var keepGoing = true;
@@ -26,7 +30,8 @@
 
 				},
 				function (results) {
-					// on error
+				    // on error
+				    $scope.contactsAvailable = true;
 					var data = results.data;
 				}
 			);
@@ -35,11 +40,25 @@
 			$scope.contact = { id: -1 };
 			contactService.getContacts().then(
 				function (results) {
-					$scope.contacts = results.data;
+				    $scope.contacts = results.data;
+				    if ($scope.contacts == null)
+				    {
+				        $scope.message = "Please create profile first and then add contacts.";
+				        $scope.contactsAvailable = false;
+				        $scope.profileExist = false;
+				    }
+				    else
+				    {
+				        $scope.contactsAvailable = true;
+				        $scope.profileExist = true;
+				    }
+
 					$scope.$broadcast('CONTACTS_LOADED_EVENT');
 				},
 				function (results) {
-					// on error
+				    // on error
+				    $scope.contactsAvailable = false;
+				    $scope.profileExist = false;
 					var data = results.data;
 				}
 			);
