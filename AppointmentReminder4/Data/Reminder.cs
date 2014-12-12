@@ -16,6 +16,7 @@ namespace AppointmentReminder.Data
 
 		public virtual string Message { get; set; }
 
+        public virtual string Image { get; set; }
 		public virtual int ContactId { get; set; }
 
 		public virtual bool Sent { get; set; }

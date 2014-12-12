@@ -216,13 +216,15 @@ namespace AppointmentReminder4.Controllers
             string fromPhoneNumber = profile.PhoneNumberIssued;
             string toPhoneNumber = string.Format("1{0}", contact.PhoneNumber);
             string message = this.SMSMessageToSend(reminder, profile, contact);
+            string image = reminder.Image;
 
             string AccountSid = profile.AccountSid;
             string AuthToken = Security.Decrypt(profile.AuthToken);
 
             var twilio = new TwilioRestClient(AccountSid, AuthToken);
-
-            var messageSent = twilio.SendSmsMessage(fromPhoneNumber, toPhoneNumber, message, "");
+        
+            var messageSent = twilio.SendMessage(fromPhoneNumber, toPhoneNumber, message, new string[] { image });
+            
         }
 
         private void RecordReminderSent(Reminder reminder)

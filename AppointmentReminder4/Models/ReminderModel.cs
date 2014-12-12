@@ -22,6 +22,8 @@ namespace AppointmentReminder.Models
 		[Required]
 		public string Message { get; set; }
 
+        public string Image { get; set; }
+
 		[Required]
 		public int ContactId { get; set; }
 

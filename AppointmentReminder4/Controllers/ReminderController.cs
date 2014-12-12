@@ -139,6 +139,7 @@ namespace AppointmentReminder4.Controllers
 				reminder.ProfileId = profile.Id;
 				reminder.ContactId = reminderModel.ContactId;
 				reminder.Message = reminderModel.Message;
+                reminder.Image = reminderModel.Image;
 				reminder.ReminderDateTime = reminderModel.ReminderDateTime;
 				reminder.Recurrence = reminderModel.Recurrence;
 				reminder.WeekDay = reminderModel.WeekDay;
