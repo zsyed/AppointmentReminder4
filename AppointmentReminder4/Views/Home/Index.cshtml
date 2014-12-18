@@ -15,10 +15,13 @@
     <script src="~/Scripts/angular-local-storage.js"></script>
     <script src="~/Scripts/angular-local-storage.min.js"></script>
 
+
     <link href="~/Content/bootstrap.min.css" rel="stylesheet" />
     <link href="~/Content/Site.css" rel="stylesheet" />
+    <script src="~/Scripts/PhoneFormat.js"></script>
 
     <script src="~/App/AppointmentReminderApp.js"></script>
+
 
     @*-- Controllers*@
     @*----Auth*@
@@ -42,6 +45,8 @@
     <script src="~/App/AuthForm/authInterceptorService.js"></script>
     <script src="~/App/AuthForm/authService.js"></script>
 
+
+
     <base href="/" />
 
 </head>
@@ -54,9 +59,9 @@
                     <span class="glyphicon glyphicon-chevron-down"></span>
                 </button>
                 <a class="navbar-brand" href="/home">Home</a>
-                <a class="navbar-brand" data-ng-hide="!authentication.isAuth" href="/Profile">Profile</a>
-                <a class="navbar-brand" data-ng-hide="!authentication.isAuth" href="/Contacts">Contacts</a>
-                <a class="navbar-brand" data-ng-hide="!authentication.isAuth" href="/Reminders">Reminders</a>
+                <a class="navbar-brand" data-ng-show="authentication.isAuth" href="/Profile">Profile</a>
+                <a class="navbar-brand" data-ng-show="authentication.profileExists" href="/Contacts">Contacts</a>
+                <a class="navbar-brand" data-ng-show="authentication.contactExists" href="/Reminders">Reminders</a>
             </div>
             <div class="collapse navbar-collapse" data-collapse="!navbarExpanded">
                 <ul class="nav navbar-nav navbar-right">

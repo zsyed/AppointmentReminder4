@@ -1,5 +1,5 @@
 ﻿appointmentReminderApp.controller('profileController',
-	function ProfileFormController($scope, $window, $location, $routeParams, profileService) {
+	function ProfileFormController($scope, $window, $location, $routeParams, profileService, authService) {
 
 		$scope.$on('PROFILE_LOADED_EVENT', function () {
 			 $scope.loading = false;
@@ -44,7 +44,12 @@
 			if ($scope.profile.Id > 0) {
 				profileService.updateProfile($scope.profile).then(
 					function (results) {
-						$scope.profile = results.data;
+					    $scope.profile = results.data;
+					    if ($scope.profile != null)
+					    {
+					        authService.profileExists(true);
+					    }
+
 						$window.history.back();
 						},
 						function (results) {
@@ -56,7 +61,10 @@
 				
 				profileService.insertProfile($scope.profile).then(
 					function (results) {
-						$scope.profile = results.data;
+					    $scope.profile = results.data;
+					    if ($scope.profile != null) {
+					        authService.profileExists(true);
+					    }
 						$window.history.back();
 					},
 						function (results) {
@@ -65,7 +73,6 @@
 						}
 					);
 			}
-			
 		};
 
 	});

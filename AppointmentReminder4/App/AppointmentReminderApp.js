@@ -1,6 +1,16 @@
 ﻿
 var appointmentReminderApp = angular.module('appointmentReminderApp', ["ngRoute", "ui.bootstrap", "LocalStorageModule"]);
 
+angular.module('appointmentReminderApp')
+.filter('tel', function () {
+    return function (phoneNumber) {
+        if (!phoneNumber)
+            return phoneNumber;
+
+        return formatLocal('US', phoneNumber);
+    }
+});
+
 appointmentReminderApp.config(function ($routeProvider, $locationProvider, $httpProvider) {
     $httpProvider.interceptors.push('authInterceptorService');
     $locationProvider.html5Mode(true);

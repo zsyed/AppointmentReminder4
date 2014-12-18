@@ -35,7 +35,7 @@
             <tr data-ng-repeat="contact in contacts">
                 <td>{{contact.FirstName}}</td>
                 <td>{{contact.LastName}}</td>
-                <td>{{contact.PhoneNumber}}</td>
+                <td>{{contact.PhoneNumber | tel}}</td>
                 <td>{{contact.EmailAddress}}</td>
                 <td>{{contact.TimeZone}}</td>
                 <td>{{contact.Active == true? "Yes": "No"}}</td>

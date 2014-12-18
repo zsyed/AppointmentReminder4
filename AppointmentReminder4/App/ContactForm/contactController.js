@@ -1,5 +1,5 @@
 ﻿appointmentReminderApp.controller('contactController',
-	function ContactFormController($scope, $window, $location, $routeParams, contactService) {
+	function ContactFormController($scope, $window, $location, $routeParams,$filter, contactService, authService) {
 
 	    $scope.contactsAvailable = false;
 	    $scope.profileExist = false;
@@ -18,7 +18,7 @@
 				function (results) {
 				    $scope.contactsAvailable = true;
 				    $scope.contact = results.data;
-
+				    $scope.contact.PhoneNumber = $filter("tel")($scope.contact.PhoneNumber);
 				    var keepGoing = true;
 				    var i = 0;
 				    for (i = 0; i <= $scope.timeZones.length && keepGoing; i++) {
@@ -111,7 +111,8 @@
 							var data = results.data;
 						}
 					);
-			}
+		    }
+            authService.checkContact();
 		};
 		
 		$scope.submitDeleteForm = function () {
@@ -119,7 +120,8 @@
 		        $scope.contact.TimeZone = $scope.selectedTimeZone.idZone;
 				contactService.deleteContact($routeParams.id).then(
 					function (results) {
-						$scope.contact = results.data;
+					    $scope.contact = results.data;
+                        authService.checkContact();
 						$window.history.back();
 					},
 					function (results) {

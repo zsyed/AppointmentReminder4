@@ -7,6 +7,10 @@
 	        $scope.$broadcast('LOGIN_LOADED_EVENT');
 	        authService.loginUser($scope.loginData).then(
                 function (results) {
+
+                    authService.checkProfile();
+                    authService.checkContact();
+
                     $location.path('/home');
                 },
                     function (results) {
