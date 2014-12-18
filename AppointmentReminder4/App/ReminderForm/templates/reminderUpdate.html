@@ -57,18 +57,18 @@
 
 	</div>	
 
-	
+    <!--<textarea ng-model="input.abc"></textarea>-->
 	<div class="form-group">
 		<label class="col-sm-3 control-label">Message</label>
 		<div class="col-sm-9" >
-			<input required type="text" placeholder="Enter Message" data-ng-model="reminder.Message"/>
+            <textarea placeholder="Enter Message" ng-model="reminder.Message" class="form-control input-group-lg"></textarea>
 		</div>
 	</div>
 
     <div class="form-group">
         <label class="col-sm-3 control-label">Image</label>
         <div class="col-sm-9">
-            <input required type="text" placeholder="Enter Image" data-ng-model="reminder.Image" />
+            <input required type="text" placeholder="Enter Image" data-ng-model="reminder.Image" class="form-control input-group-lg" />
         </div>
     </div>
 	
