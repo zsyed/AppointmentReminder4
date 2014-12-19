@@ -6,10 +6,10 @@
 	    $scope.message = "";
 
 	    $scope.timeZones = [
-          { idZone: 'PST' },
-          { idZone: 'MST' },
-          { idZone: 'CST' },
-          { idZone: 'EST'}
+          { idZone: 'PST', descZone : 'Pacific Standard Time' },
+          { idZone: 'MST', descZone : 'Mountain Stnadard Time' },
+          { idZone: 'CST', descZone : 'Central Standard Time' },
+          { idZone: 'EST', descZone : 'Eastern Standard Time' }
 	    ];
 		
 		if ($routeParams.id) {
@@ -41,6 +41,7 @@
 			contactService.getContacts().then(
 				function (results) {
 				    $scope.contacts = results.data;
+
 				    if ($scope.contacts == null)
 				    {
 				        $scope.message = "Please create profile first and then add contacts.";

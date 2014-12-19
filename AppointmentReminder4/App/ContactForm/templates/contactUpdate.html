@@ -31,10 +31,10 @@
 
     <div class="form-group">
         <label class="col-sm-3 control-label" for="TimeZone">TimeZone</label>
-        <div class="col-sm-3">
+        <div class="col-sm-9">
             <select id="ddlTimeZone" class="form-control"
                     data-ng-model="selectedTimeZone"
-                    data-ng-options="timeZone.idZone for timeZone in timeZones">
+                    data-ng-options="timeZone.descZone for timeZone in timeZones">
                 <option></option>
             </select>
         </div>
