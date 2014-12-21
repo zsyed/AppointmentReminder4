@@ -327,7 +327,7 @@ namespace AppointmentReminder4.Controllers
             string msg = string.Empty;
             try
             {
-                string fromEmailAddress = "myemail@mydomain.com";
+                string fromEmailAddress = "azure_a517861c408b1278d9304b663d4fca14@azure.com"; // "myemail@mydomain.com";
                 string toEmailAddress = "datagig@gmail.com";
                 string emailSubject = "test subject";
                 string emailBody = "Please confirm your account by clicking <a href=\"" + "http://www.microsoft.com" + "\">here</a>"; // "<b>test email body</b>"; 

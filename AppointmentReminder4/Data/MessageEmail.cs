@@ -21,17 +21,20 @@ namespace AppointmentReminder.Data
 
 		public void Send(string fromEmailAddress, string toEmailAddress, string emailSubject, string emailBody, string fromName, string ToName)
 		{
+
             MailMessage mailMsg = new MailMessage();
 
             // To
             mailMsg.To.Add(new MailAddress(toEmailAddress, ToName));
 
             // From
-            mailMsg.From = new MailAddress(fromEmailAddress, fromName);
+            // mailMsg.From = new MailAddress(fromEmailAddress, fromName);
 
             // Subject and multipart/alternative Body
             mailMsg.Subject = emailSubject;
             string text = emailBody;
+            // string html = @"<p>html body</p>";
+            // mailMsg.AlternateViews.Add(AlternateView.CreateAlternateViewFromString(text, null, MediaTypeNames.Text.Plain));
             mailMsg.AlternateViews.Add(AlternateView.CreateAlternateViewFromString(text, null, MediaTypeNames.Text.Html));
 
             // Init SmtpClient and send
@@ -40,10 +43,37 @@ namespace AppointmentReminder.Data
             string emailAccountAddress = Security.Decrypt(ConfigurationManager.AppSettings["EmailAccountAddress"]);
             string emailAccountPassword = Security.Decrypt(ConfigurationManager.AppSettings["EmailAccountPassword"]);
 
+            mailMsg.From = new MailAddress(emailAccountAddress, fromName);
+
+            // Init SmtpClient and send
             SmtpClient smtpClient = new SmtpClient(emailHost, Convert.ToInt32(emailPort));
             System.Net.NetworkCredential credentials = new System.Net.NetworkCredential(emailAccountAddress, emailAccountPassword);
             smtpClient.Credentials = credentials;
+
             smtpClient.Send(mailMsg);
+
+
+
+            ////MailMessage mailMsg = new MailMessage();
+
+            ////// To
+            ////mailMsg.To.Add(new MailAddress(toEmailAddress, ToName));
+
+            ////// From
+            ////mailMsg.From = new MailAddress(fromEmailAddress, fromName);
+
+            ////// Subject and multipart/alternative Body
+            ////mailMsg.Subject = emailSubject;
+            ////string text = emailBody;
+            ////mailMsg.AlternateViews.Add(AlternateView.CreateAlternateViewFromString(text, null, MediaTypeNames.Text.Html));
+
+            ////SmtpClient smtpClient = new SmtpClient(emailHost, Convert.ToInt32(emailPort));
+            ////System.Net.NetworkCredential credentials = new System.Net.NetworkCredential(emailAccountAddress, emailAccountPassword);
+            ////smtpClient.Credentials = credentials;
+            ////smtpClient.EnableSsl = true;
+            ////smtpClient.UseDefaultCredentials = false;
+            ////smtpClient.DeliveryMethod = SmtpDeliveryMethod.Network;
+            ////smtpClient.Send(mailMsg);
 		}
 
         public string Decrypt { get; set; }
