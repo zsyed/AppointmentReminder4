@@ -29,6 +29,7 @@ namespace AppointmentReminder4.Controllers
 				dbReminder.ReminderDateTime = reminder.ReminderDateTime;
 				dbReminder.Sent = reminder.Sent;
 				dbReminder.Recurrence = reminder.Recurrence;
+                dbReminder.Image = reminder.Image;
 				dbReminder.WeekDay = reminder.WeekDay;
 				_db.Save();
 				return Request.CreateResponse(HttpStatusCode.Created, reminder);
@@ -98,6 +99,7 @@ namespace AppointmentReminder4.Controllers
                                                     ContactName = string.Format("{0} {1}", contact.FirstName, contact.LastName),
                                                     Recurrence = reminder.Recurrence,
                                                     WeekDay = reminder.WeekDay,
+                                                    Image = reminder.Image,
                                                     Sent = reminder.Sent
                                                 };
                         return reminderModel;

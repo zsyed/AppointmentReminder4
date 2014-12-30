@@ -196,7 +196,7 @@ namespace AppointmentReminder4.Controllers
         {
             string message = null;
 
-            message = string.Format("Hi {0}, This is a reminder for you to {1} at {2}. Sincerely, {3}", contact.FirstName.Trim(), reminder.Message, reminder.ReminderDateTime.ToShortTimeString(), profile.FirstName);
+            message = string.Format("Hi {0}, {1}. Sincerely, {2}", contact.FirstName.Trim(), reminder.Message, profile.FirstName);
             return message;
         }
 
@@ -213,8 +213,8 @@ namespace AppointmentReminder4.Controllers
 
         private void SendSMSMessage(Reminder reminder, Profile profile, Contact contact)
         {
-            string fromPhoneNumber = profile.PhoneNumberIssued;
-            string toPhoneNumber = string.Format("1{0}", contact.PhoneNumber);
+            string fromPhoneNumber = string.Format("+1{0}", profile.PhoneNumberIssued);
+            string toPhoneNumber = contact.PhoneNumber;
             string message = this.SMSMessageToSend(reminder, profile, contact);
             string image = reminder.Image;
 
@@ -222,9 +222,14 @@ namespace AppointmentReminder4.Controllers
             string AuthToken = Security.Decrypt(profile.AuthToken);
 
             var twilio = new TwilioRestClient(AccountSid, AuthToken);
-        
+
             var messageSent = twilio.SendMessage(fromPhoneNumber, toPhoneNumber, message, new string[] { image });
-            
+
+            // Sample format to send twilio message.
+            //string AccountSid = "xxxxxxxxxxxxxxxxxxxxx";
+            //string AuthToken = "xxxxxxxxxxxxxxxxxxxxxx";
+            //var twilio = new TwilioRestClient(AccountSid, AuthToken);
+            //var message = twilio.SendMessage("+17144595176", "7144691491", "test");
         }
 
         private void RecordReminderSent(Reminder reminder)
