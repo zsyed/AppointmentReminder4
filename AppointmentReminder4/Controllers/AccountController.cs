@@ -18,6 +18,7 @@ using AppointmentReminder4.Providers;
 using AppointmentReminder4.Results;
 using StructureMap;
 using AppointmentReminder.Data;
+using System.Net;
 
 namespace AppointmentReminder4.Controllers
 {
@@ -442,7 +443,7 @@ namespace AppointmentReminder4.Controllers
         // GET api/Account/ResetPasswordEmail
         [Route("ResetPasswordEmail", Name = "ResetPasswordEmail")]
         [AllowAnonymous]
-        public async Task<IHttpActionResult> GetResetPasswordEmail(string userId, string code, string newPassword)
+        public HttpResponseMessage GetResetPasswordEmail(string userId, string code, string newPassword)
         {
             string errmsg = string.Empty;
 
@@ -453,23 +454,28 @@ namespace AppointmentReminder4.Controllers
                     errmsg = "Either email address or other necessary parameter is null.";
                     throw new Exception(errmsg);
                 }
-                var result = await UserManager.ResetPasswordAsync(userId, code, newPassword); 
+                var result = UserManager.ResetPasswordAsync(userId, code, newPassword); 
 
-                if (!result.Succeeded)
-                {
-                    foreach (var err in result.Errors)
-                    {
-                        errmsg = errmsg + " - " + err;
-                    }
+                //if (!result.Succeeded)
+                //{
+                //    foreach (var err in result.Errors)
+                //    {
+                //        errmsg = errmsg + " - " + err;
+                //    }
 
-                    throw new Exception(errmsg);
-                }
+                //    throw new Exception(errmsg);
+                //}
 
-                return Ok();
+                // return Ok();
+                var response = Request.CreateResponse(HttpStatusCode.Moved);
+                string fullyQualifiedUrl = Request.RequestUri.GetLeftPart(UriPartial.Authority);
+                response.Headers.Location = new Uri(fullyQualifiedUrl);
+                return response;
             }
             catch(Exception ex)
             {
-                return BadRequest(ex.Message);
+                // return BadRequest(ex.Message);
+                return null;
             }
         }
 
