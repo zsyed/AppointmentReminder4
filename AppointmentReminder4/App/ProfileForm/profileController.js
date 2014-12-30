@@ -1,5 +1,5 @@
 ﻿appointmentReminderApp.controller('profileController',
-	function ProfileFormController($scope, $window, $location, $routeParams, profileService, authService) {
+	function ProfileFormController($scope, $window, $location, $routeParams,$filter, profileService, authService) {
 
 		$scope.$on('PROFILE_LOADED_EVENT', function () {
 			 $scope.loading = false;
@@ -13,7 +13,8 @@
 
 		profileService.getProfile().then(
 			function (results) {
-				$scope.profile = results.data;
+			    $scope.profile = results.data;
+			    $scope.profile.PhoneNumber = $filter("tel")($scope.profile.PhoneNumber);
 				$scope.$broadcast('PROFILE_LOADED_EVENT');
 			},
 			function(results) {
