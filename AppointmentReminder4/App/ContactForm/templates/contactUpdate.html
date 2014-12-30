@@ -1,35 +1,35 @@
-﻿<form class="form-horizontal" role="form" >
-	
+﻿<form class="form-horizontal" role="form" name="contactUpdateForm">
 
-	<div class="form-group">
-		<label class="col-sm-3 control-label" for="FirstName">First Name</label>
-		<div class="col-sm-9" >
-			<input type="text" data-ng-model="contact.FirstName" id="firstName" name="FirstName" class="form-control" />
-		</div>
-	</div>
 
-	<div class="form-group">
-		<label class="col-sm-3 control-label" for="LastName">Last Name</label>
-		<div class="col-sm-9" >
-			<input type="text" data-ng-model="contact.LastName" id="LastName" name="LastName" class="form-control" />
-		</div>
-	</div>
-	
-	<div class="form-group">
-		<label class="col-sm-3 control-label" for="EmailAddress">Email Address</label>
-		<div class="col-sm-9" >
-			<input type="text"  data-ng-model="contact.EmailAddress"  id="EmailAddress" name="EmailAddress" class="form-control" />
-		</div>
-	</div>
-	
-	<div class="form-group">
-		<label class="col-sm-3 control-label" for="PhoneNumber">Cell Phone Number</label>
-		<div class="col-sm-9" >
-			<input type="text"  data-ng-model="contact.PhoneNumber"  id="PhoneNumber" name="PhoneNumber" class="form-control" />
-		</div>
-	</div>
+    <div class="form-group" ng-class="{ 'has-error': contactUpdateForm.FirstName.$invalid }">
+        <label class="col-sm-3 control-label" for="FirstName">First Name</label>
+        <div class="col-sm-9">
+            <input type="text" required placeholder="Enter First Name" data-ng-model="contact.FirstName" id="firstName" name="FirstName" class="form-control" />
+        </div>
+    </div>
 
-    <div class="form-group">
+    <div class="form-group" ng-class="{ 'has-error': contactUpdateForm.LastName.$invalid }">
+        <label class="col-sm-3 control-label" for="LastName">Last Name</label>
+        <div class="col-sm-9">
+            <input type="text" required placeholder="Enter Last Name" data-ng-model="contact.LastName" id="LastName" name="LastName" class="form-control" />
+        </div>
+    </div>
+
+    <div class="form-group" ng-class="{ 'has-error': contactUpdateForm.EmailAddress.$invalid && (contactUpdateForm.EmailAddress.$dirty || submitted)}">
+        <label class="col-sm-3 control-label" for="EmailAddress">Email Address</label>
+        <div class="col-sm-9">
+            <input type="text" required placeholder="Enter Email Address" data-ng-model="contact.EmailAddress" id="EmailAddress" name="EmailAddress" class="form-control" />
+        </div>
+    </div>
+
+    <div class="form-group" ng-class="{ 'has-error': contactUpdateForm.PhoneNumber.$invalid }">
+        <label class="col-sm-3 control-label" for="PhoneNumber">Cell Phone Number</label>
+        <div class="col-sm-9">
+            <input type="text" required placeholder="Enter Phone Number" data-ng-model="contact.PhoneNumber" maxlength="14" id="PhoneNumber" name="PhoneNumber" class="form-control" />
+        </div>
+    </div>
+
+    <div class="form-group" ng-class="{ 'has-error': contactUpdateForm.selectedTimeZone.$invalid }">
         <label class="col-sm-3 control-label" for="TimeZone">TimeZone</label>
         <div class="col-sm-9">
             <select id="ddlTimeZone" class="form-control"
@@ -39,13 +39,13 @@
             </select>
         </div>
     </div>
-	
-	<div class="form-group">
-		<label class="col-sm-3 control-label" ></label>
-		<div class="col-sm-9" >
-			<input type="submit" class="btn btn-primary" value="Submit" data-ng-click="submitForm()" />
-		</div>
-	</div>
+
+    <div class="form-group">
+        <label class="col-sm-3 control-label"></label>
+        <div class="col-sm-9">
+            <input type="submit" class="btn btn-primary" value="Submit" data-ng-click="submitForm()" ng-disabled="contactUpdateForm.$invalid" />
+        </div>
+    </div>
 
 
 </form>
