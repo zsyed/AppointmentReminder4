@@ -48,13 +48,13 @@ namespace AppointmentReminder4.Controllers
 
 		public HttpResponseMessage Put([FromBody] Contact contact)
 		{
-			try
+            try
 			{
 				var dbContact = _db.Contacts.ToList().Find(c => c.Id == contact.Id);
 				dbContact.FirstName = contact.FirstName;
 				dbContact.LastName = contact.LastName;
 				dbContact.EmailAddress = contact.EmailAddress;
-				dbContact.PhoneNumber = contact.PhoneNumber;
+                dbContact.PhoneNumber = new String(contact.PhoneNumber.Where(Char.IsDigit).ToArray());
 				dbContact.Active = contact.Active;
 				dbContact.SendEmail = contact.SendEmail;
 				dbContact.SendSMS = contact.SendSMS;
@@ -96,6 +96,7 @@ namespace AppointmentReminder4.Controllers
 			try
 			{
 				var profile = _db.Profiles.ToList().Find(p => p.UserName == User.Identity.Name);
+                contact.PhoneNumber = new String(contact.PhoneNumber.Where(Char.IsDigit).ToArray());
 				contact.ProfileId = profile.Id;
                 contact.SendEmail = true;
                 contact.SendSMS = true;

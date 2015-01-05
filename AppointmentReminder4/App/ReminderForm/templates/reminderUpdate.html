@@ -1,7 +1,7 @@
 ﻿<form class="form-horizontal" role="form" name="reminderUpdateForm">
 
-
-    <div class="form-group" ng-class="{ 'has-error': reminderUpdateForm.Contact.$invalid }">
+    <div class="form-group" />
+    <!--<div class="form-group" ng-class="{ 'has-error': reminderUpdateForm.selectedContact.$invalid }">-->
         <label class="col-sm-3 control-label" for="ContactName">Contact Name</label>
         <div class="col-sm-3">
             <select class="form-control"
@@ -14,7 +14,8 @@
         </div>
     </div>
 
-    <div class="form-group" ng-class="{ 'has-error': reminderUpdateForm.Recurrence.$invalid }">
+    <!--<div class="form-group" ng-class="{ 'has-error': reminderUpdateForm.Recurrence.$invalid }">-->
+    <div class="form-group" />
         <label class="col-sm-3 control-label" for="Recurrence">Recurrence</label>
         <div class="col-sm-3">
             <select id="ddlRecurrence" class="form-control"
@@ -39,7 +40,8 @@
         </div>
     </div>
 
-    <div class="form-group" ng-class="{ 'has-error': reminderUpdateForm.Weekday.$invalid }">
+    <!--<div class="form-group" ng-class="{ 'has-error': reminderUpdateForm.Weekday.$invalid }">-->
+    <div class="form-group">
         <div data-ng-show="weekdayshow">
             <label class="col-sm-3 control-label" for="Recurrence">Week Day</label>
             <div class="col-sm-3">
@@ -54,42 +56,53 @@
         </div>
     </div>
 
-    <div class="form-group">
-        <label class="col-sm-3 control-label" for="Recurrence">Time</label>
+        <div class="form-group">
+            <label class="col-sm-3 control-label" for="Recurrence">Time</label>
 
-        <div class="col-sm-9">
-            <timepicker data-ng-model="ReminderTime" ng-change="reminderTimeChanged()" hour-step="hstep" minute-step="mstep" show-meridian="ismeridian"></timepicker>
+            <div class="col-sm-9">
+                <timepicker data-ng-model="ReminderTime" ng-change="reminderTimeChanged()" hour-step="hstep" minute-step="mstep" show-meridian="ismeridian"></timepicker>
+            </div>
+
         </div>
 
-    </div>
-
-    <div class="form-group" ng-class="{ 'has-error': reminderUpdateForm.Message.$invalid }">
+        <!--<div class="form-group" ng-class="{ 'has-error': reminderUpdateForm.Message.$invalid }">-->
+    <div class="form-group">
         <label class="col-sm-3 control-label">Message</label>
         <div class="col-sm-9">
             <textarea required placeholder="Enter Message" name="Message" data-ng-model="reminder.Message" class="form-control input-group-lg"></textarea>
         </div>
     </div>
 
-    <div class="form-group">
-        <label class="col-sm-3 control-label">Image</label>
-        <div class="col-sm-9">
-            <textarea placeholder="Enter Image" ng-model="reminder.Image" class="form-control input-group-lg"></textarea>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">Image</label>
+            <div class="col-sm-9">
+                <textarea placeholder="Enter Image" ng-model="reminder.Image" class="form-control input-group-lg"></textarea>
+            </div>
         </div>
-    </div>
 
-    <div class="form-group">
-        <label class="col-sm-3 control-label" for="TimeZone">Reminder Sent</label>
-        <div class="col-sm-9">
-            <input type="checkbox" data-ng-model="reminder.Sent" />
+        <div class="form-group">
+            <label class="col-sm-3 control-label" for="TimeZone">Reminder Sent</label>
+            <div class="col-sm-9">
+                <input type="checkbox" data-ng-model="reminder.Sent" />
+            </div>
         </div>
-    </div>
 
-    <div class="form-group">
-        <label class="col-sm-3 control-label"></label>
-        <div class="col-sm-3">
-            <input type="submit" class="btn btn-primary" value="Submit" data-ng-click="submitForm()" ng-disabled="reminderUpdateForm.$invalid" />
+        <!--<div class="form-group">
+            <label class="col-sm-3 control-label"></label>
+            <div class="col-sm-3">
+                <input type="submit" class="btn btn-primary" value="Submit" data-ng-click="submitForm()" 
+                ng-disabled="reminderUpdateForm.$invalid"
+                />
+            </div>
+        </div>-->
+
+        <div class="form-group">
+            <label class="col-sm-3 control-label"></label>
+            <div class="col-sm-9">
+                <input type="submit" class="btn btn-primary" value="Submit" data-ng-click="submitForm()"  />
+                       <!--ng-disabled="reminderUpdateForm.$invalid" />-->
+            </div>
         </div>
-    </div>
 
 </form>
 
