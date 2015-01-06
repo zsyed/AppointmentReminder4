@@ -187,17 +187,17 @@ namespace AppointmentReminder4.Controllers
 
         private string EmailMessageToSend(Reminder reminder, Profile profile, Contact contact)
         {
-            string message = null;
-            message = string.Format("Hi {0}, {1}. Sincerely, {2}", contact.FirstName.Trim(), reminder.Message, profile.FirstName);
-            return message;
+            return MessageToSend(reminder, profile, contact);
         }
 
         private string SMSMessageToSend(Reminder reminder, Profile profile, Contact contact)
         {
-            string message = null;
+            return MessageToSend(reminder, profile, contact);
+        }
 
-            message = string.Format("Hi {0}, {1}. Sincerely, {2}", contact.FirstName.Trim(), reminder.Message, profile.FirstName);
-            return message;
+        private string MessageToSend(Reminder reminder, Profile profile, Contact contact)
+        {
+            return string.Format("Hi {0},{1}{2}{1}Sincerely,{1}{3}", contact.FirstName.Trim(), System.Environment.NewLine, reminder.Message, profile.FirstName);
         }
 
 
