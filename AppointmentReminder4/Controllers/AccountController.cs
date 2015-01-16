@@ -455,20 +455,9 @@ namespace AppointmentReminder4.Controllers
                     throw new Exception(errmsg);
                 }
                 var result = UserManager.ResetPasswordAsync(userId, code, newPassword); 
-
-                //if (!result.Succeeded)
-                //{
-                //    foreach (var err in result.Errors)
-                //    {
-                //        errmsg = errmsg + " - " + err;
-                //    }
-
-                //    throw new Exception(errmsg);
-                //}
-
-                // return Ok();
                 var response = Request.CreateResponse(HttpStatusCode.Moved);
                 string fullyQualifiedUrl = Request.RequestUri.GetLeftPart(UriPartial.Authority);
+                fullyQualifiedUrl = string.Format("{0}/#/Login", fullyQualifiedUrl);
                 response.Headers.Location = new Uri(fullyQualifiedUrl);
                 return response;
             }
