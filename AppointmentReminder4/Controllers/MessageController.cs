@@ -5,8 +5,36 @@ using System.Collections.Generic;
 using System.Configuration;
 using System.Linq;
 using System.Web;
+using System.Web.Http.Routing;
 using System.Web.Mvc;
 using Twilio;
+
+using System;
+using System.Net.Http;
+using System.Net.Http.Headers;
+using System.Threading.Tasks;
+using System.Net.Http.Formatting;
+using System.Net;
+using System.IO;
+using System.Web.Http;
+
+
+using System.Security.Claims;
+using System.Security.Cryptography;
+
+using System.Web.Http.ModelBinding;
+using Microsoft.AspNet.Identity;
+using Microsoft.AspNet.Identity.EntityFramework;
+using Microsoft.AspNet.Identity.Owin;
+using Microsoft.Owin.Security;
+using Microsoft.Owin.Security.Cookies;
+using Microsoft.Owin.Security.OAuth;
+using AppointmentReminder4.Models;
+using AppointmentReminder4.Providers;
+using AppointmentReminder4.Results;
+using StructureMap;
+using Newtonsoft.Json;
+
 
 namespace AppointmentReminder4.Controllers
 { 
@@ -192,12 +220,17 @@ namespace AppointmentReminder4.Controllers
 
         private string SMSMessageToSend(Reminder reminder, Profile profile, Contact contact)
         {
-            return MessageToSend(reminder, profile, contact);
+            return MessageToSendSMS(reminder, profile, contact);
         }
 
         private string MessageToSend(Reminder reminder, Profile profile, Contact contact)
         {
             return string.Format("Hi {0},{1}{2}{1}Sincerely,{1}{3}", contact.FirstName.Trim(), System.Environment.NewLine, reminder.Message, profile.FirstName);
+        }
+
+        private string MessageToSendSMS(Reminder reminder, Profile profile, Contact contact)
+        {
+            return string.Format("Hi {0},{1}{2}{1}Sincerely,{1}{3}{1}{1}{1}{4}", contact.FirstName.Trim(), "\n", reminder.Message, profile.FirstName, "text back STOP to end these reminders.");
         }
 
 
@@ -206,7 +239,13 @@ namespace AppointmentReminder4.Controllers
             string fromEmailAddress = profile.EmailAddress;
             string toEmailAddress = contact.EmailAddress;
             string emailSubject = string.Format("Reminder from {0} {1} - {2}", profile.FirstName, profile.LastName, DateTime.Now.ToString());
+
+            var callbackUrl = string.Format("/{0}/{1}?EmailAddress={2}","Message", "AddEmailAddressToUnsubscribeList", toEmailAddress); // "Message/AddEmailAddressToUnsubscribeList?EmailAddress=datagig@gmail.com
+            callbackUrl = "http://" + Request.Url.Authority + callbackUrl;
+            var callBackMessage = "Unsubscribe by clicking <a href=\"" + callbackUrl + "\">here</a>";
+
             string emailBody = this.EmailMessageToSend(reminder, profile, contact);
+            emailBody = emailBody + System.Environment.NewLine + System.Environment.NewLine + callBackMessage;
             var emailMessage = new MessageEmail();
             emailMessage.Send(fromEmailAddress, toEmailAddress, emailSubject, emailBody, profile.FirstName + " " + profile.LastName, contact.FirstName + " " + contact.LastName);
         }
@@ -339,7 +378,7 @@ namespace AppointmentReminder4.Controllers
             string msg = string.Empty;
             try
             {
-                string fromEmailAddress = "azure_a517861c408b1278d9304b663d4fca14@azure.com"; // "myemail@mydomain.com";
+                string fromEmailAddress = Security.Decrypt(ConfigurationManager.AppSettings["EmailAccountAddress"]); // "myemail@mydomain.com";
                 string toEmailAddress = "datagig@gmail.com";
                 string emailSubject = "test subject";
                 string emailBody = "Please confirm your account by clicking <a href=\"" + "http://www.microsoft.com" + "\">here</a>"; // "<b>test email body</b>"; 
@@ -379,6 +418,34 @@ namespace AppointmentReminder4.Controllers
             return Security.Encrypt(text);
         }
 
+        public string AddEmailAddressToUnsubscribeList(string EmailAddress)
+        {
+            // Create a form encoded string for the request body
 
+            string parameters = "api_user=" + Security.Decrypt(ConfigurationManager.AppSettings["EmailAccountAddress"]) + "&api_key=" + Security.Decrypt(ConfigurationManager.AppSettings["EmailAccountPassword"]) + "&email=" + EmailAddress;
+
+            //Create Request
+            HttpWebRequest myHttpWebRequest = (HttpWebRequest) HttpWebRequest.Create("https://sendgrid.com/api/unsubscribes.add.json");
+            myHttpWebRequest.Method = "POST";
+            myHttpWebRequest.ContentType = "application/x-www-form-urlencoded";
+
+            // Create a new write stream for the POST body
+            StreamWriter streamWriter = new StreamWriter(myHttpWebRequest.GetRequestStream());
+
+            // Write the parameters to the stream
+            streamWriter.Write(parameters);
+            streamWriter.Flush();
+            streamWriter.Close();
+
+            // Get the response
+            HttpWebResponse httpResponse = (HttpWebResponse) myHttpWebRequest.GetResponse();
+
+            // Create a new read stream for the response body and read it
+            StreamReader streamReader = new StreamReader(httpResponse.GetResponseStream());
+            string result = streamReader.ReadToEnd();
+            // return result;
+            result= string.Format("Email address {0} has been successfully unsubscribed.", EmailAddress);
+            return JsonConvert.SerializeObject(result);
+        }
     }
 }
