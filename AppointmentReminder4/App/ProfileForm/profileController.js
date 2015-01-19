@@ -14,7 +14,9 @@
 		profileService.getProfile().then(
 			function (results) {
 			    $scope.profile = results.data;
-			    $scope.profile.PhoneNumber = $filter("tel")($scope.profile.PhoneNumber);
+			    if ($scope.profile != null) {
+			        $scope.profile.PhoneNumber = $filter("tel")($scope.profile.PhoneNumber);
+			    }
 				$scope.$broadcast('PROFILE_LOADED_EVENT');
 			},
 			function(results) {
@@ -42,7 +44,8 @@
 		};
 
 		$scope.submitForm = function () {
-			if ($scope.profile.Id > 0) {
+		    if ($scope.profile.Id > 0) {
+		        $scope.profile.PhoneNumber = $scope.profile.PhoneNumber.replace(/\D/g, '');
 				profileService.updateProfile($scope.profile).then(
 					function (results) {
 					    $scope.profile = results.data;

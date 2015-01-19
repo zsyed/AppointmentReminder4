@@ -14,64 +14,67 @@
         </div>
     </div>
 
-    <!--<div class="form-group" ng-class="{ 'has-error': reminderUpdateForm.Recurrence.$invalid }">-->
-    <div class="form-group" />
-        <label class="col-sm-3 control-label" for="Recurrence">Recurrence</label>
-        <div class="col-sm-3">
-            <select id="ddlRecurrence" class="form-control"
-                    data-ng-model="selectedRecurrence"
-                    required
-                    name="Recurrence"
-                    ng-change="reminderRecurrenceTimeChanged()"
-                    data-ng-options="recurrence.idrecur for recurrence in recurrences">
-                <option></option>
-            </select>
-        </div>
-    </div>
-
-    <div class="form-group">
-        <div data-ng-show="calendarshow">
-            <label class="col-sm-3 control-label" for="Recurrence">Date</label>
-
-            <div class="col-sm-4">
-                <datepicker data-ng-model="ReminderDate" min-date="minDate" show-weeks="false" class="well well-sm"></datepicker>
-            </div>
-
-        </div>
-    </div>
-
-    <!--<div class="form-group" ng-class="{ 'has-error': reminderUpdateForm.Weekday.$invalid }">-->
-    <div class="form-group">
-        <div data-ng-show="weekdayshow">
-            <label class="col-sm-3 control-label" for="Recurrence">Week Day</label>
+        <div class="form-group" />
+            <label class="col-sm-3 control-label" for="Recurrence">Recurrence</label>
             <div class="col-sm-3">
-                <select id="ddlWeekday" class="form-control"
+                <select id="ddlRecurrence" class="form-control"
+                        data-ng-model="selectedRecurrence"
                         required
-                        name="Weekday"
-                        data-ng-model="selectedWeekday"
-                        data-ng-options="weekday.idweek for weekday in weekdays">
+                        name="Recurrence"
+                        ng-change="reminderRecurrenceTimeChanged()"
+                        data-ng-options="recurrence.idrecur for recurrence in recurrences">
                     <option></option>
                 </select>
             </div>
         </div>
-    </div>
+
+        <div class="form-group">
+            <div data-ng-show="calendarshow">
+                <label class="col-sm-3 control-label" for="Recurrence">Date</label>
+                <div class="col-sm-4">
+                    <p class="input-group">
+                        <input type="text" required class="form-control" datepicker-popup="{{format}}" data-ng-model="ReminderDate" is-open="opened" min-date="minDate" datepicker-options="dateOptions" ng-required="true" close-text="Close" />
+                        <span class="input-group-btn">
+                            <button type="button" class="btn btn-default" ng-click="open($event)"><i class="glyphicon glyphicon-calendar"></i></button>
+                        </span>
+                    </p>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="form-group">
+            <div data-ng-show="weekdayshow">
+                <label class="col-sm-3 control-label" for="Recurrence">Week Day</label>
+                <div class="col-sm-3">
+                    <select id="ddlWeekday" class="form-control"
+                            required
+                            name="Weekday"
+                            data-ng-model="selectedWeekday"
+                            data-ng-options="weekday.idweek for weekday in weekdays">
+                        <option></option>
+                    </select>
+                </div>
+            </div>
+        </div>
 
         <div class="form-group">
             <label class="col-sm-3 control-label" for="Recurrence">Time</label>
 
             <div class="col-sm-9">
                 <timepicker data-ng-model="ReminderTime" ng-change="reminderTimeChanged()" hour-step="hstep" minute-step="mstep" show-meridian="ismeridian"></timepicker>
+                <!--<pre class="alert alert-info">Time is: {{ReminderTime | date:'shortTime' }}</pre>-->
+                <input type="text" data-ng-model="ReminderTime | date:'shortTime'" ng-required="true" />
             </div>
 
         </div>
 
-        <!--<div class="form-group" ng-class="{ 'has-error': reminderUpdateForm.Message.$invalid }">-->
-    <div class="form-group">
-        <label class="col-sm-3 control-label">Message</label>
-        <div class="col-sm-9">
-            <textarea required placeholder="Enter Message" name="Message" data-ng-model="reminder.Message" class="form-control input-group-lg"></textarea>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">Message</label>
+            <div class="col-sm-9">
+                <textarea required placeholder="Enter Message" name="Message" data-ng-model="reminder.Message" class="form-control input-group-lg"></textarea>
+            </div>
         </div>
-    </div>
 
         <div class="form-group">
             <label class="col-sm-3 control-label">Image</label>
@@ -87,20 +90,10 @@
             </div>
         </div>
 
-        <!--<div class="form-group">
-            <label class="col-sm-3 control-label"></label>
-            <div class="col-sm-3">
-                <input type="submit" class="btn btn-primary" value="Submit" data-ng-click="submitForm()" 
-                ng-disabled="reminderUpdateForm.$invalid"
-                />
-            </div>
-        </div>-->
-
         <div class="form-group">
             <label class="col-sm-3 control-label"></label>
             <div class="col-sm-9">
-                <input type="submit" class="btn btn-primary" value="Submit" data-ng-click="submitForm()"  />
-                       <!--ng-disabled="reminderUpdateForm.$invalid" />-->
+                <input type="submit" class="btn btn-primary" value="Submit" data-ng-click="submitForm()" />
             </div>
         </div>
 
