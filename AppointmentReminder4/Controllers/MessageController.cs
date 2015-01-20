@@ -225,7 +225,7 @@ namespace AppointmentReminder4.Controllers
 
         private string MessageToSend(Reminder reminder, Profile profile, Contact contact)
         {
-            return string.Format("Hi {0},{1}{2}{1}Sincerely,{1}{3}", contact.FirstName.Trim(), System.Environment.NewLine, reminder.Message, profile.FirstName);
+            return string.Format("Hi {0},{1}{2}{1}Sincerely,{1}{3}", contact.FirstName.Trim(), "</br>", reminder.Message, profile.FirstName);
         }
 
         private string MessageToSendSMS(Reminder reminder, Profile profile, Contact contact)
@@ -245,7 +245,7 @@ namespace AppointmentReminder4.Controllers
             var callBackMessage = "Unsubscribe by clicking <a href=\"" + callbackUrl + "\">here</a>";
 
             string emailBody = this.EmailMessageToSend(reminder, profile, contact);
-            emailBody = emailBody + System.Environment.NewLine + System.Environment.NewLine + callBackMessage;
+            emailBody = string.Format("<p>{0}</p>{1}{1}<p>{2}</p>", emailBody, "</br>", callBackMessage);
             var emailMessage = new MessageEmail();
             emailMessage.Send(fromEmailAddress, toEmailAddress, emailSubject, emailBody, profile.FirstName + " " + profile.LastName, contact.FirstName + " " + contact.LastName);
         }

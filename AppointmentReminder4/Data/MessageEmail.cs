@@ -32,10 +32,14 @@ namespace AppointmentReminder.Data
 
             // Subject and multipart/alternative Body
             mailMsg.Subject = emailSubject;
-            string text = emailBody;
-            // string html = @"<p>html body</p>";
-            // mailMsg.AlternateViews.Add(AlternateView.CreateAlternateViewFromString(text, null, MediaTypeNames.Text.Plain));
-            mailMsg.AlternateViews.Add(AlternateView.CreateAlternateViewFromString(text, null, MediaTypeNames.Text.Html));
+            //string text = emailBody;
+            //mailMsg.AlternateViews.Add(AlternateView.CreateAlternateViewFromString(text, null, MediaTypeNames.Text.Html));
+
+            //string text = "text body";
+            string html = emailBody; // @"<p>html body</p> <b>hello world </b> </br> <p> Hi there </p>";
+            //mailMsg.AlternateViews.Add(AlternateView.CreateAlternateViewFromString(text, null, MediaTypeNames.Text.Plain));
+            mailMsg.AlternateViews.Add(AlternateView.CreateAlternateViewFromString(html, null, MediaTypeNames.Text.Html));
+
 
             // Init SmtpClient and send
             string emailHost = Security.Decrypt(ConfigurationManager.AppSettings["EmailHost"]);
