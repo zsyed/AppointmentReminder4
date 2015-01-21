@@ -1,7 +1,6 @@
 ﻿<form class="form-horizontal" role="form" name="reminderUpdateForm">
 
     <div class="form-group" />
-    <!--<div class="form-group" ng-class="{ 'has-error': reminderUpdateForm.selectedContact.$invalid }">-->
         <label class="col-sm-3 control-label" for="ContactName">Contact Name</label>
         <div class="col-sm-3">
             <select class="form-control"
@@ -63,7 +62,6 @@
 
             <div class="col-sm-9">
                 <timepicker data-ng-model="ReminderTime" ng-change="reminderTimeChanged()" hour-step="hstep" minute-step="mstep" show-meridian="ismeridian"></timepicker>
-                <!--<pre class="alert alert-info">Time is: {{ReminderTime | date:'shortTime' }}</pre>-->
                 <input type="text" data-ng-model="ReminderTime | date:'shortTime'" ng-required="true" />
             </div>
 
@@ -72,7 +70,7 @@
         <div class="form-group">
             <label class="col-sm-3 control-label">Email Subject</label>
             <div class="col-sm-9">
-                <textarea placeholder="Enter Email Subject" name="EmailSubject" data-ng-model="reminder.EmailSubject" class="form-control input-group-lg"></textarea>
+                <textarea placeholder="Enter Email Subject" name="EmailSubject" data-ng-model="reminder.EmailSubject" required class="form-control"></textarea>
             </div>
         </div>
 
@@ -100,10 +98,9 @@
         <div class="form-group">
             <label class="col-sm-3 control-label"></label>
             <div class="col-sm-9">
-                <input type="submit" class="btn btn-primary" value="Submit" data-ng-click="submitForm()" />
+                <input type="submit" class="btn btn-primary" value="Submit" data-ng-click="submitForm()" ng-disabled="reminderUpdateForm.$invalid" />
             </div>
         </div>
-
 </form>
 
 

@@ -35,6 +35,7 @@ namespace AppointmentReminder.Models
 
 		public bool Sent { get; set; }
 
+        [Required]
         public string EmailSubject { get; set; }
 	}
 }
