@@ -178,8 +178,11 @@ namespace AppointmentReminder4.Controllers
                 string line;
                 while ((line = reader.ReadLine()) != null)
                 {
-                    var emailAddress = line.Split('"')[3];
-                    unsubscribeEmailAddresses.Add(emailAddress);
+                    if (line.Split('"').Length > 1)
+                    {
+                        var emailAddress = line.Split('"')[3];
+                        unsubscribeEmailAddresses.Add(emailAddress);
+                    }
                 }
             }
 
