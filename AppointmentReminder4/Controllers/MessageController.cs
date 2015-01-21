@@ -238,7 +238,7 @@ namespace AppointmentReminder4.Controllers
         {
             string fromEmailAddress = profile.EmailAddress;
             string toEmailAddress = contact.EmailAddress;
-            string emailSubject = string.Format("Reminder from {0} {1} - {2}", profile.FirstName, profile.LastName, DateTime.Now.ToString());
+            string emailSubject = reminder.EmailSubject; // string.Format("Reminder from {0} {1} - {2}", profile.FirstName, profile.LastName, DateTime.Now.ToString());
 
             var callbackUrl = string.Format("/{0}/{1}?EmailAddress={2}","Message", "AddEmailAddressToUnsubscribeList", toEmailAddress); // "Message/AddEmailAddressToUnsubscribeList?EmailAddress=datagig@gmail.com
             callbackUrl = "http://" + Request.Url.Authority + callbackUrl;

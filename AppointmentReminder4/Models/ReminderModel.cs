@@ -34,5 +34,7 @@ namespace AppointmentReminder.Models
 		public string WeekDay { get; set; }
 
 		public bool Sent { get; set; }
+
+        public string EmailSubject { get; set; }
 	}
 }

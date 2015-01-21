@@ -24,6 +24,7 @@ namespace AppointmentReminder4.Controllers
 			{
 				var dbReminder = _db.Reminders.ToList().Find(r => r.Id == reminder.Id);
 				dbReminder.ContactId = reminder.ContactId;
+                dbReminder.EmailSubject = reminder.EmailSubject;
 				dbReminder.Message = reminder.Message;
 				dbReminder.ProfileId = reminder.ProfileId;
 				dbReminder.ReminderDateTime = reminder.ReminderDateTime;
@@ -59,6 +60,7 @@ namespace AppointmentReminder4.Controllers
                                 {
                                     Id = reminder.Id,
                                     ContactId = reminder.ContactId,
+                                    EmailSubject = reminder.EmailSubject,
                                     Message = reminder.Message,
                                     ProfileId = reminder.ProfileId,
                                     ReminderDateTime = reminder.ReminderDateTime,
@@ -93,6 +95,7 @@ namespace AppointmentReminder4.Controllers
                                                 {
                                                     Id = reminder.Id,
                                                     ContactId = reminder.ContactId,
+                                                    EmailSubject = reminder.EmailSubject,
                                                     Message = reminder.Message,
                                                     ProfileId = reminder.ProfileId,
                                                     ReminderDateTime = reminder.ReminderDateTime,
@@ -140,6 +143,7 @@ namespace AppointmentReminder4.Controllers
 				var reminder = new Reminder();
 				reminder.ProfileId = profile.Id;
 				reminder.ContactId = reminderModel.ContactId;
+                reminder.EmailSubject = reminderModel.EmailSubject;
 				reminder.Message = reminderModel.Message;
                 reminder.Image = reminderModel.Image;
 				reminder.ReminderDateTime = reminderModel.ReminderDateTime;
