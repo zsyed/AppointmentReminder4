@@ -1,6 +1,10 @@
 ﻿using AppointmentReminder.Data;
+using AppointmentReminder.Models;
+using AppointmentReminder4.Data;
 using System;
 using System.Collections.Generic;
+using System.Configuration;
+using System.IO;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
@@ -17,13 +21,41 @@ namespace AppointmentReminder4.Controllers
 			_db = db;
 		}
 
-		public IQueryable<Contact> GetAllContacts()
+		public List<ContactModel> GetAllContacts()
 		{
+            var unsubscribeEmailAddresses = EmailAddressesUnsubscibed();
 			var profile = _db.Profiles.ToList().Find(p => p.UserName == User.Identity.Name);
             if (profile != null)
             {
                 var contacts = new ReminderDb().Contacts.Where(c => c.ProfileId == profile.Id).OrderBy(c => c.LastName);
-                return contacts;
+                if (contacts != null)
+                {
+                    var contactsModel = new List<ContactModel>();
+
+                    foreach (var contact in contacts)
+                    {
+                        bool unsubscribe = unsubscribeEmailAddresses.Any(e => e.Equals(contact.EmailAddress));
+
+                        contactsModel.Add(new ContactModel() { 
+                            Id = contact.Id,
+                            ProfileId = contact.ProfileId,
+                            FirstName = contact.FirstName,
+                            LastName = contact.LastName,
+                            PhoneNumber = contact.PhoneNumber,
+                            EmailAddress = contact.EmailAddress,
+                            TimeZone = contact.TimeZone,
+                            Active = contact.Active,
+                            SendEmail = contact.SendEmail,
+                            SendSMS = contact.SendSMS,
+                            EmailUnsubscribe = unsubscribe
+                        });
+                    }
+                    return contactsModel;
+                }
+                else
+                {
+                    return null;
+                }
             }
             else
             {
@@ -31,19 +63,36 @@ namespace AppointmentReminder4.Controllers
             }
 		}
 
-		public Contact Get(int Id)
+		public ContactModel Get(int Id)
 		{
+            var unsubscribeEmailAddresses = EmailAddressesUnsubscibed();
+            
 			var profile = _db.Profiles.ToList().Find(p => p.UserName == User.Identity.Name);
             if (profile != null)
             {
                 var contact = new ReminderDb().Contacts.Where(c => c.ProfileId == profile.Id).ToList().Find(c => c.Id == Id);
-                return contact;
-            }
-            else
-            {
-                return null;
+                if (contact != null)
+                {
+                    bool unsubscribe = unsubscribeEmailAddresses.Any(e => e.Equals(contact.EmailAddress));
+                    var contactModel = new ContactModel() { 
+                                Id = contact.Id,
+                                ProfileId = contact.ProfileId,
+                                FirstName = contact.FirstName,
+                                LastName = contact.LastName,
+                                PhoneNumber = contact.PhoneNumber,
+                                EmailAddress = contact.EmailAddress,
+                                TimeZone = contact.TimeZone,
+                                Active = contact.Active,
+                                SendEmail = contact.SendEmail,
+                                SendSMS = contact.SendSMS,
+                                EmailUnsubscribe = unsubscribe
+                            };
+
+                    return contactModel;
+                }
             }
 
+            return null;
 		}
 
 		public HttpResponseMessage Put([FromBody] Contact contact)
@@ -110,5 +159,31 @@ namespace AppointmentReminder4.Controllers
 				return Request.CreateResponse(HttpStatusCode.BadRequest);
 			}
 		}
+
+        private List<string> EmailAddressesUnsubscibed()
+        {
+            string parameters = "api_user=" + Security.Decrypt(ConfigurationManager.AppSettings["EmailAccountAddress"]) + "&api_key=" + Security.Decrypt(ConfigurationManager.AppSettings["EmailAccountPassword"]) + "&date=0";
+
+            //Create Request
+            string url = "https://api.sendgrid.com/api/unsubscribes.get.json" + "?" + parameters;
+            var unsubscribeEmailAddresses = new List<string>();
+
+            HttpWebRequest request = WebRequest.Create(url) as HttpWebRequest;
+
+            // Get response  
+            using (HttpWebResponse response = request.GetResponse() as HttpWebResponse)
+            {
+                // Get the response stream  
+                StreamReader reader = new StreamReader(response.GetResponseStream());
+                string line;
+                while ((line = reader.ReadLine()) != null)
+                {
+                    var emailAddress = line.Split('"')[3];
+                    unsubscribeEmailAddresses.Add(emailAddress);
+                }
+            }
+
+            return unsubscribeEmailAddresses;
+        }
 	}
 }

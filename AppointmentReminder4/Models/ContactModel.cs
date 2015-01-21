@@ -39,5 +39,7 @@ namespace AppointmentReminder.Models
 
 		[Required]
 		public bool SendSMS { get; set; }
+
+        public bool EmailUnsubscribe { get; set; }
 	}
 }

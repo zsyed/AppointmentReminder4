@@ -23,6 +23,7 @@
                 <th> <b>Time Zone</b></th>
                 <th> <b>Active</b></th>
                 <th> <b>Email</b></th>
+                <th> <b>Email Unsubscribe</b></th>
                 <th> <b>SMS</b></th>
                 <th></th>
                 <th></th>
@@ -40,6 +41,7 @@
                 <td>{{contact.TimeZone}}</td>
                 <td>{{contact.Active == true? "Yes": "No"}}</td>
                 <td>{{contact.SendEmail == true? "Yes": "No"}}</td>
+                <td>{{contact.EmailUnsubscribe == true? "Yes": "No"}}</td>
                 <td>{{contact.SendSMS == true? "Yes": "No"}}</td>
                 <td>
                     <div>

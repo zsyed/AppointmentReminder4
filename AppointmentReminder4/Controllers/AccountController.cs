@@ -461,7 +461,7 @@ namespace AppointmentReminder4.Controllers
                 response.Headers.Location = new Uri(fullyQualifiedUrl);
                 return response;
             }
-            catch(Exception ex)
+            catch(Exception)
             {
                 // return BadRequest(ex.Message);
                 return null;
