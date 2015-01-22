@@ -1,38 +1,58 @@
-﻿<form class="form-horizontal" role="form">
-
-
-    <div class="form-group">
+﻿<form class="form-horizontal" role="form" name="registerUpdateForm">
+    <div class="form-group" ng-class="{ 'has-error': registerUpdateForm.Email.$invalid }">
         <label class="col-sm-3 control-label" for="Email">Email Address</label>
         <div class="col-sm-9">
-            <input type="text" data-ng-model="auth.Email" id="Email" name="Email" class="form-control" />
+            <input required type="email" data-ng-model="auth.Email" id="Email" name="Email" class="form-control" />
         </div>
     </div>
 
+    <!--//Password Pattern
+    //at least 6 characters long.
+    //Must have at least one non letter or digit character.
+    //Must have at least one digit ('0'-'9').
+    //Must have at least one uppercase ('A'-'Z').-->
 
-    <div class="form-group">
+    <div class="form-group" ng-class="{ 'has-error': registerUpdateForm.Password.$invalid }">
         <label class="col-sm-3 control-label" for="Password">Password</label>
         <div class="col-sm-9">
-            <input type="password" data-ng-model="auth.Password" id="Password" name="Password" class="form-control" />
+            <input required type="password" data-ng-model="auth.Password"
+                   data-ng-pattern="/^(?=.*[^a-zA-Z\d])(?=.*\d)(?=.*[A-Z]).{6,}$/"
+                   id=" password" name="Password" class="form-control" />  <!--ng-pattern="matchPattern"/>-->
         </div>
+
+        <div class="error"
+             ng-show="registerUpdateForm.Password.$invalid&& registerUpdateForm.Password.$dirty">
+            <span ng-show="registerUpdateForm.Password.$error">
+                Password must have - at least 6 characters - at least one non letter or digit character - at least one digit ('0'-'9') - at least one uppercase ('A'-'Z')
+            </span>
+        </div>
+
     </div>
 
-
-    <div class="form-group">
+    <div class="form-group" ng-class="{ 'has-error': registerUpdateForm.ConfirmPassword.$invalid }">
         <label class="col-sm-3 control-label" for="ConfirmPassword">Confirm Password</label>
         <div class="col-sm-9">
-            <input type="password" data-ng-model="auth.ConfirmPassword" id="ConfirmPassword" name="ConfirmPassword" class="form-control" />
+            <input required type="password" data-ng-model="auth.ConfirmPassword"
+                   id="ConfirmPassword" name="ConfirmPassword"
+                   data-ng-pattern="/^(?=.*[^a-zA-Z\d])(?=.*\d)(?=.*[A-Z]).{6,}$/"
+                   data-password-verify="auth.Password"
+                   class="form-control" /> <!--ng-pattern="matchPattern" />-->
         </div>
+
+    </div>
+
+    <div ng-show="registerUpdateForm.ConfirmPassword.$error.passwordVerify">
+        Passwords are not equal!
     </div>
 
     <div class="form-group">
         <label class="col-sm-3 control-label"></label>
         <div class="col-sm-9">
-            <input type="submit" class="btn btn-primary" value="Register" data-ng-click="registerForm()" />
+            <input type="submit" class="btn btn-primary" value="Register" data-ng-click="registerForm()" ng-disabled="registerUpdateForm.$invalid" />
         </div>
     </div>
 
     <div data-ng-hide="message == ''" data-ng-class="(savedSuccessfully) ? 'alert alert-success' : 'alert alert-danger'">
         {{message}}
     </div>
-
 </form>
