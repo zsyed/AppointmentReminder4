@@ -422,20 +422,28 @@ namespace AppointmentReminder4.Controllers
         // GET api/Account/ExternalLogin
         [Route("ConfirmEmail", Name = "ConfirmEmail")]
         [AllowAnonymous]
-        public async Task<IHttpActionResult> GetConfirmEmail(string userId, string code)
+        public HttpResponseMessage GetConfirmEmail(string userId, string code)
         {
             if (userId == null || code == null)
             {
-                return GetErrorResult(null);
+                // return GetErrorResult(null);
             }
-            var result = await UserManager.ConfirmEmailAsync(userId, code);
+            // var result = await UserManager.ConfirmEmailAsync(userId, code);
+            var result = UserManager.ConfirmEmailAsync(userId, code);
 
-            if (!result.Succeeded)
-            {
-                return GetErrorResult(result);
-            }
+            //if (!result.Succeeded)
+            //{
+            //    return GetErrorResult(result);
+            //}
 
-            return Ok();
+            // return Ok();
+
+            var response = Request.CreateResponse(HttpStatusCode.Moved);
+            string fullyQualifiedUrl = Request.RequestUri.GetLeftPart(UriPartial.Authority);
+            fullyQualifiedUrl = string.Format("{0}/#/Login", fullyQualifiedUrl);
+            response.Headers.Location = new Uri(fullyQualifiedUrl);
+            return response;
+
         }
 
         //
