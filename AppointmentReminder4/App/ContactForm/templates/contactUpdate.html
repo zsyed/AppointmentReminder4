@@ -41,23 +41,20 @@
     </div>
 
     <div class="form-group" >
-        <label class="col-sm-3 control-label" for="SendEmail">Send Email</label>
-        <div class="col-sm-9">
-            <input type="checkbox" data-ng-model="contact.SendEmail" />
-        </div>
+
+            <label class="col-sm-3 control-label" for="SendEmail">Send Email</label>
+            <div class="col-sm-9" >
+                <input type="checkbox" data-ng-model="contact.SendEmail" />
+            </div>
+
     </div>
 
     <div class="form-group">
-        <label class="col-sm-3 control-label">Email Unsubscribed</label>
+        <label class="col-sm-3 control-label" ng-class="{ 'label-danger': contact.EmailUnsubscribe, 'label-success': !contact.EmailUnsubscribe }">Email Unsubscribed</label>
         <div class="col-sm-9">
-            <label>{{contact.EmailUnsubscribe}}</label>
+            {{contact.EmailUnsubscribe? "This email address is Unsubscribed. May not receive the email.": "This email address is subscribed. Looks good!"}}
         </div>
     </div>
-
-
-    <!--<div data-ng-hide="message == ''" data-ng-class="(savedSuccessfully) ? 'alert alert-success' : 'alert alert-danger'">
-        {{message}}
-    </div>-->
 
     <div class="form-group">
         <label class="col-sm-3 control-label" for="SendSms">Send SMS</label>
