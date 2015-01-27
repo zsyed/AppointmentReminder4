@@ -70,7 +70,10 @@
                 <a class="navbar-brand" data-ng-show="authentication.profileExists" href="/Contacts">Contacts</a>
                 <a class="navbar-brand" data-ng-show="authentication.contactExists" href="/Reminders">Reminders</a>
             </div>
-            <div class="collapse navbar-collapse" data-collapse="!navbarExpanded">
+            <div class="collapse navbar-collapse dropdown-toggle"
+                 data-collapse="!navbarExpanded"
+                 data-toggle="dropdown"
+                 data-ng-click="navbarExpanded = !navbarExpanded">
                 <ul class="nav navbar-nav navbar-right">
                     <li data-ng-hide="!authentication.isAuth"><a href="/">Welcome {{authentication.userName}}</a></li>
                     <li data-ng-hide="!authentication.isAuth"><a href="" data-ng-click="logoutUser()">Logout</a></li>
