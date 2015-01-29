@@ -6,17 +6,23 @@
             Loading...
         </div>
     </div>
+    
+    <div data-ng-show="error">
+        <div class="alert alert-danger">
+            <strong>Error!   </strong> {{error}}
+        </div>
+    </div>
 
-    <div data-ng-show="profileShow == true">
+    <div data-ng-show="profileShow == true" data-ng-hide="error">
         <h3>Profile</h3>
 
-        <div class="form-group" data-ng-show="isProfileIdGreaterThanZero() == false">
+        <div class="form-group" data-ng-show="profile == null" >
             <br /><br /><br />
             <div>
                 <input type="submit" class="btn btn-primary" value="Create New" data-ng-click="showCreateProfileForm()" />
             </div>
         </div>
-        <div data-ng-show="isProfileIdGreaterThanZero() == true">
+        <div data-ng-show="profile != null">
             <div class="form-group">
                 <label class="col-sm-3 control-label">First Name: </label>
                 <label class="control-label">{{profile.FirstName}}</label>

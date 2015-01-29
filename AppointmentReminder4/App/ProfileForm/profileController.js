@@ -3,32 +3,29 @@
 
 	    $scope.profileLoaded = false;
 	    $scope.profileShow = false;
+	    $scope.error = null;
 
 	    $scope.$watch('profileLoaded', function (value) {
 	        $scope.profileShow = value;
 	    });
 
-		profileService.getProfile().then(
-			function (results) {
-			    $scope.profile = results.data;
-			    if ($scope.profile != null) {
-			        $scope.profile.PhoneNumber = $filter("tel")($scope.profile.PhoneNumber);
-			        $scope.profileLoaded = true;
-			    }
-			},
-			function(results) {
-				// on error
-				var data = results.data;
-			}
-		);
+	    var onProfileGetComplete = function (data) {
+	        $scope.profile = data;
+	        if ($scope.profile != null)
+	        {
+	            $scope.profile.PhoneNumber = $filter("tel")($scope.profile.PhoneNumber);
+	        }
+        
+	        $scope.profileLoaded = true;
+	    };
 
-		$scope.isProfileIdGreaterThanZero = function () {
-			var returnVal = false;
-			if ($scope.profile) {
-				returnVal = ($scope.profile.Id > 0);
-			}
-			return returnVal;
-		};
+	    var onError = function (reason)
+	    {
+	        $scope.profileLoaded = true;
+            $scope.error = "Could not fetch profile data."
+	    };
+
+	    profileService.getProfile().then(onProfileGetComplete, onError);
 
 		$scope.showCreateProfileForm = function () {
 			$location.path('/newProfileForm');

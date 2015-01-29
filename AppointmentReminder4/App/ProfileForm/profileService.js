@@ -1,7 +1,7 @@
 ﻿appointmentReminderApp.factory('profileService',
 	function ($http) {
 		var getProfile = function () {
-			return $http.get("/api/Profile");
+		    return $http.get("/api/Profile").then(function (response) { return response.data; });		                ;
 		};
 		
 		var insertProfile = function (profile) {
