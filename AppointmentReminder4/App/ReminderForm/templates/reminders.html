@@ -27,51 +27,63 @@
 	</div>
 	
 		<br/>	<br/>
-    <table class="table" data-ng-show="reminders.length > 0">
-        <thead>
-            <tr>
-                <th> <b>Contact</b></th>
-                <th> <b>Message</b></th>
-                <th> <b>Date</b></th>
-                <th> <b>Time</b></th>
-                <th> <b>Recurrence</b></th>
-                <th> <b>WeekDay</b></th>
-                <th> <b>Sent</b></th>
-                <th></th>
-                <th></th>
+    <div class="table-responsive">
+        <table class="table table-striped table-bordered table-hover table-condensed" data-ng-show="reminders.length > 0">
+            <thead>
+                <tr>
+                    <th> <b>Contact</b></th>
+                    <th> <b>Message</b></th>
+                    <th> <b>Date</b></th>
+                    <th> <b>Time</b></th>
+                    <th> <b>Recurrence</b></th>
+                    <th> <b>WeekDay</b></th>
+                    <th> <b>Sent</b></th>
+                    <th></th>
+                    <th></th>
 
-            </tr>
+                </tr>
 
-        </thead>
-        <tbody>
-            <tr data-ng-repeat="reminder in reminders">
-                <td>{{reminder.ContactName}}</td>
-                <td>{{reminder.Message}}</td>
-                <td>{{reminder.ReminderDateTime.substring(0,4) == '1901' ? "None" : reminder.ReminderDateTime | date: 'EEE MM/dd/yyyy' }}</td>
-                <td>{{reminder.ReminderDateTime | date: 'hh:mm a' }}</td>
-                <td>{{reminder.Recurrence}}</td>
-                <td>{{reminder.WeekDay}}</td>
-                <td>{{reminder.Sent == true? "Yes": "No"}}</td>
-                <td>
-                    <div>
-                        <input type="submit"
-                               class="btn btn-primary"
-                               value="Edit"
-                               data-ng-click="showUpdateReminderForm(reminder.Id)" />
-                    </div>
-                </td>
-                <td>
-                    <div>
-                        <input type="submit"
-                               class="btn btn-primary"
-                               value="Delete"
-                               data-ng-click="showDeleteReminderForm(reminder.Id)" />
-                    </div>
-                </td>
-            </tr>
-        </tbody>
-    </table>
-	<br/>	<br/>	
+            </thead>
+            <tbody>
+                <tr data-ng-repeat="reminder in reminders">
+                    <td>{{reminder.ContactName}}</td>
+                    <td>{{reminder.Message}}</td>
+                    <td>{{reminder.ReminderDateTime.substring(0,4) == '1901' ? "None" : reminder.ReminderDateTime | date: 'EEE MM/dd/yyyy' }}</td>
+                    <td>{{reminder.ReminderDateTime | date: 'hh:mm a' }}</td>
+                    <td>{{reminder.Recurrence}}</td>
+                    <td>{{reminder.WeekDay}}</td>
+                    <td>{{reminder.Sent == true? "Yes": "No"}}</td>
+                    <td>
+                        <div>
+                            <!--<input type="submit"
+                                   class="btn btn-primary"
+                                   value="Edit"
+                                   data-ng-click="showUpdateReminderForm(reminder.Id)" >-->
+
+                            <button class="btn btn-primary" type="submit" value="Edit" data-ng-click="showUpdateReminderForm(reminder.Id)">
+                                <span class=" glyphicon glyphicon-edit"></span>  Edit
+                            </button>
+
+                        </div>
+                    </td>
+                    <td>
+                        <div>
+                            <!--<input type="submit"
+                                   class="btn btn-primary"
+                                   value="Delete"
+                                   data-ng-click="showDeleteReminderForm(reminder.Id)" />-->
+
+                            <button class="btn btn-primary" type="submit" value="Delete" data-ng-click="showDeleteReminderForm(reminder.Id)">
+                                <span class=" glyphicon glyphicon-remove-sign"></span>  Delete
+                            </button>
+
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        </div>
+        <br />	<br />
 
 </form>
 	</div>

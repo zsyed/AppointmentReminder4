@@ -1,23 +1,20 @@
 ﻿appointmentReminderApp.controller('profileController',
 	function ProfileFormController($scope, $window, $location, $routeParams,$filter, profileService, authService) {
 
-		$scope.$on('PROFILE_LOADED_EVENT', function () {
-			 $scope.loading = false;
-		});
-		
-		$scope.$on('PROFILE_LOADING_EVENT', function () {
-			$scope.loading = true;
-		});
-		
-		$scope.$broadcast('PROFILE_LOADING_EVENT');
+	    $scope.profileLoaded = false;
+	    $scope.profileShow = false;
+
+	    $scope.$watch('profileLoaded', function (value) {
+	        $scope.profileShow = value;
+	    });
 
 		profileService.getProfile().then(
 			function (results) {
 			    $scope.profile = results.data;
 			    if ($scope.profile != null) {
 			        $scope.profile.PhoneNumber = $filter("tel")($scope.profile.PhoneNumber);
+			        $scope.profileLoaded = true;
 			    }
-				$scope.$broadcast('PROFILE_LOADED_EVENT');
 			},
 			function(results) {
 				// on error

@@ -12,6 +12,8 @@
     <title>Appointment Reminder</title>
 
     <link href="~/Content/bootstrap.min.css" type="text/css" rel="stylesheet" />
+    <link href="~/Content/Site.css" rel="stylesheet" />
+    <link rel="stylesheet" href="http://css-spinners.com/css/spinner/spinner.css" type="text/css">
 
     <script src="~/Scripts/jquery-2.1.1.min.js"></script>
     <script src="~/Scripts/bootstrap.min.js"></script>
@@ -22,10 +24,7 @@
     <script src="~/Scripts/angular-local-storage.js"></script>
     <script src="~/Scripts/angular-local-storage.min.js"></script>
 
-    <link href="~/Content/bootstrap.min.css" type="text/css" rel="stylesheet" />
-    <link href="~/Content/Site.css" rel="stylesheet" />
     <script src="~/Scripts/PhoneFormat.js"></script>
-
     <script src="~/App/AppointmentReminderApp.js"></script>
 
 
@@ -99,35 +98,6 @@
         </div>
 
     </header>
-
-
-    @*<div class="navbar navbar-inverse navbar-fixed-top" 
-         role="navigation" 
-         data-ng-controller="indexController">
-        <div class="container-fluid">
-            <div class="navbar-header">
-                <button class="btn btn-success navbar-toggle" 
-                        data-ng-click="navbarExpanded = !navbarExpanded">
-                    <span class="glyphicon glyphicon-chevron-down"></span>
-                </button>
-                <a class="navbar-brand" href="/home">Home</a>
-                <a class="navbar-brand" data-ng-show="authentication.isAuth" href="/Profile">Profile</a>
-                <a class="navbar-brand" data-ng-show="authentication.profileExists" href="/Contacts">Contacts</a>
-                <a class="navbar-brand" data-ng-show="authentication.contactExists" href="/Reminders">Reminders</a>
-            </div>
-            <div class="collapse navbar-collapse dropdown-toggle"
-                 data-collapse="!navbarExpanded"
-                 data-toggle="dropdown"
-                 data-ng-click="navbarExpanded = !navbarExpanded">
-                <ul class="nav navbar-nav navbar-right">
-                    <li data-ng-hide="!authentication.isAuth"><a href="/">Welcome {{authentication.userName}}</a></li>
-                    <li data-ng-hide="!authentication.isAuth"><a href="" data-ng-click="logoutUser()">Logout</a></li>
-                    <li class="" data-ng-hide="authentication.isAuth"> <a href="/Login"> Login</a></li>
-                    <li data-ng-hide="authentication.isAuth"> <a href="/Register">Register</a></li>
-                </ul>
-            </div>
-        </div>
-    </div>*@
 
     <div class="container">
         <div data-ng-view="">
