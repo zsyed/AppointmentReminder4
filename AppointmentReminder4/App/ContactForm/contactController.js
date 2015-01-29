@@ -11,6 +11,13 @@
           { idZone: 'CST', descZone : 'Central Standard Time' },
           { idZone: 'EST', descZone : 'Eastern Standard Time' }
 	    ];
+
+	    $scope.contactsalreadyLoaded = false;
+	    $scope.contactsLoaded = false;
+
+	    $scope.$watch('contactsalreadyLoaded', function (value) {
+	        $scope.contactsLoaded = value;
+	    });
 		
 		if ($routeParams.id) {
 		
@@ -54,7 +61,7 @@
 				        $scope.profileExist = true;
 				    }
 
-					$scope.$broadcast('CONTACTS_LOADED_EVENT');
+				    $scope.contactsalreadyLoaded = true;
 				},
 				function (results) {
 				    // on error
@@ -64,16 +71,6 @@
 				}
 			);
 		}
-		
-		$scope.$on('CONTACTS_LOADED_EVENT', function () {
-			$scope.loadingcontacts = false;
-		});
-
-		$scope.$on('CONTACTS_LOADING_EVENT', function () {
-			$scope.loadingcontacts = true;
-		});
-
-		$scope.$broadcast('CONTACTS_LOADING_EVENT');
 		
 		$scope.showCreateContactForm = function () {
 			$location.path('/newContactForm');

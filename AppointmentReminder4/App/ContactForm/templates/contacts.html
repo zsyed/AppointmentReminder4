@@ -1,70 +1,71 @@
-﻿
-<div data-ng-show="loadingcontacts == true">
-	<div class="col-sm-4"><progressbar class="progress-striped active" max="200" value="200" type="warning"><i>loading... please wait..</i></progressbar></div>
+﻿<div data-ng-show="contactsLoaded == false">
+    <div class="spinner">
+        Loading...
+    </div>
 </div>
 
-<div data-ng-show="loadingcontacts == false">
-<form class="form-horizontal" role="form" >
-    <div data-ng-show="profileExist">
-        <input type="submit"
-               class="btn btn-primary"
-               value="Add New Contact"
-               data-ng-click="showCreateContactForm()" />
-    </div>
-	
-		<br/>	<br/>
-    <div class="table-responsive">
-        <table class="table table-striped table-bordered table-hover table-condensed" data-ng-show="contacts.length > 0">
-            <thead>
-                <tr>
-                    <th> <b>First Name</b></th>
-                    <th> <b>Last Name</b></th>
-                    <th> <b>Phone Number</b></th>
-                    <th> <b>Email Address</b></th>
-                    <th> <b>Time Zone</b></th>
-                    <th> <b>Active</b></th>
-                    <th> <b>Send Email</b></th>
-                    <th> <b>Email Subscribe</b></th>
-                    <th> <b>Send SMS</b></th>
-                    <th>Status</th>
-                    <th></th>
-                    <th></th>
-                </tr>
+<div data-ng-show="contactsLoaded == true">
+    <form class="form-horizontal" role="form">
+        <div data-ng-show="profileExist">
+            <input type="submit"
+                   class="btn btn-primary"
+                   value="Add New Contact"
+                   data-ng-click="showCreateContactForm()" />
+        </div>
 
-            </thead>
-            <tbody>
-                <tr ng-class="{'danger': contact.EmailUnsubscribe}" data-ng-repeat="contact in contacts">
-                    <td>{{contact.FirstName}}</td>
-                    <td>{{contact.LastName}}</td>
-                    <td>{{contact.PhoneNumber | tel}}</td>
-                    <td>{{contact.EmailAddress}}</td>
-                    <td>{{contact.TimeZone}}</td>
-                    <td>{{contact.Active == true? "Yes": "No"}}</td>
-                    <td>{{contact.SendEmail == true? "Yes": "No"}}</td>
-                    <td>{{contact.EmailUnsubscribe == true? "No": "Yes"}}</td>
-                    <td>{{contact.SendSMS == true? "Yes": "No"}}</td>
-                    <td>{{contact.EmailUnsubscribe == true? "Problem": "Ok"}}</td>
-                    <td>
-                        <div>
-                            <button class="btn btn-primary" type="submit" value="Edit" data-ng-click="showUpdateContactForm(contact.Id)">
-                                <span class=" glyphicon glyphicon-edit"></span>  Edit
-                            </button>
-                        </div>
-                    </td>
-                    <td>
-                        <div>
-                            <button class="btn btn-primary" type="submit" value="Delete" data-ng-click="showDeleteContactForm(contact.Id)">
-                                <span class=" glyphicon glyphicon-remove-sign"></span>  Delete
-                            </button>
-                        </div>
-                    </td>
-                </tr>
-            </tbody>
-        </table>
-    </div>
-	<br/>	<br/>	
-    <div data-ng-hide="message == ''" data-ng-class="(profileExist) ? 'alert alert-success' : 'alert alert-danger'">
-        {{message}}
-    </div>
-</form>
-	</div>
+        <br />	<br />
+        <div class="table-responsive">
+            <table class="table table-striped table-bordered table-hover table-condensed" data-ng-show="contacts.length > 0">
+                <thead>
+                    <tr>
+                        <th> <b>First Name</b></th>
+                        <th> <b>Last Name</b></th>
+                        <th> <b>Phone Number</b></th>
+                        <th> <b>Email Address</b></th>
+                        <th> <b>Time Zone</b></th>
+                        <th> <b>Active</b></th>
+                        <th> <b>Send Email</b></th>
+                        <th> <b>Email Subscribe</b></th>
+                        <th> <b>Send SMS</b></th>
+                        <th>Status</th>
+                        <th></th>
+                        <th></th>
+                    </tr>
+
+                </thead>
+                <tbody>
+                    <tr ng-class="{'danger': contact.EmailUnsubscribe}" data-ng-repeat="contact in contacts">
+                        <td>{{contact.FirstName}}</td>
+                        <td>{{contact.LastName}}</td>
+                        <td>{{contact.PhoneNumber | tel}}</td>
+                        <td>{{contact.EmailAddress}}</td>
+                        <td>{{contact.TimeZone}}</td>
+                        <td>{{contact.Active == true? "Yes": "No"}}</td>
+                        <td>{{contact.SendEmail == true? "Yes": "No"}}</td>
+                        <td>{{contact.EmailUnsubscribe == true? "No": "Yes"}}</td>
+                        <td>{{contact.SendSMS == true? "Yes": "No"}}</td>
+                        <td>{{contact.EmailUnsubscribe == true? "Problem": "Ok"}}</td>
+                        <td>
+                            <div>
+                                <button class="btn btn-primary" type="submit" value="Edit" data-ng-click="showUpdateContactForm(contact.Id)">
+                                    <span class=" glyphicon glyphicon-edit"></span>  Edit
+                                </button>
+                            </div>
+                        </td>
+                        <td>
+                            <div>
+                                <button class="btn btn-primary" type="submit" value="Delete" data-ng-click="showDeleteContactForm(contact.Id)">
+                                    <span class=" glyphicon glyphicon-remove-sign"></span>  Delete
+                                </button>
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <br />	<br />
+        <div data-ng-hide="message == ''" data-ng-class="(profileExist) ? 'alert alert-success' : 'alert alert-danger'">
+            {{message}}
+        </div>
+    </form>
+</div>
