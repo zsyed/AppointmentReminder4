@@ -1,6 +1,20 @@
 ﻿appointmentReminderApp.controller('reminderController',
 	function ReminderFormController($scope, $filter, $window, $location, $routeParams, reminderService) {
 
+	    $scope.doneloadingreminders = false;
+	    $scope.finishedloadingreminders = false;
+	    $scope.loadedreminderhistories = false;
+	    $scope.finishedreminderhistories = false;
+
+	    $scope.$watch('finishedloadingreminders', function (value) {
+	        $scope.doneloadingreminders = value;
+	    });
+
+	    $scope.$watch('loadedreminderhistories', function (value) {
+	        $scope.finishedreminderhistories = value;
+	    });
+
+
 		reminderService.getReminderContacts().then(
 			function (results) {
 				$scope.remindercontacts = results.data;
@@ -85,7 +99,7 @@
 			reminderService.getReminders().then(
 				function (results) {
 					$scope.reminders = results.data;
-					$scope.$broadcast('REMINDERS_LOADED_EVENT');
+					$scope.finishedloadingreminders = true;
 				},
 				function (results) {
 					// on error
@@ -96,7 +110,7 @@
 			reminderService.getReminderHistories().then(
 				function (results) {
 					$scope.reminderhistories = results.data;
-					$scope.$broadcast('REMINDER_HISTORIES_LOADED_EVENT');
+					$scope.loadedreminderhistories = true;
 				},
 				function (results) {
 					// on error
@@ -122,26 +136,6 @@
 			{ idweek: 'Saturday' },
 			{ idweek: 'Sunday' }
 		];
-
-		$scope.$on('REMINDERS_LOADED_EVENT', function () {
-			$scope.loadingreminders = false;
-		});
-
-		$scope.$on('REMINDERS_LOADING_EVENT', function () {
-			$scope.loadingreminders = true;
-		});
-
-		$scope.$on('REMINDER_HISTORIES_LOADED_EVENT', function () {
-			$scope.loadingreminderhistories = false;
-		});
-
-		$scope.$on('REMINDER_HISTORIES_LOADING_EVENT', function () {
-			$scope.loadingreminderhistories = true;
-		});
-
-		$scope.$broadcast('REMINDER_HISTORIES_LOADING_EVENT');
-		
-		$scope.$broadcast('REMINDERS_LOADING_EVENT');
 		
 		$scope.showCreateReminderForm = function () {
 			$location.path('/newReminderForm');

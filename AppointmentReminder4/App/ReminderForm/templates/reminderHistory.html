@@ -2,11 +2,13 @@
 
 </br>
 
-<div data-ng-show="loadingreminderhistories == true">
-	<div class="col-sm-4"><progressbar class="progress-striped active" max="200" value="200" type="warning"><i>loading... please wait..</i></progressbar></div>
+<div data-ng-show="finishedreminderhistories == false">
+    <div class="spinner">
+        Loading...
+    </div>
 </div>
 
-<div data-ng-show="loadingreminderhistories == false">
+<div data-ng-show="finishedreminderhistories == true">
     <table class="table" data-ng-show="reminderhistories.length > 0">
         <thead>
             <tr>
@@ -34,4 +36,4 @@
             </tr>
         </tbody>
     </table>
-	</div>
+</div>

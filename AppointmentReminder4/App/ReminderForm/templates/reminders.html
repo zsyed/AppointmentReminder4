@@ -1,11 +1,13 @@
 ﻿
 <h3>Reminders</h3>
 
-<div data-ng-show="loadingreminders == true">
-	<div class="col-sm-4"><progressbar class="progress-striped active" max="200" value="200" type="warning"><i>loading... please wait..</i></progressbar></div>
+<div data-ng-show="doneloadingreminders == false">
+    <div class="spinner">
+        Loading...
+    </div>
 </div>
 
-<div data-ng-show="loadingreminders == false">
+<div data-ng-show="doneloadingreminders == true">
 <form class="form-horizontal" role="form" >
 	<div>
 		<input 
