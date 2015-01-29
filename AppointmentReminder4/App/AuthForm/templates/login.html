@@ -20,6 +20,11 @@
             <label class="col-sm-3 control-label"></label>
             <div class="col-sm-9">
                 <input type="submit" class="btn btn-primary" value="Login" data-ng-click="loginForm()" ng-disabled="loginUpdateForm.$invalid" />
+                <div data-ng-show="loadinglogin == true">
+                    <div class="spinner">
+                        Loading...
+                    </div>
+                </div>
             </div>
 
         </div>
@@ -31,14 +36,7 @@
             <div class="col-sm-9">
                 <input type="submit" class="btn btn-primary" value="Reset Password" data-ng-click="resetPassword()" />
             </div>
-
-            <div data-ng-show="loadinglogin == true">
-                <div class="col-sm-9"><progressbar class="progress-striped active" max="200" value="200" type="warning"><i>in process... please wait..</i></progressbar></div>
-            </div>
-
         </div>
-
-
         <div data-ng-hide="message == ''" data-ng-class="(savedSuccessfully) ? 'alert alert-success' : 'alert alert-danger'">
             {{message}}
         </div>
