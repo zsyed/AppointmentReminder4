@@ -218,6 +218,7 @@
 		$scope.submitDeleteForm = function () {
 		    if ($scope.reminder.Id > 0) {
 		        reminderService.deleteReminder($routeParams.id).then(onReminderDeleteComplete, onErrorDeleteReminder);
+
 			}
 		};
 		
