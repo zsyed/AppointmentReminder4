@@ -78,31 +78,27 @@
 			$location.path('/deleteContactForm/' + id);
 		};
 
+		var onContactInsertUpdateComplete = function (data) {
+		    $scope.contact = data;
+		    $window.history.back();
+		};
+
+		var onErrorUpdateContact = function (reason) {
+		    $scope.error = "Could not update contact";
+		};
+
+		var onErrorInsertContact = function (reason) {
+		    $scope.error = "Could not Insert contact";
+		};
+
+
 		$scope.submitForm = function() {
 		    if ($scope.contact.Id > 0) {
 		        $scope.contact.TimeZone = $scope.selectedTimeZone.idZone;
-				contactService.updateContact($scope.contact).then(
-					function(results) {
-						$scope.contact = results.data;
-						$window.history.back();
-					},
-					function(results) {
-						// on error
-						var data = results.data;
-					}
-				);
+		        contactService.updateContact($scope.contact).then(onContactInsertUpdateComplete, onErrorUpdateContact);
 			} else {
 		        $scope.contact.TimeZone = $scope.selectedTimeZone.idZone;
-				contactService.insertContact($scope.contact).then(
-					function (results) {
-						$scope.contact = results.data;
-						$window.history.back();
-					},
-						function (results) {
-							// on error
-							var data = results.data;
-						}
-					);
+		        contactService.insertContact($scope.contact).then(onContactInsertUpdateComplete, onErrorInsertContact);
 		    }
             authService.checkContact();
 		};

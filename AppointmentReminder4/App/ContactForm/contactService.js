@@ -10,11 +10,11 @@
 		};
 
 		var insertContact = function (contact) {
-			return $http.post("/api/Contact", contact);
+		    return $http.post("/api/Contact", contact).then(function (response) { return response.data; });
 		};
 
 		var updateContact = function (contact) {
-			return $http.put("/api/Contact", contact);
+		    return $http.put("/api/Contact", contact).then(function (response) { return response.data; });
 		};
 		
 		var deleteContact = function (id) {
