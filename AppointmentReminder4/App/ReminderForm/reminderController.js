@@ -165,16 +165,17 @@
 				}
 
 
-				reminderService.updateReminder($scope.reminder).then(
-					function (results) {
-						$scope.reminder = results.data;
-						$window.history.back();
-					},
-					function (results) {
-						// on error
-						var data = results.data;
-					}
-				);
+				var onReminderUpdateComplete = function (data) {
+				    $scope.reminder = data;
+				    $window.history.back();
+				};
+
+				var onErrorUpdateReminder = function (reason) {
+				    $scope.error = "Could not update reminder.";
+				};
+
+				reminderService.updateReminder($scope.reminder).then(onReminderUpdateComplete, onErrorUpdateReminder);
+
 			} else {
 				$scope.reminder.ContactId = $scope.selectedContact.Id;
 				
@@ -192,17 +193,17 @@
 				if ($scope.weekdayshow) {
 					$scope.reminder.WeekDay = $scope.selectedWeekday.idweek;
 				}
+
+				var onReminderInsertComplete = function (data) {
+				    $scope.reminder = data;
+				    $window.history.back();
+				};
+
+				var onErrorInsertReminder = function (reason) {
+				    $scope.error = "Could not insert reminder.";
+				};
 				
-				reminderService.insertReminder($scope.reminder).then(
-					function (results) {
-						$scope.reminder = results.data;
-						$window.history.back();
-					},
-						function (results) {
-							// on error
-							var data = results.data;
-						}
-					);
+				reminderService.insertReminder($scope.reminder).then(onReminderInsertComplete, onErrorInsertReminder); 
 			}
 		};
 

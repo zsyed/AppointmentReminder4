@@ -21,13 +21,12 @@
 		    return $http.get("/api/ReminderContact").then(function (response) { return response.data; });
 		};
 
-
 		var insertReminder = function (reminder) {
-			return $http.post("/api/Reminder", reminder);
+		    return $http.post("/api/Reminder", reminder).then(function (response) { return response.data; });
 		};
 
 		var updateReminder = function (reminder) {
-			return $http.put("/api/Reminder", reminder);
+		    return $http.put("/api/Reminder", reminder).then(function (response) { return response.data; });
 		};
 
 		var deleteReminder = function (id) {
