@@ -15,14 +15,7 @@
 	        $scope.error = "Could not load reminder histories";
 	    };
 
-	    var onRemindersGetComplete = function (data) {
-	        $scope.reminders = data;
-	        $scope.finishedloadingreminders = true;
-	    };
 
-	    var onErrorReminder = function (reason) {
-	        $scope.error = "Could not load reminders";
-	    };
 
 	    var onReminderGetComplete = function (data) {
 	        $scope.reminder = data;
@@ -92,21 +85,31 @@
 	    });
 
 
-		reminderService.getReminderContacts().then(
-			function (results) {
-				$scope.remindercontacts = results.data;
-			},
-			function (results) {
-				// on error
-				var data = results.data;
-			}
-		);
+        var onReminderContactsGetComplete = function (data) {
+            $scope.remindercontacts = data;
+        };
+
+        var onErrorContactsReminder = function (reason) {
+            $scope.error = "Could not load reminder contact.";
+        };
+
+        reminderService.getReminderContacts().then(onReminderContactsGetComplete, onErrorContactsReminder);
+
+        var onRemindersGetComplete = function (data) {
+            $scope.reminders = data;
+            $scope.finishedloadingreminders = true;
+        };
+
+        var onErrorReminders = function (reason) {
+            $scope.error = "Could not load reminders";
+        };
 
 		if ($routeParams.id) {
 		    reminderService.getReminder($routeParams.id).then(onReminderGetComplete, onErrorReminder);
 		} else {
 		    $scope.reminder = { id: -1 };
 		    reminderService.getReminders().then(onRemindersGetComplete, onErrorReminders);
+            reminderService.getReminderHistories().then(onReminderHistoriesGetComplete, onErrorReminderHistories);
 		}
 
 		$scope.recurrences = [
@@ -203,18 +206,18 @@
 			}
 		};
 
+		var onReminderDeleteComplete = function (data) {
+		    $scope.reminder = data;
+		    $window.history.back();
+		};
+
+		var onErrorDeleteReminder = function (reason) {
+		    $scope.error = "Could not delete contact";
+		};
+
 		$scope.submitDeleteForm = function () {
-			if ($scope.reminder.Id > 0) {
-				reminderService.deleteReminder($routeParams.id).then(
-					function (results) {
-						$scope.reminder = results.data;
-						$window.history.back();
-					},
-					function (results) {
-						// on error
-						var data = results.data;
-					}
-				);
+		    if ($scope.reminder.Id > 0) {
+		        reminderService.deleteReminder($routeParams.id).then(onReminderDeleteComplete, onErrorDeleteReminder);
 			}
 		};
 		

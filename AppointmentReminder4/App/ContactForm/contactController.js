@@ -107,22 +107,20 @@
             authService.checkContact();
 		};
 		
+        var onContactDeleteComplete = function (data) {
+            $scope.contact = data;
+            authService.checkContact();
+            $window.history.back();
+    	};
+
+	    var onErrorDeleteContact = function (reason) {
+	        $scope.error = "Could not delete contact";
+	    };
+
 		$scope.submitDeleteForm = function () {
 		    if ($scope.contact.Id > 0) {
 		        $scope.contact.TimeZone = $scope.selectedTimeZone.idZone;
-				contactService.deleteContact($routeParams.id).then(
-					function (results) {
-					    $scope.contact = results.data;
-                        authService.checkContact();
-						$window.history.back();
-					},
-					function (results) {
-						// on error
-						var data = results.data;
-					}
-				);
+                contactService.deleteContact($routeParams.id).then(onContactDeleteComplete, onErrorDeleteContact);
 			} 
 		};
-
 	});
-

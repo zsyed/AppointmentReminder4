@@ -18,7 +18,7 @@
 		};
 		
 		var deleteContact = function (id) {
-			return $http.delete("/api/Contact/" + id);
+		    return $http.delete("/api/Contact/" + id).then(function (response) { return response.data; });
 		};
 
 		return {

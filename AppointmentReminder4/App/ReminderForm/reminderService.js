@@ -2,23 +2,23 @@
 	function ($http) {
 
 		var getReminder = function (id) {
-			return $http.get("/api/Reminder/" + id);
+		    return $http.get("/api/Reminder/" + id).then(function (response) { return response.data; });
 		};
 		
 		var getReminderForUpdate = function (id) {
-			return $http.get("/api/Reminder/" + id);
+		    return $http.get("/api/Reminder/" + id).then(function (response) { return response.data; });
 		};
 
 		var getReminders = function () {
-			return $http.get("/api/Reminder");
+		    return $http.get("/api/Reminder").then(function (response) { return response.data; });
 		};
 		
 		var getReminderForUpdateContacts = function () {
-			return $http.get("/api/ReminderContact");
+		    return $http.get("/api/ReminderContact").then(function (response) { return response.data; });
 		};
 
 		var getReminderContacts = function () {
-			return $http.get("/api/ReminderContact");
+		    return $http.get("/api/ReminderContact").then(function (response) { return response.data; });
 		};
 
 
@@ -31,11 +31,11 @@
 		};
 
 		var deleteReminder = function (id) {
-			return $http.delete("/api/Reminder/" + id);
+		    return $http.delete("/api/Reminder/" + id).then(function (response) { return response.data; });
 		};
 
 		var getReminderHistories = function () {
-			return $http.get("/api/ReminderHistory");
+		    return $http.get("/api/ReminderHistory").then(function (response) { return response.data; });
 		};
 
 		return {
