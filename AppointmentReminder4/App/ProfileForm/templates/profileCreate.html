@@ -1,71 +1,80 @@
-﻿<form class="form-horizontal" role="form" name="profileCreateForm">
-
-
-    <div class="form-group" ng-class="{ 'has-error': profileCreateForm.FirstName.$invalid }">
-        <label class="col-lg-3 control-label" for="FirstName">First Name</label>
-        <div class="col-sm-9">
-            <input type="text"
-                   required
-                   data-ng-model="profile.FirstName"
-                   id="firstName"
-                   name="FirstName"
-                   placeholder="Enter First Name"
-                   class="form-control" />
-        </div>
+﻿<div data-ng-show="error">
+    <div class="alert alert-danger">
+        <strong>Error!   </strong> {{error}}
     </div>
+</div>
 
-    <div class="form-group" ng-class="{ 'has-error': profileCreateForm.LastName.$invalid }">
-        <label class="col-lg-3 control-label" for="LastName">Last Name</label>
-        <div class="col-sm-9">
-            <input type="text"
-                   required
-                   data-ng-model="profile.LastName"
-                   id="lastName"
-                   name="LastName"
-                   placeholder="Enter Last Name"
-                   class="form-control" />
+<div data-ng-hide="error">
+
+    <form class="form-horizontal" role="form" name="profileCreateForm">
+
+
+        <div class="form-group" ng-class="{ 'has-error': profileCreateForm.FirstName.$invalid }">
+            <label class="col-lg-3 control-label" for="FirstName">First Name</label>
+            <div class="col-sm-9">
+                <input type="text"
+                       required
+                       data-ng-model="profile.FirstName"
+                       id="firstName"
+                       name="FirstName"
+                       placeholder="Enter First Name"
+                       class="form-control" />
+            </div>
         </div>
-    </div>
 
-    <div class="form-group" ng-class="{ 'has-error': profileCreateForm.EmailAddress.$invalid }">
-        <label class="col-lg-3 control-label" for="FirstName">Email Address</label>
-        <div class="col-sm-9">
-            <input type="email"
-                   required
-                   data-ng-model="profile.EmailAddress"
-                   id="EmailAddress"
-                   name="EmailAddress"
-                   placeholder="Enter Email Address"
-                   class="form-control" />
+        <div class="form-group" ng-class="{ 'has-error': profileCreateForm.LastName.$invalid }">
+            <label class="col-lg-3 control-label" for="LastName">Last Name</label>
+            <div class="col-sm-9">
+                <input type="text"
+                       required
+                       data-ng-model="profile.LastName"
+                       id="lastName"
+                       name="LastName"
+                       placeholder="Enter Last Name"
+                       class="form-control" />
+            </div>
         </div>
-    </div>
 
-    <div class="form-group" ng-class="{ 'has-error': profileCreateForm.PhoneNumber.$invalid }">
-        <label class="col-lg-3 control-label" for="PhoneNumber">Phone Number</label>
-        <div class="col-sm-9">
-            <input type="text"
-                   required
-                   data-ng-model="profile.PhoneNumber"
-                   id="PhoneNumber"
-                   name="PhoneNumber"
-                   placeholder="Enter Phone Number"
-                   class="form-control" />
+        <div class="form-group" ng-class="{ 'has-error': profileCreateForm.EmailAddress.$invalid }">
+            <label class="col-lg-3 control-label" for="FirstName">Email Address</label>
+            <div class="col-sm-9">
+                <input type="email"
+                       required
+                       data-ng-model="profile.EmailAddress"
+                       id="EmailAddress"
+                       name="EmailAddress"
+                       placeholder="Enter Email Address"
+                       class="form-control" />
+            </div>
         </div>
-    </div>
 
-    <div class="form-group">
-        <label class="col-sm-3 control-label" for="DeActivate">De Activate</label>
-        <div class="col-sm-9">
-            <input type="checkbox" data-ng-model="profile.DeActivate" id="DeActivate" name="DeActivate" />
+        <div class="form-group" ng-class="{ 'has-error': profileCreateForm.PhoneNumber.$invalid }">
+            <label class="col-lg-3 control-label" for="PhoneNumber">Phone Number</label>
+            <div class="col-sm-9">
+                <input type="text"
+                       required
+                       data-ng-model="profile.PhoneNumber"
+                       id="PhoneNumber"
+                       name="PhoneNumber"
+                       placeholder="Enter Phone Number"
+                       class="form-control" />
+            </div>
         </div>
-    </div>
 
-    <div class="form-group">
-        <label class="col-sm-3 control-label"></label>
-        <div class="col-sm-9">
-            <input type="submit" class="btn btn-primary" value="Submit" data-ng-click="submitForm()" ng-disabled="profileCreateForm.$invalid" />
+        <div class="form-group">
+            <label class="col-sm-3 control-label" for="DeActivate">De Activate</label>
+            <div class="col-sm-9">
+                <input type="checkbox" data-ng-model="profile.DeActivate" id="DeActivate" name="DeActivate" />
+            </div>
         </div>
-    </div>
 
-</form>
+        <div class="form-group">
+            <label class="col-sm-3 control-label"></label>
+            <div class="col-sm-9">
+                <input type="submit" class="btn btn-primary" value="Submit" data-ng-click="submitForm()" ng-disabled="profileCreateForm.$invalid" />
+            </div>
+        </div>
 
+    </form>
+
+</div>

@@ -36,39 +36,37 @@
 
 		};
 
+		var onProfileUpdateComplete = function (data) {
+		    $scope.profile = data;
+		    if ($scope.profile != null)
+		    {
+		        authService.profileExists(true);
+		        $window.history.back();
+		    }
+		};
+
+		var onUpdateError = function (reason) {
+		    $scope.error = "Could not update profile data."
+		};
+
+		var onProfileInsertComplete = function (data) {
+		    $scope.profile = data;
+		    if ($scope.profile != null) {
+		        authService.profileExists(true);
+		    }
+		    $window.history.back();
+		};
+
+		var onInsertError = function (reason) {
+		    $scope.error = "Could not insert profile data."
+		};
+
 		$scope.submitForm = function () {
 		    if ($scope.profile.Id > 0) {
 		        $scope.profile.PhoneNumber = $scope.profile.PhoneNumber.replace(/\D/g, '');
-				profileService.updateProfile($scope.profile).then(
-					function (results) {
-					    $scope.profile = results.data;
-					    if ($scope.profile != null)
-					    {
-					        authService.profileExists(true);
-					    }
-
-						$window.history.back();
-						},
-						function (results) {
-						// on error
-						var data = results.data;
-						}
-					);
+		        profileService.updateProfile($scope.profile).then(onProfileUpdateComplete, onUpdateError);
 			} else {
-				
-				profileService.insertProfile($scope.profile).then(
-					function (results) {
-					    $scope.profile = results.data;
-					    if ($scope.profile != null) {
-					        authService.profileExists(true);
-					    }
-						$window.history.back();
-					},
-						function (results) {
-							// on error
-							var data = results.data;
-						}
-					);
+		        profileService.insertProfile($scope.profile).then(onProfileInsertComplete, onInsertError);
 			}
 		};
 
