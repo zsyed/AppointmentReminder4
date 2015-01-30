@@ -18,58 +18,52 @@
 	    $scope.$watch('contactsalreadyLoaded', function (value) {
 	        $scope.contactsLoaded = value;
 	    });
-		
+
+	    var onContactsGetComplete = function (data) {
+	        $scope.contacts = data;
+	        if ($scope.contacts != null) {
+	            $scope.contactsAvailable = true;
+	            $scope.profileExist = true;
+	        }
+	        else
+	        {
+	            $scope.message = "Please create profile first and then add contacts.";
+	            $scope.contactsAvailable = false;
+	            $scope.profileExist = false;
+	        }
+
+	        $scope.contactsalreadyLoaded = true;
+	    };
+
+	    var onErrorContacts = function (reason) {
+	        $scope.contactsalreadyLoaded = true;
+	        $scope.error = "Could not fetch contacts data."
+	        $scope.contactsAvailable = false;
+	        $scope.profileExist = false;
+	    };
+
+	    var onContactGetComplete = function (data) {
+		    $scope.contact = data;
+		    $scope.contact.PhoneNumber = $filter("tel")($scope.contact.PhoneNumber);
+		    var keepGoing = true;
+		    var i = 0;
+		    for (i = 0; i <= $scope.timeZones.length && keepGoing; i++) {
+			    if ($scope.timeZones[i].idZone == $scope.contact.TimeZone) {
+				    $scope.selectedTimeZone = $scope.timeZones[i];
+				    keepGoing = false;
+				    }
+		    }
+	    };
+
+	    var onErrorContact = function (reason) {
+	        $scope.error = "Could not load contact";
+	    };
+
 		if ($routeParams.id) {
-		
-			contactService.getContact($routeParams.id).then(
-				function (results) {
-				    $scope.contactsAvailable = true;
-				    $scope.contact = results.data;
-				    $scope.contact.PhoneNumber = $filter("tel")($scope.contact.PhoneNumber);
-				    var keepGoing = true;
-				    var i = 0;
-				    for (i = 0; i <= $scope.timeZones.length && keepGoing; i++) {
-				        if ($scope.timeZones[i].idZone == $scope.contact.TimeZone) {
-				            $scope.selectedTimeZone = $scope.timeZones[i];
-				            keepGoing = false;
-				        }
-				    }
-
-				},
-				function (results) {
-				    // on error
-				    $scope.contactsAvailable = true;
-					var data = results.data;
-				}
-			);
-
+            contactService.getContact($routeParams.id).then(onContactGetComplete, onErrorContact);
 		} else {
-			$scope.contact = { id: -1 };
-			contactService.getContacts().then(
-				function (results) {
-				    $scope.contacts = results.data;
-
-				    if ($scope.contacts == null)
-				    {
-				        $scope.message = "Please create profile first and then add contacts.";
-				        $scope.contactsAvailable = false;
-				        $scope.profileExist = false;
-				    }
-				    else
-				    {
-				        $scope.contactsAvailable = true;
-				        $scope.profileExist = true;
-				    }
-
-				    $scope.contactsalreadyLoaded = true;
-				},
-				function (results) {
-				    // on error
-				    $scope.contactsAvailable = false;
-				    $scope.profileExist = false;
-					var data = results.data;
-				}
-			);
+		    $scope.contact = { id: -1 };
+		    contactService.getContacts().then(onContactsGetComplete, onErrorContacts);
 		}
 		
 		$scope.showCreateContactForm = function () {

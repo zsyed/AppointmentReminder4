@@ -4,7 +4,13 @@
     </div>
 </div>
 
-<div data-ng-show="contactsLoaded == true">
+<div data-ng-show="error">
+    <div class="alert alert-danger">
+        <strong>Error!   </strong> {{error}}
+    </div>
+</div>
+
+<div data-ng-show="contactsLoaded == true" data-ng-hide="error">
     <form class="form-horizontal" role="form">
         <div data-ng-show="profileExist">
             <input type="submit"

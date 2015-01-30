@@ -50,38 +50,41 @@
 	        _authentication.contactExists = exists;
 	    }
 
-	    var checkProfile = function () {
-	        profileService.getProfile().then(
-                function (results) {
-                    if (results.data != null)
-                    {
-                        _authentication.profileExists = true;
-                    }
-                    else
-                    {
-                        _authentication.profileExists = false;
-                    }
-                },
-                function (results) {
-                    _authentication.profileExists = false;
-                }
-            );
+	    var onProfileGetComplete = function (data) {
+	        if (data != null) {
+	            _authentication.profileExists = true;
+	        }
+	        else
+	        {
+	            _authentication.profileExists = false;
+	        }
 	    };
 
+	    var onProfileError = function (reason) {
+	        _authentication.profileExists = false;
+	    };
+
+	    var checkProfile = function () {
+	        profileService.getProfile().then(onProfileGetComplete, onProfileError);
+	    };
+
+	    var onContactsGetComplete = function (data) {
+	        if (data.length > 0)
+	        {
+	            _authentication.contactExists = true;
+	        }
+	        else {
+	            _authentication.contactExists = false;
+	        }
+	    }
+
+	    var onErrorContacts = function (reason)
+	    {
+	        _authentication.contactExists = false;
+	    }
+
 	    var checkContact = function () {
-	        contactService.getContacts().then(
-                function (results) {
-                    if (results.data.length > 0) {
-                        _authentication.contactExists = true;
-                    }
-                    else {
-                        _authentication.contactExists = false;
-                    }
-                },
-                function (results) {
-                    _authentication.contactExists = false;
-                }
-            );
+	        contactService.getContacts().then(onContactsGetComplete, onErrorContacts);
 	    };
 
 

@@ -2,11 +2,11 @@
 	function ($http) {
 		
 		var getContact = function (id) {
-			return $http.get("/api/Contact/" + id);
+		    return $http.get("/api/Contact/" + id).then(function (response) { return response.data; });
 		};
 
 		var getContacts = function() {
-			return $http.get("/api/Contact");
+		    return $http.get("/api/Contact").then(function (response) { return response.data; });
 		};
 
 		var insertContact = function (contact) {

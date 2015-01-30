@@ -3,7 +3,6 @@
 
 	    $scope.profileLoaded = false;
 	    $scope.profileShow = false;
-	    $scope.error = null;
 
 	    $scope.$watch('profileLoaded', function (value) {
 	        $scope.profileShow = value;

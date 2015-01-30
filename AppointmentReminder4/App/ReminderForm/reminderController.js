@@ -6,6 +6,83 @@
 	    $scope.loadedreminderhistories = false;
 	    $scope.finishedreminderhistories = false;
 
+	    var onReminderHistoriesGetComplete = function (data) {
+	        $scope.reminderhistories = data;
+	        $scope.loadedreminderhistories = true;
+	    };
+
+	    var onErrorReminderHistories = function (reason) {
+	        $scope.error = "Could not load reminder histories";
+	    };
+
+	    var onRemindersGetComplete = function (data) {
+	        $scope.reminders = data;
+	        $scope.finishedloadingreminders = true;
+	    };
+
+	    var onErrorReminder = function (reason) {
+	        $scope.error = "Could not load reminders";
+	    };
+
+	    var onReminderGetComplete = function (data) {
+	        $scope.reminder = data;
+	        var contactId = $scope.reminder.ContactId;
+	        var recurrence = $scope.reminder.Recurrence;
+	        var weekday = $scope.reminder.WeekDay;
+
+	        $scope.ReminderDate = $filter('date')($scope.reminder.ReminderDateTime, 'MM/dd/yyyy');
+	        $scope.ReminderTime = $filter('date')($scope.reminder.ReminderDateTime, 'MM/dd/yyyy hh:mm a');
+	        var keepGoing = true;
+	        for (i = 0; i <= $scope.remindercontacts.length && keepGoing; i++) {
+	            if ($scope.remindercontacts[i].Id == contactId) {
+	                $scope.selectedContact = $scope.remindercontacts[i];
+	                keepGoing = false;
+	            }
+	        }
+
+
+	        keepGoing = true;
+	        for (i = 0; i <= $scope.recurrences.length && keepGoing; i++) {
+	            if ($scope.recurrences[i].idrecur == recurrence) {
+	                $scope.selectedRecurrence = $scope.recurrences[i];
+	                keepGoing = false;
+	            }
+	        }
+
+	        if (weekday != null) {
+	            keepGoing = true;
+	            for (var i = 0; i <= $scope.weekdays.length && keepGoing; i++) {
+	                if ($scope.weekdays[i].idweek == weekday) {
+	                    $scope.selectedWeekday = $scope.weekdays[i];
+	                    keepGoing = false;
+	                }
+	            }
+	        }
+
+	        //copy paste code must be refactored.
+
+	        if (recurrence == 'Once') {
+	            $scope.calendarshow = true;
+	            $scope.weekdayshow = false;
+	        }
+
+	        if (recurrence == 'Daily') {
+	            $scope.calendarshow = false;
+	            $scope.weekdayshow = false;
+	        }
+
+	        if (recurrence == 'Weekly') {
+	            $scope.calendarshow = false;
+	            $scope.weekdayshow = true;
+	        }
+
+	        //copy paste code
+	    };
+
+	    var onErrorReminder = function (reason) {
+	        $scope.error = "Could not load reminder";
+	    };
+
 	    $scope.$watch('finishedloadingreminders', function (value) {
 	        $scope.doneloadingreminders = value;
 	    });
@@ -26,99 +103,10 @@
 		);
 
 		if ($routeParams.id) {
-
-			reminderService.getReminder($routeParams.id).then(
-				function (response) {
-					$scope.reminder = response.data;
-					
-
-					$scope.reminder = response.data;
-					var contactId = $scope.reminder.ContactId;
-					var recurrence = $scope.reminder.Recurrence;
-					var weekday = $scope.reminder.WeekDay;
-
-					$scope.ReminderDate = $filter('date')($scope.reminder.ReminderDateTime, 'MM/dd/yyyy');
-					$scope.ReminderTime = $filter('date')($scope.reminder.ReminderDateTime, 'MM/dd/yyyy hh:mm a');
-					var keepGoing = true;
-					for (i = 0; i <= $scope.remindercontacts.length && keepGoing; i++) {
-						if ($scope.remindercontacts[i].Id == contactId) {
-							$scope.selectedContact = $scope.remindercontacts[i];
-							keepGoing = false;
-						}
-					}
-
-
-					keepGoing = true;
-					for (i = 0; i <= $scope.recurrences.length && keepGoing; i++) {
-						if ($scope.recurrences[i].idrecur == recurrence) {
-							$scope.selectedRecurrence = $scope.recurrences[i];
-							keepGoing = false;
-						}
-					}
-
-					if (weekday != null) {
-						keepGoing = true;
-						for (var i = 0; i <= $scope.weekdays.length && keepGoing; i++) {
-							if ($scope.weekdays[i].idweek == weekday) {
-								$scope.selectedWeekday = $scope.weekdays[i];
-								keepGoing = false;
-							}
-						}
-					}
-
-					//copy paste code must be refactored.
-
-					if (recurrence == 'Once') {
-						$scope.calendarshow = true;
-						$scope.weekdayshow = false;
-					}
-
-					if (recurrence == 'Daily') {
-						$scope.calendarshow = false;
-						$scope.weekdayshow = false;
-					}
-
-					if (recurrence == 'Weekly') {
-						$scope.calendarshow = false;
-						$scope.weekdayshow = true;
-					}
-
-					//copy paste code
-
-
-
-				},
-				function (results) {
-					// on error
-					var data = results.data;
-				}
-			);
-
+		    reminderService.getReminder($routeParams.id).then(onReminderGetComplete, onErrorReminder);
 		} else {
-			$scope.reminder = { id: -1 };
-			reminderService.getReminders().then(
-				function (results) {
-					$scope.reminders = results.data;
-					$scope.finishedloadingreminders = true;
-				},
-				function (results) {
-					// on error
-					var data = results.data;
-				}
-			);
-
-			reminderService.getReminderHistories().then(
-				function (results) {
-					$scope.reminderhistories = results.data;
-					$scope.loadedreminderhistories = true;
-				},
-				function (results) {
-					// on error
-					var data = results.data;
-				}
-			);
-
-
+		    $scope.reminder = { id: -1 };
+		    reminderService.getReminders().then(onRemindersGetComplete, onErrorReminders);
 		}
 
 		$scope.recurrences = [
@@ -255,11 +243,6 @@
 		$scope.clear = function () {
 		    $scope.dt = null;
 		};
-
-	    // Disable weekend selection
-		//$scope.disabled = function (date, mode) {
-		//    return (mode === 'day' && (date.getDay() === 0 || date.getDay() === 6));
-		//};
 
 		$scope.toggleMin = function () {
 		    $scope.minDate = $scope.minDate ? null : new Date();
