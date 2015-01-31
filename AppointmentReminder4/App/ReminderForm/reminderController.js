@@ -1,5 +1,5 @@
 ﻿appointmentReminderApp.controller('reminderController',
-	function ReminderFormController($scope, $filter, $window, $location, $routeParams, reminderService) {
+	function ReminderFormController($scope, $filter, $window, $location, $routeParams, reminderService, contactService) {
 
 	    $scope.doneloadingreminders = false;
 	    $scope.finishedloadingreminders = false;
@@ -14,8 +14,6 @@
 	    var onErrorReminderHistories = function (reason) {
 	        $scope.error = "Could not load reminder histories";
 	    };
-
-
 
 	    var onReminderGetComplete = function (data) {
 	        $scope.reminder = data;
@@ -85,8 +83,16 @@
 	    });
 
 
-        var onReminderContactsGetComplete = function (data) {
-            $scope.remindercontacts = data;
+	    var onReminderContactsGetComplete = function (data) {
+	        $scope.finishedloadingreminders = true;
+	        $scope.remindercontacts = data;
+	        if ($scope.remindercontacts.length > 0)
+	        {
+	            $scope.finishedloadingreminders = false;
+	            $scope.loadedreminderhistories = false;
+	            reminderService.getReminders().then(onRemindersGetComplete, onErrorReminders);
+	            reminderService.getReminderHistories().then(onReminderHistoriesGetComplete, onErrorReminderHistories);
+	        }
         };
 
         var onErrorContactsReminder = function (reason) {
@@ -104,13 +110,17 @@
             $scope.error = "Could not load reminders";
         };
 
-		if ($routeParams.id) {
-		    reminderService.getReminder($routeParams.id).then(onReminderGetComplete, onErrorReminder);
-		} else {
-		    $scope.reminder = { id: -1 };
-		    reminderService.getReminders().then(onRemindersGetComplete, onErrorReminders);
-            reminderService.getReminderHistories().then(onReminderHistoriesGetComplete, onErrorReminderHistories);
-		}
+        if ($scope.remindercontacts != null) {
+            if ($scope.remindercontacts.length > 0) {
+                if ($routeParams.id) {
+                    reminderService.getReminder($routeParams.id).then(onReminderGetComplete, onErrorReminder);
+                } else {
+                    $scope.reminder = { id: -1 };
+                    reminderService.getReminders().then(onRemindersGetComplete, onErrorReminders);
+                    reminderService.getReminderHistories().then(onReminderHistoriesGetComplete, onErrorReminderHistories);
+                }
+            }
+        }
 
 		$scope.recurrences = [
 		  { idrecur: 'Once' },

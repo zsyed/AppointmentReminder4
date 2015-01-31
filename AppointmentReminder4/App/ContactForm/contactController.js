@@ -100,12 +100,12 @@
 		        $scope.contact.TimeZone = $scope.selectedTimeZone.idZone;
 		        contactService.insertContact($scope.contact).then(onContactInsertUpdateComplete, onErrorInsertContact);
 		    }
-            authService.checkContact();
+            //authService.checkContact();
 		};
 		
         var onContactDeleteComplete = function (data) {
             $scope.contact = data;
-            authService.checkContact();
+            //authService.checkContact();
             $window.history.back();
     	};
 

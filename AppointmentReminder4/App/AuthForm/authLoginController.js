@@ -16,8 +16,8 @@
 	        authService.loginUser($scope.loginData).then(
                 function (results) {
 
-                    authService.checkProfile();
-                    authService.checkContact();
+                    //authService.checkProfile();
+                    //authService.checkContact();
 
                     $location.path('/home');
                 },

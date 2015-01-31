@@ -3,9 +3,18 @@
 	    $scope.savedSuccessfully = false;
 	    $scope.message = "";
 
+	    $scope.loadingRegister = false;
+	    $scope.registerLoaded = false;
+
+	    $scope.$watch('registerLoaded', function (value) {
+	        $scope.loadingRegister = value;
+	    });
+
 	    $scope.registerForm = function () {
+	        $scope.registerLoaded = true;
 	        authService.registerUser($scope.auth)
                 .success(function (data, status, headers, config) {
+                    $scope.registerLoaded = false;
                         $scope.message = '';
                         $scope.errors =[];
                         if (data.success === false) {
@@ -20,6 +29,7 @@
                         }
                             })
                 .error(function (data, status, headers, config) {
+                    $scope.registerLoaded = false;
                     $scope.message = data.Message;
                     $scope.savedSuccessfully = false;
                 });

@@ -50,42 +50,42 @@
 	        _authentication.contactExists = exists;
 	    }
 
-	    var onProfileGetComplete = function (data) {
-	        if (data != null) {
-	            _authentication.profileExists = true;
-	        }
-	        else
-	        {
-	            _authentication.profileExists = false;
-	        }
-	    };
+	    //var onProfileGetComplete = function (data) {
+	    //    if (data != null) {
+	    //        _authentication.profileExists = true;
+	    //    }
+	    //    else
+	    //    {
+	    //        _authentication.profileExists = false;
+	    //    }
+	    //};
 
-	    var onProfileError = function (reason) {
-	        _authentication.profileExists = false;
-	    };
+	    //var onProfileError = function (reason) {
+	    //    _authentication.profileExists = false;
+	    //};
 
-	    var checkProfile = function () {
-	        profileService.getProfile().then(onProfileGetComplete, onProfileError);
-	    };
+	    //var checkProfile = function () {
+	    //    profileService.getProfile().then(onProfileGetComplete, onProfileError);
+	    //};
 
-	    var onContactsGetComplete = function (data) {
-	        if (data.length > 0)
-	        {
-	            _authentication.contactExists = true;
-	        }
-	        else {
-	            _authentication.contactExists = false;
-	        }
-	    }
+	    //var onContactsGetComplete = function (data) {
+	    //    if (data.length > 0)
+	    //    {
+	    //        _authentication.contactExists = true;
+	    //    }
+	    //    else {
+	    //        _authentication.contactExists = false;
+	    //    }
+	    //}
 
-	    var onErrorContacts = function (reason)
-	    {
-	        _authentication.contactExists = false;
-	    }
+	    //var onErrorContacts = function (reason)
+	    //{
+	    //    _authentication.contactExists = false;
+	    //}
 
-	    var checkContact = function () {
-	        contactService.getContacts().then(onContactsGetComplete, onErrorContacts);
-	    };
+	    //var checkContact = function () {
+	    //    contactService.getContacts().then(onContactsGetComplete, onErrorContacts);
+	    //};
 
 
 	    var loginUser = function (loginData) {
@@ -115,9 +115,9 @@
 	    return {
             registerUser: registerUser,
             loginUser: loginUser,
-            checkProfile: checkProfile,
+            //checkProfile: checkProfile,
             profileExists: profileExists,
-            checkContact: checkContact,
+            //checkContact: checkContact,
             contactExists: contactExists,
             logoutUser: logoutUser,
             authentication: _authentication,
