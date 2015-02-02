@@ -1,5 +1,5 @@
 ﻿appointmentReminderApp.controller('reminderController',
-	function ReminderFormController($scope, $filter, $window, $location, $routeParams, reminderService, contactService) {
+	function ReminderFormController($scope, $filter, $window, $location, $routeParams, reminderService) {
 
 	    $scope.doneloadingreminders = false;
 	    $scope.finishedloadingreminders = false;
@@ -14,6 +14,8 @@
 	    var onErrorReminderHistories = function (reason) {
 	        $scope.error = "Could not load reminder histories";
 	    };
+
+
 
 	    var onReminderGetComplete = function (data) {
 	        $scope.reminder = data;
@@ -83,16 +85,8 @@
 	    });
 
 
-	    var onReminderContactsGetComplete = function (data) {
-	        $scope.finishedloadingreminders = true;
-	        $scope.remindercontacts = data;
-	        if ($scope.remindercontacts.length > 0)
-	        {
-	            $scope.finishedloadingreminders = false;
-	            $scope.loadedreminderhistories = false;
-	            reminderService.getReminders().then(onRemindersGetComplete, onErrorReminders);
-	            reminderService.getReminderHistories().then(onReminderHistoriesGetComplete, onErrorReminderHistories);
-	        }
+        var onReminderContactsGetComplete = function (data) {
+            $scope.remindercontacts = data;
         };
 
         var onErrorContactsReminder = function (reason) {
@@ -110,17 +104,13 @@
             $scope.error = "Could not load reminders";
         };
 
-        if ($scope.remindercontacts != null) {
-            if ($scope.remindercontacts.length > 0) {
-                if ($routeParams.id) {
-                    reminderService.getReminder($routeParams.id).then(onReminderGetComplete, onErrorReminder);
-                } else {
-                    $scope.reminder = { id: -1 };
-                    reminderService.getReminders().then(onRemindersGetComplete, onErrorReminders);
-                    reminderService.getReminderHistories().then(onReminderHistoriesGetComplete, onErrorReminderHistories);
-                }
-            }
-        }
+		if ($routeParams.id) {
+		    reminderService.getReminder($routeParams.id).then(onReminderGetComplete, onErrorReminder);
+		} else {
+		    $scope.reminder = { id: -1 };
+		    reminderService.getReminders().then(onRemindersGetComplete, onErrorReminders);
+            reminderService.getReminderHistories().then(onReminderHistoriesGetComplete, onErrorReminderHistories);
+		}
 
 		$scope.recurrences = [
 		  { idrecur: 'Once' },
@@ -175,16 +165,17 @@
 				}
 
 
-				reminderService.updateReminder($scope.reminder).then(
-					function (results) {
-						$scope.reminder = results.data;
-						$window.history.back();
-					},
-					function (results) {
-						// on error
-						var data = results.data;
-					}
-				);
+				var onReminderUpdateComplete = function (data) {
+				    $scope.reminder = data;
+				    $window.history.back();
+				};
+
+				var onErrorUpdateReminder = function (reason) {
+				    $scope.error = "Could not update reminder.";
+				};
+
+				reminderService.updateReminder($scope.reminder).then(onReminderUpdateComplete, onErrorUpdateReminder);
+
 			} else {
 				$scope.reminder.ContactId = $scope.selectedContact.Id;
 				
@@ -202,17 +193,17 @@
 				if ($scope.weekdayshow) {
 					$scope.reminder.WeekDay = $scope.selectedWeekday.idweek;
 				}
+
+				var onReminderInsertComplete = function (data) {
+				    $scope.reminder = data;
+				    $window.history.back();
+				};
+
+				var onErrorInsertReminder = function (reason) {
+				    $scope.error = "Could not insert reminder.";
+				};
 				
-				reminderService.insertReminder($scope.reminder).then(
-					function (results) {
-						$scope.reminder = results.data;
-						$window.history.back();
-					},
-						function (results) {
-							// on error
-							var data = results.data;
-						}
-					);
+				reminderService.insertReminder($scope.reminder).then(onReminderInsertComplete, onErrorInsertReminder); 
 			}
 		};
 
