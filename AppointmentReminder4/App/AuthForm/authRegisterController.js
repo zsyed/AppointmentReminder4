@@ -25,7 +25,7 @@
                         }
                         else {
                             $scope.savedSuccessfully = true;
-                            $scope.message = 'Partial Registration Successful. Please click the link in the email that we just sent you to complete the registration. ';
+                            $scope.message = 'Information! - Partial Registration Successful. Please click the link in the email that we just sent you to complete the registration. ';
                         }
                             })
                 .error(function (data, status, headers, config) {
