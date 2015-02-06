@@ -224,12 +224,12 @@ namespace AppointmentReminder4.Controllers
 
         private string MessageToSend(Reminder reminder, Profile profile, Contact contact)
         {
-            return string.Format("Hi {0},{1}{2}{1}Sincerely,{1}{3}", contact.FirstName.Trim(), "</br>", reminder.Message, profile.FirstName);
+            return string.Format("Hi {0},{1}{2}{1}Sincerely,{1}{3}{1}{1}This email was sent by {4}", contact.FirstName.Trim(), "</br>", reminder.Message, profile.FirstName, ConfigurationManager.AppSettings["WebSiteName"]);
         }
 
         private string MessageToSendSMS(Reminder reminder, Profile profile, Contact contact)
         {
-            return string.Format("Hi {0},{1}{2}{1}Sincerely,{1}{3}{1}{1}{1}{4}", contact.FirstName.Trim(), "\n", reminder.Message, profile.FirstName, "text back STOP to end these reminders.");
+            return string.Format("Hi {0},{1}{2}{1}Sincerely,{1}{3}{1}{1}{1}{4}{1}{1}Message Sent to you by {5}", contact.FirstName.Trim(), "\n", reminder.Message, profile.FirstName, "text back STOP to end these reminders.", ConfigurationManager.AppSettings["WebSiteName"]);
         }
 
 

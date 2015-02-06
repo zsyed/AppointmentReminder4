@@ -10,7 +10,6 @@
 	        $scope.loadinglogin = value;
 	    });
 
-
 	    $scope.loginForm = function () {
 	        $scope.loginLoaded = true;
 	        authService.loginUser($scope.loginData).then(
@@ -28,6 +27,10 @@
                         $scope.message = "Login attempt failed. Email address and/or password is incorrect."; // results.error_description;
                     }
                 );
+	    };
+
+	    $scope.resetPasswordRedirect = function () {
+	        $location.path('/ResetPassword');
 	    };
 
 	});

@@ -28,7 +28,7 @@
         };
 
         var resetPassword = function (passwordResetData) {
-            return $http.post("/api/Account/ResetPassword", passwordResetData);
+            return $http.post("/api/Account/ResetPassword", passwordResetData).then(function (response) { return response.data; });
         };
 
 	    var logoutUser = function () {
@@ -49,44 +49,6 @@
 	    var contactExists = function (exists) {
 	        _authentication.contactExists = exists;
 	    }
-
-	    //var onProfileGetComplete = function (data) {
-	    //    if (data != null) {
-	    //        _authentication.profileExists = true;
-	    //    }
-	    //    else
-	    //    {
-	    //        _authentication.profileExists = false;
-	    //    }
-	    //};
-
-	    //var onProfileError = function (reason) {
-	    //    _authentication.profileExists = false;
-	    //};
-
-	    //var checkProfile = function () {
-	    //    profileService.getProfile().then(onProfileGetComplete, onProfileError);
-	    //};
-
-	    //var onContactsGetComplete = function (data) {
-	    //    if (data.length > 0)
-	    //    {
-	    //        _authentication.contactExists = true;
-	    //    }
-	    //    else {
-	    //        _authentication.contactExists = false;
-	    //    }
-	    //}
-
-	    //var onErrorContacts = function (reason)
-	    //{
-	    //    _authentication.contactExists = false;
-	    //}
-
-	    //var checkContact = function () {
-	    //    contactService.getContacts().then(onContactsGetComplete, onErrorContacts);
-	    //};
-
 
 	    var loginUser = function (loginData) {
 
