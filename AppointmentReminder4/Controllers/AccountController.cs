@@ -19,6 +19,7 @@ using AppointmentReminder4.Results;
 using StructureMap;
 using AppointmentReminder.Data;
 using System.Net;
+using System.Configuration;
 
 namespace AppointmentReminder4.Controllers
 {
@@ -174,7 +175,8 @@ namespace AppointmentReminder4.Controllers
                 callbackUrl = "http://" + Url.Request.RequestUri.Authority + callbackUrl;
 
                 var emailBody = "Please reset your new password by clicking <a href=\"" + callbackUrl + "\">here</a>";
-                await new MessageEmail().SendAsync("DoNotReply@AppointmentReminder.com", user.UserName, "Reset your password", emailBody, "DoNotReply@AppointmentReminder.com", user.UserName);
+                var fromEmailAddress = string.Format("DoNotReply@{0}", ConfigurationManager.AppSettings["WebSiteName"]);
+                await new MessageEmail().SendAsync(fromEmailAddress, user.UserName, "Reset your password", emailBody, "Password Reset", user.UserName);
 
                 return Ok();
             }
