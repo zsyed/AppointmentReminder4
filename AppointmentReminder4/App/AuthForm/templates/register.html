@@ -1,12 +1,12 @@
-﻿<form class="form-horizontal" role="form" name="registerUpdateForm">
+﻿<form class="form-horizontal" role="form" name="resetRegisterForm">
     
     <div data-ng-hide="message == ''" data-ng-class="(savedSuccessfully) ? 'alert alert-info' : 'alert alert-danger'">
         {{message}}
     </div>
 
     <div class="error"
-         ng-show="registerUpdateForm.Password.$invalid&& registerUpdateForm.Password.$dirty">
-        <span ng-show="registerUpdateForm.Password.$error">
+         ng-show="resetRegisterForm.Password.$invalid&& resetRegisterForm.Password.$dirty">
+        <span ng-show="resetRegisterForm.Password.$error">
 
             <div class="alert alert-warning">
                 Warning! Password must have - at least 6 characters - at least one non letter or digit character - at least one digit ('0'-'9') - at least one uppercase ('A'-'Z')
@@ -14,16 +14,16 @@
         </span>
     </div>
 
-    <div ng-show="registerUpdateForm.ConfirmPassword.$error.passwordVerify">
-       
+    <div ng-show="resetRegisterForm.ConfirmPassword.$error.passwordVerify">
+
         <div class="alert alert-warning">
             Passwords are not equal!
         </div>
     </div>
 
     <div class="error"
-         ng-show="registerUpdateForm.Email.$invalid&& registerUpdateForm.Email.$dirty">
-        <span ng-show="registerUpdateForm.Email.$error">
+         ng-show="resetRegisterForm.Email.$invalid&& resetRegisterForm.Email.$dirty">
+        <span ng-show="resetRegisterForm.Email.$error">
 
             <div class="alert alert-warning">
                 Warning! Please enter valid email address
@@ -31,7 +31,7 @@
         </span>
     </div>
 
-    <div class="form-group" ng-class="{ 'has-error': registerUpdateForm.Email.$invalid }">
+    <div class="form-group" ng-class="{ 'has-error': resetRegisterForm.Email.$invalid }">
         <label class="col-sm-3 control-label" for="Email">Email Address</label>
         <div class="col-sm-9">
             <input required type="email" data-ng-model="auth.Email"
@@ -47,7 +47,7 @@
     //Must have at least one digit ('0'-'9').
     //Must have at least one uppercase ('A'-'Z').-->
 
-    <div class="form-group" ng-class="{ 'has-error': registerUpdateForm.Password.$invalid }">
+    <div class="form-group" ng-class="{ 'has-error': resetRegisterForm.Password.$invalid }">
         <label class="col-sm-3 control-label" for="Password">Password</label>
         <div class="col-sm-9">
             <input required type="password" data-ng-model="auth.Password"
@@ -57,7 +57,7 @@
 
     </div>
 
-    <div class="form-group" ng-class="{ 'has-error': registerUpdateForm.ConfirmPassword.$invalid }">
+    <div class="form-group" ng-class="{ 'has-error': resetRegisterForm.ConfirmPassword.$invalid }">
         <label class="col-sm-3 control-label" for="ConfirmPassword">Confirm Password</label>
         <div class="col-sm-9">
             <input required type="password" data-ng-model="auth.ConfirmPassword"
@@ -72,7 +72,7 @@
     <div class="form-group">
         <label class="col-sm-3 control-label"></label>
         <div class="col-sm-9">
-            <input type="submit" class="btn btn-primary" value="Register" data-ng-click="registerForm()" ng-disabled="registerUpdateForm.$invalid" />
+            <input type="submit" class="btn btn-primary" value="Register" data-ng-click="registerForm()" ng-disabled="resetRegisterForm.$invalid" />
             <div data-ng-show="loadingRegister == true">
                 <div class="spinner">
                     Loading...
