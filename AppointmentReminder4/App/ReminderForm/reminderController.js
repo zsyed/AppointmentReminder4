@@ -15,8 +15,6 @@
 	        $scope.error = "Could not load reminder histories";
 	    };
 
-
-
 	    var onReminderGetComplete = function (data) {
 	        $scope.reminder = data;
 	        var contactId = $scope.reminder.ContactId;

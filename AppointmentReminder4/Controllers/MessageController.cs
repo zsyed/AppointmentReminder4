@@ -33,6 +33,7 @@ using AppointmentReminder4.Providers;
 using AppointmentReminder4.Results;
 using StructureMap;
 using Newtonsoft.Json;
+using System.Text.RegularExpressions;
 
 
 namespace AppointmentReminder4.Controllers
@@ -113,7 +114,19 @@ namespace AppointmentReminder4.Controllers
                                     Value = reminder.Message
                                 });
                             }
-
+                        }
+                    }
+                    else if (reminder.ProfileId == 0 & reminder.ContactId == 0)
+                    {
+                        contact = new ReminderDb().Contacts.Where(c => c.ProfileId == 0).FirstOrDefault();
+                        DateTime serverCurrentDateTime = this.ServerCurrentDateTime(reminder);
+                        if (SendOnceTest(contact, reminder, serverCurrentDateTime))
+                        {
+                            contactList.Add(new SelectListItem()
+                            {
+                                Text = string.Format("{0} {1}", "Home", "Test"),
+                                Value = reminder.Message
+                            });
                         }
                     }
                 }
@@ -145,6 +158,22 @@ namespace AppointmentReminder4.Controllers
                 if ((reminder.ReminderDateTime.Date == serverCurrentDateTime.Date) && (reminder.ReminderDateTime.Hour == serverCurrentDateTime.Hour) && (timeDifference.Minutes >= 0 && timeDifference.Minutes <= RemdinerMinutes))
                 {
                     reminderSent = SendNotification(contact, reminder, profile, serverCurrentDateTime);
+                }
+            }
+            return reminderSent;
+        }
+
+        private bool SendOnceTest(Contact contact, Reminder reminder, DateTime serverCurrentDateTime)
+        {
+            bool reminderSent = false;
+            if (reminder.Recurrence == "Once" && contact.ProfileId == 0 && reminder.ContactId == 0 && reminder.Sent == false)
+            {
+                TimeSpan timeDifference = reminder.ReminderDateTime.TimeOfDay - serverCurrentDateTime.TimeOfDay;
+                int RemdinerMinutes = Convert.ToInt32(ConfigurationManager.AppSettings["RemdinerMinutes"]);
+
+                if ((reminder.ReminderDateTime.Date == serverCurrentDateTime.Date) && (reminder.ReminderDateTime.Hour == serverCurrentDateTime.Hour) && (timeDifference.Minutes >= 0 && timeDifference.Minutes <= RemdinerMinutes))
+                {
+                    reminderSent = SendNotificationTest(contact, reminder, serverCurrentDateTime);
                 }
             }
             return reminderSent;
@@ -212,14 +241,55 @@ namespace AppointmentReminder4.Controllers
             return reminderSent;
         }
 
+        private bool SendNotificationTest(Contact contact, Reminder reminder, DateTime serverCurrentDateTime)
+        {
+            bool reminderSent = false;
+
+            if (contact.SendEmail)
+            {
+                this.SendEmailMessageTest(reminder, contact);
+                RecordSendEmailHistoryTest(reminder, contact, serverCurrentDateTime);
+                reminderSent = true;
+            }
+
+            if (contact.SendSMS)
+            {
+                this.SendSMSMessageTest(reminder, contact);
+                RecordSendSMSHistoryTest(reminder, contact, serverCurrentDateTime);
+                reminderSent = true;
+            }
+
+            if (reminderSent)
+            {
+                RecordReminderSent(reminder);
+            }
+
+            return reminderSent;
+        }
+
         private string EmailMessageToSend(Reminder reminder, Profile profile, Contact contact)
         {
             return MessageToSend(reminder, profile, contact);
         }
 
+        private string EmailMessageToSendTest(Reminder reminder, Contact contact)
+        {
+            return MessageToSendTest(reminder,contact);
+        }
+
         private string SMSMessageToSend(Reminder reminder, Profile profile, Contact contact)
         {
             return MessageToSendSMS(reminder, profile, contact);
+        }
+
+        private string SMSMessageToSendTest(Reminder reminder, Contact contact)
+        {
+            return MessageToSendSMSTest(reminder, contact);
+        }
+
+        private string MessageToSendTest(Reminder reminder, Contact contact)
+        {
+            return string.Format("Hi {0},{1}{2}{1}Sincerely,{1}{3}{1}{1}This email was sent by {4}", contact.FirstName.Trim(), "</br>", reminder.Message, "Test Email", ConfigurationManager.AppSettings["WebSiteName"]);
         }
 
         private string MessageToSend(Reminder reminder, Profile profile, Contact contact)
@@ -230,6 +300,11 @@ namespace AppointmentReminder4.Controllers
         private string MessageToSendSMS(Reminder reminder, Profile profile, Contact contact)
         {
             return string.Format("Hi {0},{1}{2}{1}Sincerely,{1}{3}{1}{1}{1}{4}{1}{1}Message Sent to you by {5}", contact.FirstName.Trim(), "\n", reminder.Message, profile.FirstName, "text back STOP to end these reminders.", ConfigurationManager.AppSettings["WebSiteName"]);
+        }
+
+        private string MessageToSendSMSTest(Reminder reminder, Contact contact)
+        {
+            return string.Format("Hi {0},{1}{2}{1}Sincerely,{1}{3}{1}{1}{1}{4}{1}{1}Message Sent to you by {5}", contact.FirstName.Trim(), "\n", reminder.Message, "Test", "text back STOP to end these reminders.", ConfigurationManager.AppSettings["WebSiteName"]);
         }
 
 
@@ -249,6 +324,18 @@ namespace AppointmentReminder4.Controllers
             emailMessage.Send(fromEmailAddress, toEmailAddress, emailSubject, emailBody, profile.FirstName + " " + profile.LastName, contact.FirstName + " " + contact.LastName);
         }
 
+        private void SendEmailMessageTest(Reminder reminder, Contact contact)
+        {
+            string fromEmailAddress = "TestEmail";
+            string toEmailAddress = contact.EmailAddress;
+            string emailSubject = reminder.EmailSubject; // string.Format("Reminder from {0} {1} - {2}", profile.FirstName, profile.LastName, DateTime.Now.ToString());
+
+            string emailBody = this.EmailMessageToSendTest(reminder, contact);
+            emailBody = string.Format("<p>{0}</p>{1}{1}", emailBody, "</br>");
+            var emailMessage = new MessageEmail();
+            emailMessage.Send(fromEmailAddress, toEmailAddress, emailSubject, emailBody, "Test Email", "Test Email");
+        }
+
         private void SendSMSMessage(Reminder reminder, Profile profile, Contact contact)
         {
             string fromPhoneNumber = string.Format("+1{0}", profile.PhoneNumberIssued);
@@ -258,6 +345,35 @@ namespace AppointmentReminder4.Controllers
 
             string AccountSid = profile.AccountSid;
             string AuthToken = Security.Decrypt(profile.AuthToken);
+
+            var twilio = new TwilioRestClient(AccountSid, AuthToken);
+
+            if (string.IsNullOrEmpty(image))
+            {
+                twilio.SendMessage(fromPhoneNumber, toPhoneNumber, message);
+            }
+            else
+            {
+                twilio.SendMessage(fromPhoneNumber, toPhoneNumber, message, new string[] { image });
+            }
+
+            // Sample format to send twilio message.
+            //string AccountSid = "xxxxxxxxxxxxxxxxxxxxx";
+            //string AuthToken = "xxxxxxxxxxxxxxxxxxxxxx";
+            //var twilio = new TwilioRestClient(AccountSid, AuthToken);
+            //var message = twilio.SendMessage("+17144595176", "7144691491", "test");
+        }
+
+        private void SendSMSMessageTest(Reminder reminder, Contact contact)
+        {
+            string fromPhoneNumber = string.Format("+1{0}", Security.Decrypt(ConfigurationManager.AppSettings["FromPhoneNumber"]));
+            string toPhoneNumber = Regex.Replace(contact.PhoneNumber, "[^0-9]", ""); ;
+            string message = this.SMSMessageToSendTest(reminder, contact);
+            string image = "http://1.bp.blogspot.com/-CX0lw-6UhBc/U1EKIFJN0nI/AAAAAAAABAQ/IgTh46-7Jpo/s1600/Reminder2.png";
+
+            string AccountSid = Security.Decrypt(ConfigurationManager.AppSettings["SMSAccountSid"]);
+            string AuthToken = Security.Decrypt(ConfigurationManager.AppSettings["SMSAuthToken"]);
+            
 
             var twilio = new TwilioRestClient(AccountSid, AuthToken);
 
@@ -298,12 +414,42 @@ namespace AppointmentReminder4.Controllers
             _db.Save();
         }
 
+        private void RecordSendEmailHistoryTest(Reminder reminder, Contact contact, DateTime serverCurrentDateTime)
+        {
+            var reminderHistory = new ReminderHistory();
+            reminderHistory.ContactId = contact.Id;
+            reminderHistory.Message = reminder.Message;
+            // reminderHistory.ProfileId = profile.Id;
+            reminderHistory.ReminderDateTime = reminder.ReminderDateTime;
+            reminderHistory.ReminderId = reminder.Id;
+            reminderHistory.EmailSent = true;
+            reminderHistory.SMSSent = false;
+            reminderHistory.MessageSentDateTime = serverCurrentDateTime;
+            _db.ReminderHistories.Add(reminderHistory);
+            _db.Save();
+        }
+
         private void RecordSendSMSHistory(Reminder reminder, Contact contact, Profile profile, DateTime serverCurrentDateTime)
         {
             var reminderHistory = new ReminderHistory();
             reminderHistory.ContactId = contact.Id;
             reminderHistory.Message = reminder.Message;
             reminderHistory.ProfileId = profile.Id;
+            reminderHistory.ReminderDateTime = reminder.ReminderDateTime;
+            reminderHistory.ReminderId = reminder.Id;
+            reminderHistory.EmailSent = false;
+            reminderHistory.SMSSent = true;
+            reminderHistory.MessageSentDateTime = serverCurrentDateTime;
+            _db.ReminderHistories.Add(reminderHistory);
+            _db.Save();
+        }
+
+        private void RecordSendSMSHistoryTest(Reminder reminder, Contact contact, DateTime serverCurrentDateTime)
+        {
+            var reminderHistory = new ReminderHistory();
+            reminderHistory.ContactId = contact.Id;
+            reminderHistory.Message = reminder.Message;
+            // reminderHistory.ProfileId = profile.Id;
             reminderHistory.ReminderDateTime = reminder.ReminderDateTime;
             reminderHistory.ReminderId = reminder.Id;
             reminderHistory.EmailSent = false;

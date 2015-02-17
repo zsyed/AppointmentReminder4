@@ -258,6 +258,7 @@
     <Compile Include="Controllers\ReminderContactController.cs" />
     <Compile Include="Controllers\ReminderController.cs" />
     <Compile Include="Controllers\ReminderHistoryController.cs" />
+    <Compile Include="Controllers\ReminderTestController.cs" />
     <Compile Include="Controllers\ResetPasswordController.cs" />
     <Compile Include="Data\Common.cs" />
     <Compile Include="Data\Contact.cs" />

@@ -13,7 +13,7 @@ angular.module('appointmentReminderApp')
 
 appointmentReminderApp.config(function ($routeProvider, $locationProvider, $httpProvider) {
     $httpProvider.interceptors.push('authInterceptorService');
-    $locationProvider.html5Mode(true);
+    $locationProvider.html5Mode(true).hashPrefix('!');
     $routeProvider
         // Auth 
 		.when("/home", {

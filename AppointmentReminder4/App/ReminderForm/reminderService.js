@@ -21,9 +21,12 @@
 		    return $http.get("/api/ReminderContact").then(function (response) { return response.data; });
 		};
 
-
 		var insertReminder = function (reminder) {
 			return $http.post("/api/Reminder", reminder);
+		};
+
+		var insertTestReminder = function (reminderTest) {
+		    return $http.post("/api/ReminderTest", reminderTest);
 		};
 
 		var updateReminder = function (reminder) {
@@ -44,6 +47,7 @@
 			getReminderContacts: getReminderContacts,
 			getReminderHistories: getReminderHistories,
 			insertReminder: insertReminder,
+			insertTestReminder: insertTestReminder,
 			deleteReminder: deleteReminder,
 			updateReminder: updateReminder,
 			getReminder: getReminder,
