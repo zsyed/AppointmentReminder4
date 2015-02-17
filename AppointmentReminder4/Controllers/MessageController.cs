@@ -8,7 +8,6 @@ using System.Web;
 using System.Web.Http.Routing;
 using System.Web.Mvc;
 using Twilio;
-
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Threading.Tasks;
@@ -16,11 +15,8 @@ using System.Net.Http.Formatting;
 using System.Net;
 using System.IO;
 using System.Web.Http;
-
-
 using System.Security.Claims;
 using System.Security.Cryptography;
-
 using System.Web.Http.ModelBinding;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
