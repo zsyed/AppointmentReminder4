@@ -303,7 +303,6 @@
     <Content Include="App\AuthForm\templates\login.html" />
     <Content Include="App\AuthForm\templates\logout.html" />
     <Content Include="App\AuthForm\templates\register.html" />
-    <Content Include="App\AuthForm\templates\RegisterResetCommonCode.html" />
     <Content Include="App\AuthForm\templates\resetPassword.html" />
     <Content Include="App\ContactForm\contactController.js" />
     <Content Include="App\ContactForm\contactService.js" />
