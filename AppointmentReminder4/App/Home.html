@@ -21,9 +21,26 @@
         <label class="col-sm-3 control-label" for="Email"></label>
         <div class="col-sm-9">
             <button class=" btn btn-primary" type="submit" value="Test" data-ng-click="submitTestReminderForm()">Test Reminder Now</button>
-        </div>
 
+        </div>
     </div>
+
+    <div data-ng-show="loading == true">
+        <div class="spinner">
+            Loading...
+        </div>
+    </div>
+
+    <div class="alert alert-success" data-ng-show="successMsg.length > 0">
+        <a href="#" class="close" data-dismiss="alert">&times;</a>
+        <strong>Great!   </strong> {{successMsg}}
+    </div>
+
+    <div class="alert alert-danger" data-ng-show="errorMsg.length > 0">
+        <a href="#" class="close" data-dismiss="alert">&times;</a>
+        <strong>oops!   </strong> {{errorMsg}}
+    </div>
+
 
 </form>
 
