@@ -76,9 +76,9 @@ namespace AppointmentReminder4.Controllers
 
                 foreach (var reminder in reminders)
                 {
-                    if (reminder.ProfileId == 0 & reminder.ContactId == 0)
+                    if (reminder.ContactId == 0 && !reminder.Sent)
                     {
-                        var contact = new ReminderDb().Contacts.Where(c => c.ProfileId == 0).FirstOrDefault();
+                        var contact = new ReminderDb().Contacts.Where(c => c.ProfileId == reminder.ProfileId).FirstOrDefault();
                         DateTime serverCurrentDateTime = this.ServerCurrentDateTime(reminder);
                         if (SendOnceTest(contact, reminder, serverCurrentDateTime))
                         {
@@ -201,7 +201,7 @@ namespace AppointmentReminder4.Controllers
         private bool SendOnceTest(Contact contact, Reminder reminder, DateTime serverCurrentDateTime)
         {
             bool reminderSent = false;
-            if (reminder.Recurrence == "Once" && contact.ProfileId == 0 && reminder.ContactId == 0 && reminder.Sent == false)
+            if (reminder.Recurrence == "Once" && contact.ProfileId == reminder.ProfileId && reminder.ContactId == 0 && reminder.Sent == false)
             {
                 TimeSpan timeDifference = reminder.ReminderDateTime.TimeOfDay - serverCurrentDateTime.TimeOfDay;
                 int RemdinerMinutes = Convert.ToInt32(ConfigurationManager.AppSettings["RemdinerMinutes"]);

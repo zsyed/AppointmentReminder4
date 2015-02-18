@@ -24,8 +24,17 @@ namespace AppointmentReminder4.Controllers
         {
             try
             {
+                var profile = new Profile();
+                profile.EmailAddress = "Test Email Address";
+                profile.FirstName = Guid.NewGuid().ToString();
+                profile.LastName = "Test";
+                profile.DeActivate = false;
+                _db.Profiles.Add(profile);
+                _db.Save();
+                var profileSaved = new ReminderDb().Profiles.Where(p => p.FirstName == profile.FirstName).FirstOrDefault();
+
                 var reminder = new Reminder();
-                reminder.ProfileId = 0;
+                reminder.ProfileId = profileSaved.Id;
                 reminder.EmailSubject = "Test Email Subject";
                 reminder.Message = "This is a Test Message";
                 // reminder.Image = "";
@@ -39,7 +48,7 @@ namespace AppointmentReminder4.Controllers
 
                 contact.FirstName = "Test First";
                 contact.LastName = "Test Last";
-                contact.ProfileId = 0;
+                contact.ProfileId = profileSaved.Id;
                 contact.SendEmail = true;
                 contact.SendSMS = true;
                 contact.Active = true;
