@@ -107,7 +107,7 @@ namespace AppointmentReminder4.Controllers
 
         public JsonResult SendReminder()
         {
-            // For each reminder
+            // For each reminder loop through.
             var contactList = new List<SelectListItem>();
             try
             {
@@ -324,7 +324,7 @@ namespace AppointmentReminder4.Controllers
 
         private string MessageToSendTest(Reminder reminder, Contact contact)
         {
-            return string.Format("Hi {0},{1}{2}{1}Sincerely,{1}{3}{1}{1}This email was sent by {4}", contact.FirstName.Trim(), "</br>", reminder.Message, "Test Email", ConfigurationManager.AppSettings["WebSiteName"]);
+            return string.Format("Hi {0},{1}{2}{1}Sincerely,{1}{3}{1}{1}This email was sent by {4}", contact.FirstName.Trim(), "</br>", reminder.Message, "Site Admin.", ConfigurationManager.AppSettings["WebSiteName"]);
         }
 
         private string MessageToSend(Reminder reminder, Profile profile, Contact contact)
