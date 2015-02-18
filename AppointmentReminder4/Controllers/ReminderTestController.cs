@@ -33,31 +33,33 @@ namespace AppointmentReminder4.Controllers
                 _db.Save();
                 var profileSaved = new ReminderDb().Profiles.Where(p => p.FirstName == profile.FirstName).FirstOrDefault();
 
-                var reminder = new Reminder();
-                reminder.ProfileId = profileSaved.Id;
-                reminder.EmailSubject = "Test Email Subject";
-                reminder.Message = "This is a Test Message";
-                // reminder.Image = "";
-                reminder.ReminderDateTime = DateTime.Now.AddMinutes(3);
-                reminder.Recurrence = "Once";
-                // reminder.WeekDay = reminderModel.WeekDay;
-                // reminder.Sent = reminderModel.Sent;
-                _db.Reminders.Add(reminder);
-                _db.Save();
-                // return Request.CreateResponse(HttpStatusCode.Created, reminder);
+                if (profileSaved != null)
+                {
+                    var reminder = new Reminder();
+                    reminder.ProfileId = profileSaved.Id;
+                    reminder.EmailSubject = "Thank you for testing.";
+                    reminder.Message = "This is a test message generated when you entered your cell phone number and email address on our home page. Please register with us to get started with getting useful reminders and take your business to next level.";
+                    reminder.ReminderDateTime = DateTime.Now.AddMinutes(3);
+                    reminder.Recurrence = "Once";
 
-                contact.FirstName = "Test First";
-                contact.LastName = "Test Last";
-                contact.ProfileId = profileSaved.Id;
-                contact.SendEmail = true;
-                contact.SendSMS = true;
-                contact.Active = true;
-                _db.Contacts.Add(contact);
-                _db.Save();
+                    _db.Reminders.Add(reminder);
+                    _db.Save();
 
-                return Request.CreateResponse(HttpStatusCode.Created, contact);
+                    contact.FirstName = "Guest";
+                    contact.LastName = "User";
+                    contact.ProfileId = profileSaved.Id;
+                    contact.SendEmail = true;
+                    contact.SendSMS = true;
+                    contact.Active = true;
+                    _db.Contacts.Add(contact);
+                    _db.Save();
 
-
+                    return Request.CreateResponse(HttpStatusCode.Created, contact);
+                }
+                else
+                {
+                    return Request.CreateResponse(HttpStatusCode.BadRequest);
+                }
             }
             catch (Exception ex)
             {

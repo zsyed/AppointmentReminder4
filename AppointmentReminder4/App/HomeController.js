@@ -14,7 +14,7 @@
 	    var onReminderTestComplete = function (data) {
 	        $scope.tryingtoload = false;
 	        $scope.reminderTest = data;
-	        $scope.successMsg = "You should be getting test message very soon. ";
+	        $scope.successMsg = "You should be getting your test SMS message on " + data.data.PhoneNumber + " and " + data.data.EmailAddress + " within 90 seconds.";
 	    };
 
 	    var onReminderErrorTest = function (reason) {
