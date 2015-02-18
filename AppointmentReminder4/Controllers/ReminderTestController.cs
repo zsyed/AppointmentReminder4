@@ -29,7 +29,7 @@ namespace AppointmentReminder4.Controllers
                 reminder.EmailSubject = "Test Email Subject";
                 reminder.Message = "This is a Test Message";
                 // reminder.Image = "";
-                reminder.ReminderDateTime = DateTime.Now.AddMinutes(3);
+                reminder.ReminderDateTime = DateTime.Now.AddMinutes(6);
                 reminder.Recurrence = "Once";
                 // reminder.WeekDay = reminderModel.WeekDay;
                 // reminder.Sent = reminderModel.Sent;

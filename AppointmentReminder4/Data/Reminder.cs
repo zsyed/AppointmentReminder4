@@ -22,5 +22,7 @@ namespace AppointmentReminder.Data
 		public virtual int ContactId { get; set; }
 
 		public virtual bool Sent { get; set; }
+
+        public virtual bool TestColumn { get; set; }
 	}
 }
