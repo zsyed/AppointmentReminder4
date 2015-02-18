@@ -66,6 +66,45 @@ namespace AppointmentReminder4.Controllers
             return DateTime.Now.ToString();
         }
 
+        public JsonResult SendReminderTest()
+        {
+            // For each reminder
+            var contactList = new List<SelectListItem>();
+            try
+            {
+                var reminders = new ReminderDb().Reminders;
+
+                foreach (var reminder in reminders)
+                {
+                    if (reminder.ProfileId == 0 & reminder.ContactId == 0)
+                    {
+                        var contact = new ReminderDb().Contacts.Where(c => c.ProfileId == 0).FirstOrDefault();
+                        DateTime serverCurrentDateTime = this.ServerCurrentDateTime(reminder);
+                        if (SendOnceTest(contact, reminder, serverCurrentDateTime))
+                        {
+                            contactList.Add(new SelectListItem()
+                            {
+                                Text = string.Format("{0} {1}", "Home", "Test"),
+                                Value = reminder.Message
+                            });
+                        }
+                    }
+                }
+            }
+            catch (Exception exception)
+            {
+                contactList.Add(new SelectListItem() { Selected = false, Text = exception.Message, Value = exception.InnerException.ToString() });
+            }
+
+            if (contactList.Count == 0)
+            {
+                contactList.Add(new SelectListItem() { Selected = false, Text = "No appointments to send out", Value = "none" });
+            }
+
+            return Json(contactList, JsonRequestBehavior.AllowGet);
+
+        }
+
         public JsonResult SendReminder()
         {
             // For each reminder
@@ -112,19 +151,19 @@ namespace AppointmentReminder4.Controllers
                             }
                         }
                     }
-                    else if (reminder.ProfileId == 0 & reminder.ContactId == 0)
-                    {
-                        contact = new ReminderDb().Contacts.Where(c => c.ProfileId == 0).FirstOrDefault();
-                        DateTime serverCurrentDateTime = this.ServerCurrentDateTime(reminder);
-                        if (SendOnceTest(contact, reminder, serverCurrentDateTime))
-                        {
-                            contactList.Add(new SelectListItem()
-                            {
-                                Text = string.Format("{0} {1}", "Home", "Test"),
-                                Value = reminder.Message
-                            });
-                        }
-                    }
+                    //else if (reminder.ProfileId == 0 & reminder.ContactId == 0)
+                    //{
+                    //    contact = new ReminderDb().Contacts.Where(c => c.ProfileId == 0).FirstOrDefault();
+                    //    DateTime serverCurrentDateTime = this.ServerCurrentDateTime(reminder);
+                    //    if (SendOnceTest(contact, reminder, serverCurrentDateTime))
+                    //    {
+                    //        contactList.Add(new SelectListItem()
+                    //        {
+                    //            Text = string.Format("{0} {1}", "Home", "Test"),
+                    //            Value = reminder.Message
+                    //        });
+                    //    }
+                    //}
                 }
             }
             catch (Exception exception)
