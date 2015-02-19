@@ -59,16 +59,44 @@
 
     </div>
 
+    <div class="form-group"
+         data-ng-class="{'has-error':testMessageForm.random.$invalid && testMessageForm.random.$dirty}">
+        <label class="col-sm-3 control-label" for="Phone">Enter Captcha <b>{{randomNumber}}</b></label>
+        <div class="col-sm-9">
+            <input required
+                   placeholder="Enter {{randomNumber}} here for validation."
+                   minlength="4"
+                   maxlength="4"
+                   data-ng-pattern="validateTextbox()"
+                   data-ng-model="reminderTest.random"
+                   id="random"
+                   name="random"
+                   class="form-control" />
+            <span class="help-block has-error">
+                <span ng-show="testMessageForm.random.$error.required">
+                    required
+                </span>
+                <span ng-show="testMessageForm.random.$error.minlength">
+                    At least 4 characters.
+                </span>
+                <span ng-show="testMessageForm.random.$error.pattern">
+                    Captcha {{randomNumber}} not entered correctly.
+                </span>
+            </span>
+        </div>
+
+    </div>
+
     <div class="form-group">
         <label class="col-sm-3 control-label" for="Email"></label>
         <div class="col-sm-9">
             <button class=" btn btn-success"
                     type="submit" value="Test"
                     data-ng-disabled="testMessageForm.$invalid"
-                    data-ng-click="submitTestReminderForm()">
+                    data-ng-click="submitTestReminderForm();">
                 Test Reminder Now
             </button>
-
+            
         </div>
     </div>
 
