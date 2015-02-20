@@ -7,7 +7,7 @@
         <div class="col-sm-9">
             <input required
                    placeholder="nnn-nnn-nnnn"
-                   ng-pattern="/^(\([0-9]{3}\) |[0-9]{3}-)[0-9]{3}-[0-9]{4}$/"
+                   ng-pattern="/(\+*\d{1,})*([ |\(])*(\d{3})[^\d]*(\d{3})[^\d]*(\d{4})/"
                    minlength="10"
                    maxlength="14"
                    data-ng-model="reminderTest.PhoneNumber"
