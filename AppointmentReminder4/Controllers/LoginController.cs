@@ -6,12 +6,12 @@ using System.Web.Mvc;
 
 namespace AppointmentReminder4.Controllers
 {
-    public class ResetPasswordController : Controller
+    public class LoginController : Controller
     {
-        // GET: ResetPassword
+        // GET: Login
         public ActionResult Index()
         {
-            var url = "http://" + Request.Url.Authority + "/#/ResetPassword";
+            var url = "http://" + Request.Url.Authority + "/#/Login";
             return Redirect(url);
         }
     }

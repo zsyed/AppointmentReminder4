@@ -6,6 +6,10 @@
     <strong>Warning!   </strong> Please first create contact then create reminders.
 </div>
 
+<div class="alert alert-warning" data-ng-show="error">
+    <strong>Warning!   </strong> {{error}}
+</div>
+
 
 <div data-ng-show="remindercontacts.length > 0">
     <div data-ng-show="doneloadingreminders == false">

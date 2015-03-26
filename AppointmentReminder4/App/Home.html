@@ -1,13 +1,133 @@
 ﻿
-<div>
-    
-    <h3><span class="label label-success">Automated Reminders</span></h3>
+<form class="form-horizontal" role="form" name="testMessageForm" novalidate>
 
-    <ul class="list-group">
-        <li class="list-group-item">Real Time Communication</li>
-        <li class="list-group-item">Text and email reminders to your contacts</li>
-        <li class="list-group-item">Spend less time on the phone</li>
-        <li class="list-group-item">No long term contracts. Cancel any time.</li>
-    </ul>
+    <div class="form-group"
+         data-ng-class="{'has-error':testMessageForm.PhoneNumber.$invalid && testMessageForm.PhoneNumber.$dirty}">
+        <label class="col-sm-3 control-label" for="Phone">Cell Number</label>
+        <div class="col-sm-9">
+            <input required
+                   placeholder="nnn-nnn-nnnn"
+                   ng-pattern="/(\+*\d{1,})*([ |\(])*(\d{3})[^\d]*(\d{3})[^\d]*(\d{4})/"
+                   minlength="10"
+                   maxlength="14"
+                   data-ng-model="reminderTest.PhoneNumber"
+                   id="PhoneNumber"
+                   name="PhoneNumber"
+                   class="form-control" />
+            <span class="help-block has-error">
+                <span ng-show="testMessageForm.PhoneNumber.$error.required">
+                    required
+                </span>
+                <span ng-show="testMessageForm.PhoneNumber.$error.minlength">
+                    At least 10 digits.
+                </span>
+                <span ng-show="testMessageForm.PhoneNumber.$error.maxlength">
+                    Why so many characters. Double check.
+                </span>
+                <span ng-show="testMessageForm.PhoneNumber.$error.pattern">
+                    Wrong Phone number pattern.
+                </span>
+            </span>
+        </div>
 
-</div>
+    </div>
+
+    <div class="form-group"
+         data-ng-class="{'has-error':testMessageForm.EmailAddress.$invalid && testMessageForm.EmailAddress.$dirty}">
+        <label class="col-sm-3 control-label" for="Email">Email Address</label>
+        <div class="col-sm-9">
+            <input required
+                   placeholder="myemail@mycompany.com"
+                   ng-pattern="/^[_a-z0-9-]+(\.[_a-z0-9-]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,4})$/"
+                   minlength="3"
+                   data-ng-model="reminderTest.EmailAddress"
+                   id="EmailAddress"
+                   name="EmailAddress"
+                   class="form-control" />
+            <span class="help-block has-error">
+                <span ng-show="testMessageForm.EmailAddress.$error.required">
+                    required
+                </span>
+                <span ng-show="testMessageForm.EmailAddress.$error.minlength">
+                    At least 3 characters.
+                </span>
+                <span ng-show="testMessageForm.EmailAddress.$error.pattern">
+                    Wrong Email Pattern. Double check.
+                </span>
+            </span>
+        </div>
+
+    </div>
+
+    <div class="form-group"
+         data-ng-class="{'has-error':testMessageForm.random.$invalid && testMessageForm.random.$dirty}">
+        <label class="col-sm-3 control-label" for="Phone">Enter Captcha <b>{{randomNumber}}</b></label>
+        <div class="col-sm-9">
+            <input required
+                   placeholder="Enter {{randomNumber}} here for validation."
+                   minlength="4"
+                   maxlength="4"
+                   data-ng-pattern="validateTextbox()"
+                   data-ng-model="reminderTest.random"
+                   id="random"
+                   name="random"
+                   class="form-control" />
+            <span class="help-block has-error">
+                <span ng-show="testMessageForm.random.$error.required">
+                    required
+                </span>
+                <span ng-show="testMessageForm.random.$error.minlength">
+                    At least 4 characters.
+                </span>
+                <span ng-show="testMessageForm.random.$error.pattern">
+                    Captcha {{randomNumber}} not entered correctly.
+                </span>
+            </span>
+        </div>
+
+    </div>
+
+    <div class="form-group">
+        <label class="col-sm-3 control-label" for="Email"></label>
+        <div class="col-sm-9">
+            <button class=" btn btn-success"
+                    type="submit" value="Test"
+                    data-ng-disabled="testMessageForm.$invalid"
+                    data-ng-click="submitTestReminderForm();">
+                Test Reminder Now
+            </button>
+            
+        </div>
+    </div>
+
+    <div data-ng-show="loading == true">
+        <div class="spinner">
+            Loading...
+        </div>
+    </div>
+
+    <div class="alert alert-success" data-ng-show="successMsg.length > 0">
+        <a href="#" class="close" data-dismiss="alert">&times;</a>
+        <strong>Great!   </strong> {{successMsg}}
+    </div>
+
+    <div class="alert alert-danger" data-ng-show="errorMsg.length > 0">
+        <a href="#" class="close" data-dismiss="alert">&times;</a>
+        <strong>oops!   </strong> {{errorMsg}}
+    </div>
+</form>
+
+<br /><br />
+
+    <div>
+
+        <h3><span class="label label-primary">Appointment Reminder Features</span></h3>
+
+        <ul class="list-group">
+            <li class="list-group-item">Real Time Communications.</li>
+            <li class="list-group-item">Text and email reminders to your contacts</li>
+            <li class="list-group-item">Spend less time on the phone</li>
+            <li class="list-group-item">No long term contracts. Cancel any time.</li>
+        </ul>
+
+    </div>

@@ -15,8 +15,6 @@
 	        $scope.error = "Could not load reminder histories";
 	    };
 
-
-
 	    var onReminderGetComplete = function (data) {
 	        $scope.reminder = data;
 	        var contactId = $scope.reminder.ContactId;
@@ -90,7 +88,7 @@
         };
 
         var onErrorContactsReminder = function (reason) {
-            $scope.error = "Could not load reminder contact.";
+            $scope.error = "Could not load reminder contact. Or Contact may not exist. Please double check to see that at least 1 contact exists.";
         };
 
         reminderService.getReminderContacts().then(onReminderContactsGetComplete, onErrorContactsReminder);

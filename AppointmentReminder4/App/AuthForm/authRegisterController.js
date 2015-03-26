@@ -25,7 +25,7 @@
                         }
                         else {
                             $scope.savedSuccessfully = true;
-                            $scope.message = 'Partial Registration Successful. Please click the link in the email that we just sent you to complete the registration. ';
+                            $scope.message = 'Information! - Partial Registration Successful. Please click the link in the email that we just sent you to complete the registration. ';
                         }
                             })
                 .error(function (data, status, headers, config) {
@@ -33,28 +33,31 @@
                     $scope.message = data.Message;
                     $scope.savedSuccessfully = false;
                 });
-        };
+	    };
+
+	    $scope.resetComplete = false;
+	    $scope.resetDone = true;
 
 	    $scope.resetPassword = function () {
-	        authService.resetPassword($scope.passwordResetData)
-                .success(function (data, status, headers, config) {
-                        $scope.message = '';
-                        $scope.errors =[];
-                        if (data.success === false) {
 
-                            $scope.message = data.Message;
-                            $scope.savedSuccessfully = false;
+	        $scope.resetDone = false;
+	        $scope.$watch('resetComplete', function (value) {
+	            $scope.resetDone = value;
+	        });
 
-                        }
-                        else {
-                            $scope.savedSuccessfully = true;
-                            $scope.message = 'Password reset was successful. Please click on the link in the email just sent to you to complete this process.';
-                        }
-                            })
-                .error(function (data, status, headers, config) {
-                    $scope.message = data.Message;
-                    $scope.savedSuccessfully = false;
-                });
+	        var onResetComplete = function (data) {
+	            $scope.resetComplete = true;
+	            $scope.savedSuccessfully = true;
+	            $scope.message = 'Password reset was successful. Please check your email. Click on the link in the email and login again with new reset password.';
+	        };
+
+	        var onResetError = function (reason) {
+	            $scope.resetComplete = true;
+	            $scope.message = reason.Message;
+	            $scope.savedSuccessfully = false;
+	        };
+
+	        authService.resetPassword($scope.passwordResetData).then(onResetComplete, onResetError);
 	    };
 	});
 

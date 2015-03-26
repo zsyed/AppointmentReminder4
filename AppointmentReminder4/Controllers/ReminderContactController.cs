@@ -21,16 +21,19 @@ namespace AppointmentReminder4.Controllers
             if (profile != null)
             {
                 var profileContacts = _db.Contacts.Where(c => c.ProfileId == profile.Id).ToList();
-                var contacts = new List<ReminderContact>();
-                foreach (var profileContact in profileContacts)
+                if (profileContacts != null)
                 {
-                    contacts.Add(new ReminderContact()
-                                     {
-                                         Id = profileContact.Id,
-                                         name = string.Format("{0} {1}", profileContact.FirstName, profileContact.LastName)
-                                     });
+                    var contacts = new List<ReminderContact>();
+                    foreach (var profileContact in profileContacts)
+                    {
+                        contacts.Add(new ReminderContact()
+                                         {
+                                             Id = profileContact.Id,
+                                             name = string.Format("{0} {1}", profileContact.FirstName, profileContact.LastName)
+                                         });
+                    }
+                    return this.Ok(contacts);
                 }
-                return this.Ok(contacts);
             }
             return null;
 		}
