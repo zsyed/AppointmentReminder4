@@ -1,4 +1,5 @@
-﻿using System;
+﻿using AppointmentReminder4.Common;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -15,7 +16,7 @@ namespace AppointmentReminder.Models
 		public bool EmailSent { get; set; }
 		public bool SMSSent { get; set; }
 		public DateTime MessageSentDateTime { get; set; }
-		public string Recurrence { get; set; }
+		public Frequency Recurrence { get; set; }
 		public string Weekday { get; set; }
 	}
 }

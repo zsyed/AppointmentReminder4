@@ -21,11 +21,13 @@
                         required
                         name="Recurrence"
                         ng-change="reminderRecurrenceTimeChanged()"
-                        data-ng-options="recurrence.idrecur for recurrence in recurrences">
+                        data-ng-options="recurrence.option for recurrence in recurrences">
                     <option></option>
                 </select>
             </div>
         </div>
+
+    <!--data-ng-options="recurrence.idrecur for recurrence in recurrences">-->
 
         <div class="form-group">
             <div data-ng-show="calendarshow">

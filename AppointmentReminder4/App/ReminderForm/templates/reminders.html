@@ -1,6 +1,4 @@
-﻿
-<h3>Reminders</h3>
-
+﻿<h3>Reminders</h3>
 
 <div class="alert alert-warning" data-ng-show="remindercontacts.length == 0">
     <strong>Warning!   </strong> Please first create contact then create reminders.
@@ -59,16 +57,19 @@
                             <td>{{reminder.Message}}</td>
                             <td>{{reminder.ReminderDateTime.substring(0,4) == '1901' ? "None" : reminder.ReminderDateTime | date: 'EEE MM/dd/yyyy' }}</td>
                             <td>{{reminder.ReminderDateTime | date: 'hh:mm a' }}</td>
-                            <td>{{reminder.Recurrence}}</td>
+                            <td>
+                                <div ng-switch on="{{reminder.Recurrence}}">
+                                    <span data-ng-switch-when="0">Once</span>
+                                    <span data-ng-switch-when="1">Daily</span>
+                                    <span data-ng-switch-when="2">Weekly</span>
+                                    <span data-ng-switch-when="3">Monthly</span>
+                                    <span data-ng-switch-default>UnKnown</span>
+                                </div>
+                            </td>
                             <td>{{reminder.WeekDay}}</td>
                             <td>{{reminder.Sent == true? "Yes": "No"}}</td>
                             <td>
                                 <div>
-                                    <!--<input type="submit"
-                                           class="btn btn-primary"
-                                           value="Edit"
-                                           data-ng-click="showUpdateReminderForm(reminder.Id)" >-->
-
                                     <button class="btn btn-primary" type="submit" value="Edit" data-ng-click="showUpdateReminderForm(reminder.Id)">
                                         <span class=" glyphicon glyphicon-edit"></span>  Edit
                                     </button>
@@ -77,11 +78,6 @@
                             </td>
                             <td>
                                 <div>
-                                    <!--<input type="submit"
-                                           class="btn btn-primary"
-                                           value="Delete"
-                                           data-ng-click="showDeleteReminderForm(reminder.Id)" />-->
-
                                     <button class="btn btn-primary" type="submit" value="Delete" data-ng-click="showDeleteReminderForm(reminder.Id)">
                                         <span class=" glyphicon glyphicon-remove-sign"></span>  Delete
                                     </button>

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using AppointmentReminder4.Common;
+using System;
 
 namespace AppointmentReminder.Data
 {
@@ -10,7 +11,7 @@ namespace AppointmentReminder.Data
 
 		public virtual DateTime ReminderDateTime { get; set; }
 
-		public virtual string Recurrence { get; set; } // once, daily, weekly, monthly
+        public virtual Frequency Recurrence { get; set; } // once, daily, weekly, monthly
 
 		public virtual string WeekDay { get; set; } // monday, tuesday, etc.
 
@@ -22,7 +23,5 @@ namespace AppointmentReminder.Data
 		public virtual int ContactId { get; set; }
 
 		public virtual bool Sent { get; set; }
-
-        public virtual bool TestColumn { get; set; }
 	}
 }

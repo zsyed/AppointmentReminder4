@@ -5,8 +5,9 @@ using System.Web;
 
 namespace AppointmentReminder.Models
 {
-	using System.ComponentModel.DataAnnotations;
-	using System.Web.Mvc;
+    using AppointmentReminder4.Common;
+    using System.ComponentModel.DataAnnotations;
+    using System.Web.Mvc;
 
 	public class ReminderModel
 	{
@@ -29,7 +30,7 @@ namespace AppointmentReminder.Models
 
 		public string ContactName { get; set; }
 
-		public string Recurrence { get; set; }
+		public Frequency Recurrence { get; set; }
 
 		public string WeekDay { get; set; }
 

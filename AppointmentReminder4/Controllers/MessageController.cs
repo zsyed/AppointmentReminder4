@@ -30,6 +30,7 @@ using AppointmentReminder4.Results;
 using StructureMap;
 using Newtonsoft.Json;
 using System.Text.RegularExpressions;
+using AppointmentReminder4.Common;
 
 
 namespace AppointmentReminder4.Controllers
@@ -41,24 +42,43 @@ namespace AppointmentReminder4.Controllers
 
         private IReminderDb _db;
 
+        public enum TimeZone
+        {
+            PST, 
+            MST,
+            CST,
+            EST
+        }
+
         public MessageController(IReminderDb db)
         {
             _db = db;
         }
 
-        public string CurrentDateTimeValue(string TimeZone)
+        public string CurrentDateTimeValue(string timeZone)
         {
             int prodServerTimeDifference = 0;
 
-            switch (TimeZone)
+
+            var enumTimeZones = Enum.GetNames(typeof(TimeZone));
+
+            foreach (var enumTimeZone in enumTimeZones)
             {
-                case "PST": prodServerTimeDifference = Convert.ToInt32(ConfigurationManager.AppSettings["PSTOffSetHours"]); break;
-                case "MST": prodServerTimeDifference = Convert.ToInt32(ConfigurationManager.AppSettings["MSTOffSetHours"]); break;
-                case "CST": prodServerTimeDifference = Convert.ToInt32(ConfigurationManager.AppSettings["CSTOffSetHours"]); break;
-                case "EST": prodServerTimeDifference = Convert.ToInt32(ConfigurationManager.AppSettings["ESTOffSetHours"]); break;
+                if (enumTimeZone.Equals(timeZone))
+                {
+                    prodServerTimeDifference = Convert.ToInt32(ConfigurationManager.AppSettings[enumTimeZone]);
+                    break;
+                }
             }
 
-            return DateTime.Now.AddHours(prodServerTimeDifference).ToString();
+            if (prodServerTimeDifference != 0)
+            {
+                return DateTime.Now.AddHours(prodServerTimeDifference).ToString();
+            }
+            else
+            {
+                return null;
+            }
         }
 
         public string CurrentDateTime()
@@ -183,7 +203,7 @@ namespace AppointmentReminder4.Controllers
         private bool SendOnce(Contact contact, Reminder reminder, DateTime serverCurrentDateTime)
         {
             bool reminderSent = false;
-            if (reminder.Recurrence == "Once")
+            if (reminder.Recurrence == Frequency.Once)
             {
                 var profile = _db.Profiles.ToList().Find(p => p.Id == reminder.ProfileId);
 
@@ -201,7 +221,7 @@ namespace AppointmentReminder4.Controllers
         private bool SendOnceTest(Contact contact, Reminder reminder, DateTime serverCurrentDateTime)
         {
             bool reminderSent = false;
-            if (reminder.Recurrence == "Once" && contact.ProfileId == reminder.ProfileId && reminder.ContactId == 0 && reminder.Sent == false)
+            if (reminder.Recurrence == Frequency.Once && contact.ProfileId == reminder.ProfileId && reminder.ContactId == 0 && reminder.Sent == false)
             {
                 TimeSpan timeDifference = reminder.ReminderDateTime.TimeOfDay - serverCurrentDateTime.TimeOfDay;
                 int RemdinerMinutes = Convert.ToInt32(ConfigurationManager.AppSettings["RemdinerMinutes"]);
@@ -217,7 +237,7 @@ namespace AppointmentReminder4.Controllers
         private bool SendDaily(Contact contact, Reminder reminder, DateTime serverCurrentDateTime)
         {
             bool reminderSent = false;
-            if (reminder.Recurrence == "Daily")
+            if (reminder.Recurrence == Frequency.Daily)
             {
                 var profile = _db.Profiles.ToList().Find(p => p.Id == reminder.ProfileId);
 
@@ -235,7 +255,7 @@ namespace AppointmentReminder4.Controllers
         private bool SendWeekly(Contact contact, Reminder reminder, DateTime serverCurrentDateTime)
         {
             bool reminderSent = false;
-            if (reminder.Recurrence == "Weekly")
+            if (reminder.Recurrence == Frequency.Weekly)
             {
                 var profile = _db.Profiles.ToList().Find(p => p.Id == reminder.ProfileId);
 

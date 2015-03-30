@@ -1,5 +1,6 @@
 ﻿using AppointmentReminder.Data;
 using AppointmentReminder.Models;
+using AppointmentReminder4.Common;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -40,7 +41,7 @@ namespace AppointmentReminder4.Controllers
                     reminder.EmailSubject = "Thank you for testing.";
                     reminder.Message = "This is a test message generated when you entered your cell phone number and email address on our home page. Please register with us to get started with getting useful reminders and take your business to next level.";
                     reminder.ReminderDateTime = DateTime.Now.AddMinutes(3);
-                    reminder.Recurrence = "Once";
+                    reminder.Recurrence = Frequency.Once; // "Once";
 
                     _db.Reminders.Add(reminder);
                     _db.Save();

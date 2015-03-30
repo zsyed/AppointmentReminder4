@@ -34,7 +34,8 @@
 
 	        keepGoing = true;
 	        for (i = 0; i <= $scope.recurrences.length && keepGoing; i++) {
-	            if ($scope.recurrences[i].idrecur == recurrence) {
+	            //if ($scope.recurrences[i].idrecur == recurrence) {
+	            if ($scope.recurrences[i].id == recurrence) {
 	                $scope.selectedRecurrence = $scope.recurrences[i];
 	                keepGoing = false;
 	            }
@@ -52,17 +53,17 @@
 
 	        //copy paste code must be refactored.
 
-	        if (recurrence == 'Once') {
+	        if (recurrence == 0) { //'Once'
 	            $scope.calendarshow = true;
 	            $scope.weekdayshow = false;
 	        }
 
-	        if (recurrence == 'Daily') {
+	        if (recurrence == 1) { //'Daily'
 	            $scope.calendarshow = false;
 	            $scope.weekdayshow = false;
 	        }
 
-	        if (recurrence == 'Weekly') {
+	        if (recurrence == 2) { //
 	            $scope.calendarshow = false;
 	            $scope.weekdayshow = true;
 	        }
@@ -110,10 +111,16 @@
             reminderService.getReminderHistories().then(onReminderHistoriesGetComplete, onErrorReminderHistories);
 		}
 
+		//$scope.recurrences = [
+		//  { idrecur: 'Once' },
+		//  { idrecur: 'Daily' },
+		//  { idrecur: 'Weekly' }
+	    //];
+
 		$scope.recurrences = [
-		  { idrecur: 'Once' },
-		  { idrecur: 'Daily' },
-		  { idrecur: 'Weekly' }
+		  { id: 0, option: 'Once' },
+		  { id: 1, option: 'Daily' },
+		  { id: 2, option: 'Weekly' }
 		];
 
 		$scope.weekdays = [
@@ -156,7 +163,8 @@
 				$scope.ReminderTime = $filter('date')($scope.ReminderTime, 'hh:mm a');
 				$scope.ReminderTime = $scope.ReminderTime.substr($scope.ReminderTime.length - 8);
 				$scope.reminder.ReminderDateTime = $scope.ReminderDate + " " + $scope.ReminderTime;
-				$scope.reminder.Recurrence = $scope.selectedRecurrence.idrecur;
+				//$scope.reminder.Recurrence = $scope.selectedRecurrence.idrecur;
+				$scope.reminder.Recurrence = $scope.selectedRecurrence.id;
 
 				if ($scope.weekdayshow) {
 					$scope.reminder.WeekDay = $scope.selectedWeekday.idweek;
@@ -186,7 +194,8 @@
 				$scope.ReminderTime = $filter('date')($scope.ReminderTime, 'hh:mm a');
 				$scope.ReminderTime = $scope.ReminderTime.substr($scope.ReminderTime.length - 8);
 				$scope.reminder.ReminderDateTime = $scope.ReminderDate + " " + $scope.ReminderTime;
-				$scope.reminder.Recurrence = $scope.selectedRecurrence.idrecur;
+				//$scope.reminder.Recurrence = $scope.selectedRecurrence.idrecur;
+				$scope.reminder.Recurrence = $scope.selectedRecurrence.id;
 				
 				if ($scope.weekdayshow) {
 					$scope.reminder.WeekDay = $scope.selectedWeekday.idweek;
@@ -274,18 +283,19 @@
 		$scope.weekdayshow = false;
 		
 		$scope.reminderRecurrenceTimeChanged = function () {
-			var recurrence = $scope.selectedRecurrence.idrecur; // $('#ddlRecurrence option:selected').text();
-			if (recurrence == 'Once') {
+		    //var recurrence = $scope.selectedRecurrence.idrecur; // $('#ddlRecurrence option:selected').text();
+		    var recurrence = $scope.selectedRecurrence.id; // $('#ddlRecurrence option:selected').text();
+			if (recurrence == 0) { // 'Once'
 				$scope.calendarshow = true;
 				$scope.weekdayshow = false;
 			}
 
-			if (recurrence == 'Daily') {
+			if (recurrence == 1) { //'Daily'
 				$scope.calendarshow = false;
 				$scope.weekdayshow = false;
 			}
 
-			if (recurrence == 'Weekly') {
+			if (recurrence == 2) { //'Weekly'
 				$scope.calendarshow = false;
 				$scope.weekdayshow = true;
 			}
